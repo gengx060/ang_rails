@@ -22,6 +22,7 @@ module Kgeng
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.assets.initialize_on_precompile = false
     # config.assets.enabled = true
     # # config.assets.paths << Rails.root.join("app", "assets", "javascripts", "asset")
     # config.assets.paths << "#{Rails.root}/app/assets/javascripts/"
