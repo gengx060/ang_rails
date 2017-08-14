@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>AngularJS Routing example</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+		body {
+		  padding-top: 10px;
+		  background-color: #F5F5F5;
+		}
+	.nav > li {
+		float:none;
+		display:inline-block;
+		*display:inline; /* Internet Explorer 7 compatibility */
+		*zoom:1;
+		vertical-align: top;
+	}
+
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="menu.js"></script>
+  </head>
+
+  <body ng-app="sampleApp">
+
+	<menu></menu>
+    <div class="container">
+		<div class="row">
+		<div class="col-md-3">
+		   <ul class="nav">
+				<li><a href="#AddNewOrder"> Add New Order </a></li>
+				<li><a href="#ShowOrders"> Show Order </a></li>
+			</ul>
+		</div>
+		<div class="col-md-9">
+		  	<div ng-view></div>
+		</div>
+
+		</div>
+
+    </div><!-- /.container -->
+
+
+	<script type="text/ng-template" id="add_order.html">
+
+		<h2> Add Order </h2>
+		{{message}}
+
+	</script>
+
+	<script type="text/ng-template" id="show_orders.html">
+
+		<h2> Show Orders </h2>
+		{{message}}
+
+	</script>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+	<script src="app.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<div>
+	<style>
+		ul.comment_reply_ul_li li {
+			display: inline;
+			margin-right: 5px;
+		}
+		
+		.comment_reply_ul_li a {
+			cursor: pointer
+		}
+	</style>
+	<!-- 	<div style='margin:0,0,40,40'>
+			<b>sent to server</b>
+			<p ng-bind="code_text"></p>
+		</div> -->
+	<div style='margin-bottom: 10px'>
+		<div ng-style="{'margin-left': '40px'}">
+			<div style='float:left; margin-right: 12px;'>
+				<a href='#'>
+					<img ng-style="{'width':'48px', 'height': '48px'}" class="img-circle"
+						 ng-src='{{newcomment_top.img ? newcomment_top.img : $root.profile_placeholder}}'>
+				</a>
+			</div>
+			<div style='overflow: hidden;margin-right:40px'>
+				<textarea set-focus="newcomment_top.show" class="form-control" placeholder="Join the discussion here..."
+						  style='overflow: auto; word-wrap: break-word; min-height: 100px;margin-bottom:5px'
+						  ng-model="newcomment_top.content"></textarea>
+				<button class='btn btn-info pull-right' ng-click='newcomment_top.send(null, comments)'>send</button>
+			</div>
+		</div>
+	</div>
+	<div ng-repeat="comment in comments" style='margin-bottom: 10px'>
+		<div ng-style="{'margin-left': comment.lvl==1 ? '40px' : 55 + (comment.lvl-1)*45 +'px'}">
+			<div style='float:left; margin-right: 12px;'>
+				<a href='#'>
+					<img ng-style="{'width': comment.lvl=='1'?'48px':'36px', 'height':  comment.lvl=='1'?'48px':'36px'}"
+						 class="img-circle" ng-src='{{comment.img ? comment.img :  $root.profile_placeholder}}'>
+				</a>
+			</div>
+			<div style='overflow: hidden'>
+				<a href='#' style='font-weight: 700;margin-right:5px'>{{comment.user}}</a>
+				<span style='color:#c2c6cc' aria-hidden="true">•</span>
+				<span style='font-size: 12px;'>{{comment.time_stamp}}</span>
+				<p style='word-wrap: break-word;'>{{comment.msg}}</p>
+				<ul class='comment_reply_ul_li' style='padding-left: 0px'>
+					<li><a><i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
+					<li><a><i class="fa fa-angle-up" aria-hidden="true"></i></a></li>
+					<li><a ng-style="{'font-weight':comment.newcomment.show ? 'bold':'normal'}"
+						   style='text-decoration: none;' ng-click='comment.newcomment.switch(comment)'>Reply</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div style='margin-bottom: 10px' ng-if='comment.newcomment.show'>
+			<div ng-style="{'margin-left': comment.newcomment.margin_left}">
+				<div style='float:left; margin-right: 12px;'>
+					<a href='#'>
+						<img ng-style="{'width':'36px', 'height': '36px'}" class="img-circle"
+							 ng-src='{{comment.newcomment.img ? comment.newcomment.img : $root.profile_placeholder}}'>
+					</a>
+				</div>
+				<div style='overflow: hidden;margin-right:40px'>
+					<textarea set-focus="comment.newcomment.show" class="form-control"
+							  placeholder="Join the discussion here..."
+							  style='overflow: auto; word-wrap: break-word; min-height: 100px;margin-bottom:5px'
+							  ng-model="comment.newcomment.content"></textarea>
+					<button class='btn btn-info pull-right' ng-click='comment.newcomment.send(comment, comments)'>send
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

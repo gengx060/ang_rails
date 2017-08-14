@@ -1,0 +1,32 @@
+<!--<script src="app/contcontacts.jst.js"></script>-->
+<style>
+	.popover {
+		max-width: 100%; /* Max Width of the popover (depending on the container!) */
+	}
+</style>
+
+<div style="width:380px;">
+	<!--<div style='position: relative;left: 45%; top: 40%;color:black;opacity: 0.5'>-->
+	<!--<i class="fa fa-spinner fa-spin fa-5x"></i>-->
+	<!--</div>-->
+	<div style=" float:left;width:80px">
+	<img ng-style="{'width':'80px', 'height':'80px'}"
+		 class="img-rounded" ng-src='{{src.img ? src.img : $root.profile_placeholder}}'/>
+	</div>
+	<div style="float:right;width:290px;">
+		<div>
+			<a href='javascript: void(0);'><b>{{src.name}}</b></a>
+		</div>
+		<div style=" margin-top: 20px;">
+			<span class="label label-default">Default Label</span>
+			<span class="label label-primary">Primary Label</span>
+			<span class="label label-success">Success Label</span>
+			<span class="label label-info">Info Label</span>
+			<span class="label label-warning">Warning Label</span>
+			<span class="label label-danger">Danger Label</span>
+		</div>
+	</div>
+	<div style="clear:both"></div>
+	<div style="margin-top: 10px;"><span>crated at {{src.time_stamp}}</span></div>
+
+</div>
