@@ -65,3 +65,4 @@ production:
   username: geng
   password: Gn6rH!EufTE?
   socket: /var/run/mysqld/mysqld.sock
+  database: geng

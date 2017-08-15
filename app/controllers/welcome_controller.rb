@@ -5,6 +5,7 @@ class WelcomeController < ApplicationController
   end
 
   def ajax
-    render json:'sucess:1', layout: false
+    # render text:'sucess:1', layout: false
+    render :json => { :success => true,:product => {s:1}.as_json() }
   end
 end
