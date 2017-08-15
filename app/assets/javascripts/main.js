@@ -1,19 +1,20 @@
+debugger
 require.config({
 	
-	baseUrl: "/assets/",
+	baseUrl: "assets/",
 	
 	// alias libraries paths
 	paths: {
-		'angular'              : '/assets/asset/angularjs/1.6.1/angular',
-		'angular-route'        : '/assets/asset/angularjs/1.6.1/angular-route',
-		'angular-sanitize'     : '/assets/asset/angularjs/1.6.1/angular-sanitize',
-		'bootstrap'            : '/assets/asset/bootstrap/3.3.7/bootstrap.min',
-		'jquery'               : '/assets/asset/jquery/3.2.1/jquery.min',
-		'Enumerable'           : '/assets/asset/linq/linq',
-		'toastr'               : '/assets/asset/toastr/toastr',
-		'bootstrap-dialog'     : '/assets/asset/bootstrap-dialog/bootstrap-dialog',
-		'ui-bootstrap'         : '/assets/asset/angular-ui-bootstrap/ui-bootstrap-tpls/2.5.0/ui-bootstrap-tpls-2.5.0',
-		'angular-modal-service': '/assets/asset/angular-modal/angular-modal-service',
+		'angular'              : 'asset/angularjs/1.6.1/angular',
+		'angular-route'        : 'asset/angularjs/1.6.1/angular-route',
+		'angular-sanitize'     : 'asset/angularjs/1.6.1/angular-sanitize',
+		'bootstrap'            : 'asset/bootstrap/3.3.7/bootstrap.min',
+		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
+		'Enumerable'           : 'asset/linq/linq',
+		'toastr'               : 'asset/toastr/toastr',
+		'bootstrap-dialog'     : 'asset/bootstrap-dialog/bootstrap-dialog',
+		'ui-bootstrap'         : 'asset/angular-ui-bootstrap/ui-bootstrap-tpls/2.5.0/ui-bootstrap-tpls-2.5.0',
+		'angular-modal-service': 'asset/angular-modal/angular-modal-service',
 		'async'                : '../lib/requirejs/async',
 		'ngload'               : '../lib/requirejs/ngload',
 		'prettify'             : '../lib/google-code-prettify/prettify',

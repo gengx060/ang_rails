@@ -52,8 +52,16 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+#production:
+#  <<: *default
+#  database: untitled_production
+#  username: untitled
+#  password: <%= ENV['UNTITLED_DATABASE_PASSWORD'] %>
 production:
-  <<: *default
-  database: untitled_production
-  username: untitled
-  password: <%= ENV['UNTITLED_DATABASE_PASSWORD'] %>
+  host: mysql5.gear.host
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: geng
+  password: Gn6rH!EufTE?
+  socket: /var/run/mysqld/mysqld.sock

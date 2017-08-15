@@ -21,7 +21,7 @@ define(['angular', 'bootstrap', 'app/common/vcard/vcard'], function (angular) {
 					time_stamp: '12/18/2016, 11:06:47 AM'
 				}
 			},
-			templateUrl: '/assets/app/menu/menu.template.html',
+			templateUrl: 'assets/app/menu/menu.template.html',
 			replace    : true
 		};
 	});

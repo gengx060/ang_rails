@@ -36,6 +36,10 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
+  # Do not compress assets
+  config.assets.compress = false
+  # config.assets.js_compressor = Uglifier.new(:beautify => true) if defined? Uglifier
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
