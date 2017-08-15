@@ -11,5 +11,5 @@
 !/log/.keep
 .*
 !/.gitignore
-
+Gemfile*
 /tmp
