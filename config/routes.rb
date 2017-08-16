@@ -1,11 +1,20 @@
 Rails.application.routes.draw do
 
-  get 'auth_controller/login'
+  get 'account/new_user'
+
+  # get 'auth/login'
 
   root 'welcome#index'
   get '/welcome/ajax' => 'welcome#ajax'
   post '/welcome/ajax' => 'welcome#ajax'
   post '/auth/login' => 'auth#login'
+
+
+  id_requirement     = /\d+/
+  action_requirement = /[A-Za-z_]\S*/
+  post '/:controller/:action', :action => 'list', :requirements => { :action => action_requirement }
+  # match '/:controller/:id/:action', :action => 'show', :requirements => { :id => id_requirement, :action => action_requirement }
+
 
   # get '/asset', to: redirect('/assets')
   # map.connect '/', :controller => "auth", :action=>"login"

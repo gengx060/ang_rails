@@ -6,7 +6,7 @@ class AuthController < ApplicationController
 		session[:user] = params['user']
 		session[:ip] = request.remote_ip
 		# render :json => { :success => true,:product => {sucess:1}.as_json() }, :status => :bad_request
-
+		session[:expires_at] =  30.minutes.from_now
 		render :json => { :success => true }
 
 	end

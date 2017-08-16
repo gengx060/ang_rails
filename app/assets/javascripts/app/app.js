@@ -27,7 +27,8 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'angular-route', 'angular-sanit
 
 							$( "#full-page-loader_unique" ).hide();
 							if (res.status == 401) {
-								BD.alert('Please login.');
+								debugger
+								BD.alert(res.error);
 							}
 						}
 					};
@@ -119,34 +120,6 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'angular-route', 'angular-sanit
 					// });
 				}
 			}]);
-		// .controller('vcard1', function ($scope, $sce) {
-		// 	$scope.dynamicPopover = {
-		// 		content: 'Hello, World!',
-		// 		templateUrl: '/assets/app/common/vcard/vcard.template.html',
-		// 		title: 'Title'
-		// 	};
-		//
-		// 	$scope.placement = {
-		// 		options: [
-		// 			'top',
-		// 			'top-left',
-		// 			'top-right',
-		// 			'bottom',
-		// 			'bottom-left',
-		// 			'bottom-right',
-		// 			'left',
-		// 			'left-top',
-		// 			'left-bottom',
-		// 			'right',
-		// 			'right-top',
-		// 			'right-bottom'
-		// 		],
-		// 		selected: 'right-top'
-		// 	};
-		//
-		// 	// $scope.htmlPopover = $sce.trustAsHtml('<b style="color: red">I can</b> have <div class="label label-success">HTML</div> content');
-		//
-		// });
 
 	app.config(['$routeProvider',
 		function ($routeProvider) {

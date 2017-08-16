@@ -5,12 +5,16 @@ class ApplicationController < ActionController::Base
 
 	def check_auth
 		# unless (session[:user] != nil && session[:ip] == request.remote_ip)
-		unless (session[:user] != nil && session[:ip] == request.remote_ip)
-			render :json => {:success => true, :product => {sucess: 1}.as_json()}, :status => 401
-			return false
+		if (session[:user] && session[:expires_at] && session[:ip] == request.remote_ip)
+			if session[:expires_at].to_time - Time.now > 0
+				return true
+			else
+				render :json => {:error => 'Your session expired, please login'}, :status => 401
+				return false
+			end
 		else
-			# time_left = (session[:expires_at] - Time.now).to_i
-
+			render :json => {:error => 'Unauthorized user, please login'}, :status => 401
+			return false
 		end
 	end
 end
