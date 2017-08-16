@@ -1,5 +1,6 @@
-define(['angular', 'angular-modal-service', 'app/common/vcard/vcard'], function (angular) {
-	angular.module('contacts', ['angularModalService', 'vcard'])
+define(['angular', 'angular-modal-service', 'app/common/vcard/vcard', 'app/common/dragdrop/dragdrop'],
+	function (angular) {
+	angular.module('contacts', ['angularModalService', 'vcard', 'dragdrop'])
 		.directive('contacts', function () {
 
 			return {

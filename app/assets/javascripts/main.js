@@ -14,9 +14,10 @@ require.config({
 		'bootstrap-dialog'     : 'asset/bootstrap-dialog/bootstrap-dialog',
 		'ui-bootstrap'         : 'asset/angular-ui-bootstrap/ui-bootstrap-tpls/2.5.0/ui-bootstrap-tpls-2.5.0',
 		'angular-modal-service': 'asset/angular-modal/angular-modal-service',
+		'jquery-uploadfile'	   : 'asset/jquery/jquery-uploadfile/jquery.uploadfile',
 		'async'                : '../lib/requirejs/async',
 		'ngload'               : '../lib/requirejs/ngload',
-		'prettify'             : '../lib/google-code-prettify/prettify',
+		'prettify'             : '../lib/google-code-prettify/prettify'
 		
 		// 'HomeController': 'controller/home_ctrl',
 	},
@@ -46,6 +47,9 @@ require.config({
 		},
 		'ui-bootstrap'         : {
 			deps: ['jquery', 'bootstrap', 'angular']
+		},
+		'jquery-uploadfile'    : {
+			deps: ['jquery']
 		}
 	},
 	
