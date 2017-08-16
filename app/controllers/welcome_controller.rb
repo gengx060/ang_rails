@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  before_action :check_auth, :except => ["index", "check_auth"]
+
   def index
     # render file: Rails.public_path.join("templates","home.html"), layout: true
     render file: "../assets/javascripts/index.html", layout: true

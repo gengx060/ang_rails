@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   root 'welcome#index'
   get '/welcome/ajax' => 'welcome#ajax'
   post '/welcome/ajax' => 'welcome#ajax'
+  post '/auth/login' => 'auth#login'
 
-  get '/asset', to: redirect('/assets')
+  # get '/asset', to: redirect('/assets')
   # map.connect '/', :controller => "auth", :action=>"login"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

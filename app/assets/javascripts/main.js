@@ -1,4 +1,3 @@
-debugger
 require.config({
 	
 	baseUrl: "assets/",

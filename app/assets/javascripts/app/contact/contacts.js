@@ -45,6 +45,7 @@ define(['angular', 'angular-modal-service', 'app/common/vcard/vcard'], function 
 			}).then(function (modal) {
 				modal.element.modal();
 				modal.close.then(function (result) {
+					console.log(123);
 					$scope.message = "You said 1" + result;
 				});
 			});
