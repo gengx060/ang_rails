@@ -1,14 +1,36 @@
 class AuthController < ApplicationController
 	# protect_from_forgery with: :null_session
-	before_action :check_auth, :except => ["login"]
+	before_action :check_auth, :except => ["login", "login_check"]
 
 	def login
-		session[:user] = params['user']
-		session[:ip] = request.remote_ip
-		# render :json => { :success => true,:product => {sucess:1}.as_json() }, :status => :bad_request
-		session[:expires_at] =  30.minutes.from_now
-		render :json => { :success => true }
+		user = User.find_by(email: params['email'])
+		if user
+			hashed = Digest::SHA512.hexdigest("#{params['password']} #{user.salt}")
+			if hashed == user.password
+				session[:user_id] = user.id
+				session[:ip] = request.remote_ip
+				# render :json => { :success => true,:product => {sucess:1}.as_json() }, :status => :bad_request
+				session[:expires_at] = 30.minutes.from_now
+				render :json => {:success => true}
+				user_login = UserLogin.new do |ul|
+					ul.user_id = user.id
+					ul.user_ip = request.remote_ip
+					ul.login_at = Time.now()
+				end
+				user_login.save!
+				return
+			end
+		end
+		render :json => {:error => 'Incorrect username or password.'}, :status => 401
 
+	end
+
+	def login_check
+		if session[:user_id]
+			render :json => {:success => true}
+			return
+		end
+		render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
 	end
 
 	# def check_auth
@@ -32,32 +54,32 @@ class AuthController < ApplicationController
 	# 		session[:expires_at] = 2.hours.from_now
 	# 	end
 
-		# # Special Hack for State SST Testing
-		# if ((session[:merchant_id] == "10001001") && (session[:login] == "sst_state"))
-		#   session[:layout] = "exactor_lite.rhtml"
-		#   if (((controller_name == "invoice") &&
-		#       (action_name == "tax_calculator") ||
-		#       (action_name == "get_invoice") ||
-		#       (action_name == "show") ||
-		#       (action_name == "calculate_tax") ||
-		#       (action_name == "commit_tax")) ||
-		#       ((controller_name == "sku") &&
-		#           (action_name == "get_merchant_sku_table")))
-		#     return true
-		#   else
-		#     redirect_to :controller=>"invoice", :action=>"tax_calculator"
-		#     return false
-		#   end
-		# end
-		#
-		# unless session[:user]
-		#   session[:intended_action] = action_name
-		#   session[:intended_controller] = controller_name
-		#   flash[:notice] = "Please log in"
-		#   redirect_to :controller=>"auth", :action=>"login"
-		#   return false
-		# end
-		#
-		# return check_permissions(controller_name, action_name)
+	# # Special Hack for State SST Testing
+	# if ((session[:merchant_id] == "10001001") && (session[:login] == "sst_state"))
+	#   session[:layout] = "exactor_lite.rhtml"
+	#   if (((controller_name == "invoice") &&
+	#       (action_name == "tax_calculator") ||
+	#       (action_name == "get_invoice") ||
+	#       (action_name == "show") ||
+	#       (action_name == "calculate_tax") ||
+	#       (action_name == "commit_tax")) ||
+	#       ((controller_name == "sku") &&
+	#           (action_name == "get_merchant_sku_table")))
+	#     return true
+	#   else
+	#     redirect_to :controller=>"invoice", :action=>"tax_calculator"
+	#     return false
+	#   end
+	# end
+	#
+	# unless session[:user]
+	#   session[:intended_action] = action_name
+	#   session[:intended_controller] = controller_name
+	#   flash[:notice] = "Please log in"
+	#   redirect_to :controller=>"auth", :action=>"login"
+	#   return false
+	# end
+	#
+	# return check_permissions(controller_name, action_name)
 	# end
 end
