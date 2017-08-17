@@ -1,4 +1,5 @@
-define(['angular', 'angular-modal-service', 'app/common/vcard/vcard', 'app/common/dragdrop/dragdrop'],
+define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
+		'app/common/dragdrop/dragdrop'],
 	function (angular) {
 	angular.module('contacts', ['angularModalService', 'vcard', 'dragdrop'])
 		.directive('contacts', function () {
@@ -59,7 +60,6 @@ define(['angular', 'angular-modal-service', 'app/common/vcard/vcard', 'app/commo
 		})
 		.controller('ModalController', function ($scope, close) {
 			$scope.submit = function () {
-				$scope.newUserForm.firstname = '';
 				ajaxRequest($scope.newUserForm, '/account/new_user', function (res) {
 					$scope.$apply(function(){
 						$scope.newUserForm = {
@@ -68,8 +68,10 @@ define(['angular', 'angular-modal-service', 'app/common/vcard/vcard', 'app/commo
 							email : ''
 						}
 					});
+					toastr.success('New user saved successfully.');
 				}, function (res) {
-					debugger
+					// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+					toastr.error(res.info.error ? res.info.error : res.info.server_msg);
 				});
 			}
 

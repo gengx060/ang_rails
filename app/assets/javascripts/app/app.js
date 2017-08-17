@@ -1,34 +1,55 @@
-define(['angular', 'jquery', 'bootstrap-dialog', 'angular-route', 'angular-sanitize', 'ui-bootstrap', 'app/menu/menu', 'app/comment/comment', 'app/contact/contacts',
-	'app/welcome/full-page-loader'], function (angular, $, BD) {
+define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'angular-sanitize', 'ui-bootstrap', 'app/menu/menu', 'app/comment/comment', 'app/contact/contacts',
+	'app/welcome/full-page-loader'], function (angular, $, BD, toastr) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment', 'contacts', 'fullPageLoader'])
 		.factory("srvAuth", ['$rootScope',
 			function ($rootScope) {
-
+				toastr.options = {
+					timeOut: 800,
+					positionClass: "toast-bottom-center"
+				};
+				window.toastr = toastr;
+				window.BD = BD;
 				window.ajaxRequest = function (myPostData, url, success, error, complete) {
-
+					var process_res = function (res, fun) {
+						if (typeof res.responseText === "string") {
+							try {
+								res.info = {};
+								res.info.server_msg = res.responseText;
+								res.info = JSON.parse(res.responseText);
+							} catch (e) {
+							}
+						}
+						if (fun) {
+							try {
+								fun(res);
+							} catch (e) {
+							}
+						}
+					}
 					var headers = {};
 					headers.antiForgeryToken = sessionStorage.getItem("antiForgeryToken");
-					$( "#full-page-loader_unique" ).show();
+					$("#full-page-loader_unique").show();
 					var options = {
 						url: url,
 						type: "post",
 						data: JSON.stringify(myPostData),
 						contentType: "application/json; charset=UTF-8",
 						dataType: "text",
-						// headers: headers,
-						headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+						headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
 						context: this,
-						success: success,
-						error: error,
+						success: function (res) {
+							process_res(res, success);
+						},
+						error: function (res) {
+							process_res(res, error);
+						},
 						complete: function (res) {
-							if (complete) {
-								complete(res);
-							}
+							process_res(res, complete);
 
-							$( "#full-page-loader_unique" ).hide();
+							$("#full-page-loader_unique").hide();
 							if (res.status == 401) {
 								debugger
-								BD.alert(res.error);
+								BD.alert(res.info.error);
 							}
 						}
 					};
@@ -100,9 +121,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'angular-route', 'angular-sanit
 				$scope.name = 'aaa';
 				$scope.login = function () {
 					var user = {user: 'adfadf'};
-					ajaxRequest(user, '/auth/login',function(){
+					ajaxRequest(user, '/auth/login', function () {
 						// debugger
-					},function(){
+					}, function () {
 						debugger
 					})
 					// $http({
