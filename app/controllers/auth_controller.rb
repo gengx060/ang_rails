@@ -9,7 +9,7 @@ class AuthController < ApplicationController
 			if hashed == user.password
 				session[:user_id] = user.id
 				session[:ip] = request.remote_ip
-				# render :json => { :success => true,:product => {sucess:1}.as_json() }, :status => :bad_request
+				session[:is_org] = (user.id == user.org_id)
 				session[:expires_at] = 30.minutes.from_now
 				render :json => {:success => true}
 				user_login = UserLogin.new do |ul|
