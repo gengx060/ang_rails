@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery with: :exception
 	before_action :check_auth
 
+	PAGING_LIMIT = 2
+
 	def check_auth
 		# unless (session[:user] != nil && session[:ip] == request.remote_ip)
 		if (session[:user_id] && session[:expires_at] && session[:ip] == request.remote_ip)

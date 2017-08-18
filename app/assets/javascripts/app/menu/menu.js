@@ -7,9 +7,12 @@ define(['angular', 'bootstrap', 'app/common/vcard/vcard'], function (angular) {
 			transclude: true,
 			scope: {},
 			controller: function ($scope, $element) {
+				$scope.$on('$locationChangeStart', function (event) {
+					event.preventDefault();
+				});
 				$scope.signout = function () {
 					ajaxRequest({}, '/auth/logout', function () {
-						location.hash ='#!/login';
+						location.href = '#!/login';
 						location.reload();
 					}, function () {
 					});

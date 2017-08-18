@@ -5,8 +5,8 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	.factory("srvAuth", ['$rootScope',
 		function ($rootScope) {
 			toastr.options = {
-				timeOut: 3000,
 				closeButton: true,
+				preventDuplicates: true,
 				positionClass: "toast-bottom-full-width"
 			};
 			window.toastr = toastr;
@@ -182,6 +182,32 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			$scope.hideAlert = function () {
 				$scope.showAlert = false;
 			}
+
+			// var loc_hash = location.hash;
+			// ajaxRequest({}, '/auth/login_check', function () {
+			// 	location.hash = (loc_hash == '#!/login' ? '#!/welcome' : loc_hash)
+			// 	ajaxRequest({}, '/account/get_menu', function () {
+			// 		$scope.$apply(function () {
+			// 			$scope.$root.showmenu = true;
+			// 			$scope.$root.menus = [
+			// 				{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
+			// 				{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
+			// 				{name: 'users', route: '/users', nav: true, title: 'Github Users'}
+			// 			];
+			// 			$scope.$root.user = {
+			// 				id: 3,
+			// 				name: 'Belle Chang-Li',
+			// 				parent_id: null,
+			// 				img: "assets/asset/img/b1.jpg",
+			// 				msgCount: 2,
+			// 				time_stamp: '12/18/2016, 11:06:47 AM'
+			// 			}
+			// 		});
+			// 	}, function () {
+			// 	});
+			//
+			// }, function () {
+			// });
 
 			$scope.submit = function () {
 				ajaxRequest($scope.user, '/auth/login', function () {
