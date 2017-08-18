@@ -3,9 +3,9 @@ class AccountController < ApplicationController
 
 	def new_user
 		if session[:is_org]
-			render :json => {:error => 'You don\'t have such permission.'}, :status => 500
+			render :json => {:message => 'You don\'t have such permission.'}, :status => 500
 		elsif User.exists?(email: params['email'])
-			render :json => {:error => 'Duplicate email found.'}, :status => 500
+			render :json => {:message => 'Duplicate email found.'}, :status => 500
 		else
 			user = User.new do |u|
 				u.firstname = params['firstname']
@@ -23,9 +23,9 @@ class AccountController < ApplicationController
 
 	def create_FB_account
 		if session[:is_org]
-			render :json => {:error => 'You don\'t have such permission.'}, :status => 500
+			render :json => {:message => 'You don\'t have such permission.'}, :status => 500
 		elsif User.exists?(email: params['email'])
-			render :json => {:error => 'Duplicate email found.'}, :status => 500
+			render :json => {:message => 'Duplicate email found.'}, :status => 500
 		else
 			user = User.new do |u|
 				u.firstname = params['firstname']
@@ -91,6 +91,13 @@ class AccountController < ApplicationController
 		end
 	end
 
+	def get_menu
+		if session[:user_id]
+			render :json => {:success => true}
+			return
+		end
+		render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
+	end
 
 	private
 

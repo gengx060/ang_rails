@@ -11,13 +11,19 @@ class AuthController < ApplicationController
 				session[:ip] = request.remote_ip
 				session[:is_org] = (user.id == user.org_id)
 				session[:expires_at] = 30.minutes.from_now
-				render :json => {:success => true}
+
+				last_login = UserLogin.where(:user_id => session[:user_id]).order("login_at DESC").first
+
 				user_login = UserLogin.new do |ul|
 					ul.user_id = user.id
 					ul.user_ip = request.remote_ip
 					ul.login_at = Time.now()
 				end
 				user_login.save!
+
+				render :json => {:user_id => session[:user_id],
+												 :last_login => last_login ? last_login.login_at : null,
+												 :last_login_ip => last_login ? last_login.user_ip : null }
 				return
 			end
 		end

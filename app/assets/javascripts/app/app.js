@@ -54,10 +54,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 						$("#full-page-loader_unique").hide();
 						// here need to take care login case
 						// generic cases except login
-						if (url != '/auth/login'&& url != '/auth/login_check' && res.status == 401) {
+						// if (['/auth/login', '/auth/login_check', '/account/get_menu'].indexOf(url) == -1
+						debugger
+						if (res.status == 401 && location.hash != '#!/login') {
+							// if (location.href == '/login')
+							// 	return
 							var bd = BD.alert({
 								message: 'Redirect to login in 3 secs.',
-								title: res.info.error
+								title: res.info.message
 							});
 							var timeout = 3;
 							var intr = setInterval(function () {
@@ -73,8 +77,27 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				};
 				$.ajax(options);
 			}
-			var srvAuth = {};
 
+			//remember location hash, if loged in, redirect.
+			var loc_hash = location.hash;
+			ajaxRequest({}, '/auth/login_check', function () {
+				location.hash = (loc_hash == '#!/login' ? '#!/welcome' : loc_hash)
+				// location.hash = loc_hash;
+				ajaxRequest({}, '/account/get_menu', function () {
+					$rootScope.$apply(function () {
+						$rootScope.showmenu = true;
+						$rootScope.menus = [
+							{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
+							{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
+							{name: 'users', route: '/contacts', nav: true, title: 'Github Users'}
+						];
+					});
+				}, function () {
+				});
+			}, function () {
+			});
+
+			var srvAuth = {};
 			srvAuth.fblogin = function () {
 				FB.login(function (response) {
 					if (response.status === 'connected') {
@@ -129,39 +152,39 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				);
 			}
 		}])
-	.controller('AuthCtrl1', ['$scope', '$location',
-		function ($scope, $location) {
-			debugger
-			$scope.name = 'aaa';
-		}])
 	.controller('login', ['$scope', '$location', '$http', '$location',
 		function ($scope, $location, $http, $location) {
 			$scope.user = {
-				email: '',
-				password: ''
+				email: 'gaix01@163.com',
+				password: 'gege1818'
 			};
 			$scope.$root.showmenu = false;
 			$scope.name = 'name1';
+			$scope.showAlert = false;
+			$scope.hideAlert = function() {
+				$scope.showAlert = false;
+			}
 
-			ajaxRequest($scope.user, '/auth/login_check', function () {
-				$scope.$apply(function () {
-					$scope.$root.showmenu = true;
-				});
-				$location.path('welcome');
-			}, function () {
-			});
 			$scope.submit = function () {
 				ajaxRequest($scope.user, '/auth/login', function () {
 					toastr.success('New user saved successfully.');
-					$scope.$apply(function () {
-						// $scope.show = true;
-						$scope.$root.showmenu = true;
-						// $scope.name = 'name2';
-						// $location.path('welcome');
+
+					ajaxRequest({}, '/account/get_menu', function () {
+						$scope.$apply(function () {
+							$scope.$root.showmenu = true;
+							$scope.$root.menus = [
+								{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
+								{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
+								{name: 'users', route: '/contacts', nav: true, title: 'Github Users'}
+							];
+						});
+						location.hash = '#!/welcome';
+					}, function () {
 					});
-					$location.path('welcome');
 				}, function () {
-					toastr.error('Incorrect username or password.');
+					$scope.$apply(function () {
+						$scope.showAlert = true;
+					});
 				})
 			}
 		}]);

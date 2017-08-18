@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
 	def check_auth
 		# unless (session[:user] != nil && session[:ip] == request.remote_ip)
-		if (session[:user] && session[:expires_at] && session[:ip] == request.remote_ip)
+		if (session[:user_id] && session[:expires_at] && session[:ip] == request.remote_ip)
 			if session[:expires_at].to_time - Time.now > 0
 				return true
 			else

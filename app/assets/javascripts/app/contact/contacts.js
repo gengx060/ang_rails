@@ -71,7 +71,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					toastr.success('New user saved successfully.');
 				}, function (res) {
 					// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
-					toastr.error(res.info.error ? res.info.error : res.info.server_msg);
+					toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 				});
 			}
 
