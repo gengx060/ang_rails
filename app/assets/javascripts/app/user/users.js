@@ -1,8 +1,8 @@
 define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
 		'app/common/dragdrop/dragdrop'],
 	function (angular) {
-	angular.module('contacts', ['angularModalService', 'vcard', 'dragdrop'])
-		.directive('contacts', function () {
+	angular.module('users', ['angularModalService', 'vcard', 'dragdrop'])
+		.directive('users', function () {
 
 			return {
 				require: '^tabs',
@@ -32,9 +32,23 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						// 	time_stamp: '12/18/2016, 11:06:47 AM'
 						// }
 					];
+					ajaxRequest($scope.newUserForm, '/user/user_list', function (res) {
+						$scope.$apply(function () {
+							debugger
+							$scope.menus = [
+								{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
+								{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
+								{name: 'users', route: '/contacts', nav: true, title: 'Github Users'}
+							]
+						});
+						// toastr.success('New user saved successfully.');
+					}, function (res) {
+						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+						// toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+					});
 
 				},
-				templateUrl: 'assets/app/contact/contacts.template.html',
+				templateUrl: 'assets/app/user/users.template.html',
 				replace: true
 			};
 		})
@@ -46,7 +60,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 			}
 			$scope.show = function () {
 				ModalService.showModal({
-					templateUrl: 'assets/app/contact/new-user.template.html',
+					templateUrl: 'assets/app/user/new-user.template.html',
 					controller: "ModalController",
 					scope: $scope
 				}).then(function (modal) {
@@ -60,7 +74,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 		})
 		.controller('ModalController', function ($scope, close) {
 			$scope.submit = function () {
-				ajaxRequest($scope.newUserForm, '/account/new_user', function (res) {
+				ajaxRequest($scope.newUserForm, '/user/new_user', function (res) {
 					$scope.$apply(function(){
 						$scope.newUserForm = {
 							firstname : '',
@@ -80,14 +94,4 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 				close(result, 500); // close, but give 500ms for bootstrap to animate
 			};
 		})
-		// .controller('newUserForm', function ($scope, close) {
-		// 	$scope.submit = function (e) {
-		// 		debugger
-		// 		if (e.isDefaultPrevented()) {
-		// 			// handle the invalid form...
-		// 		} else {
-		// 			// everything looks good!
-		// 		}
-		// 	}
-		// });
 });

@@ -12,3 +12,6 @@
 .*
 !/.gitignore
 /tmp
+/test
+Gemfile
+Gemfile.lock

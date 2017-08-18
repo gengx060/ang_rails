@@ -1,6 +1,7 @@
-define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'angular-sanitize', 'ui-bootstrap', 'app/menu/menu', 'app/comment/comment', 'app/contact/contacts',
+define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
+	'app/menu/menu', 'app/comment/comment', 'app/user/users',
 	'app/welcome/full-page-loader'], function (angular, $, BD, toastr) {
-	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment', 'contacts', 'fullPageLoader'])
+	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment', 'users', 'fullPageLoader'])
 	.factory("srvAuth", ['$rootScope',
 		function ($rootScope) {
 			toastr.options = {
@@ -10,6 +11,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			};
 			window.toastr = toastr;
 			window.BD = BD;
+			window.BD.singletonCount = 1;
 			window.ajaxRequest = function (myPostData, url, success, error, complete) {
 				var process_res = function (res, fun, error_function_flag) {
 					if (typeof res.responseText === "string") {
@@ -55,23 +57,30 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 						// here need to take care login case
 						// generic cases except login
 						// if (['/auth/login', '/auth/login_check', '/account/get_menu'].indexOf(url) == -1
-						debugger
+						// debugger
 						if (res.status == 401 && location.hash != '#!/login') {
-							// if (location.href == '/login')
-							// 	return
-							var bd = BD.alert({
-								message: 'Redirect to login in 3 secs.',
-								title: res.info.message
-							});
-							var timeout = 3;
-							var intr = setInterval(function () {
-								if (timeout > 0) {
-									bd.setMessage('Redirect to login in ' + timeout-- + ' secs.')
-								} else {
-									clearInterval(intr);
-									location.href = '/';
-								}
-							}, 1000);
+							if (BD.singletonCount == 1) {
+								BD.singletonCount--;
+								// var bd = BD.alert({
+								// 	message: 'Redirect to login in 3 secs.',
+								// 	title: res.info.message
+								// });
+								console.log('redirect to login page.');
+								location.href = '#!/login';
+								// debugger
+								// var timeout = 0;
+								// var intr = setInterval(function () {
+								// 	console.log();
+								// 	if (timeout > 0) {
+								// 		timeout--;
+								// 		// bd.setMessage('Redirect to login in ' + timeout-- + ' secs.')
+								// 	} else {
+								// 		BD.singletonCount = 0; // reset to allow BD showup again
+								// 		clearInterval(intr);
+								// 		location.href = '#!/login';
+								// 	}
+								// }, 1000);
+							}
 						}
 					}
 				};
@@ -89,11 +98,20 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 						$rootScope.menus = [
 							{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
 							{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
-							{name: 'users', route: '/contacts', nav: true, title: 'Github Users'}
+							{name: 'users', route: '/users', nav: true, title: 'Github Users'}
 						];
+						$rootScope.user = {
+							id: 3,
+							name: 'Belle Chang-Li',
+							parent_id: null,
+							img: "assets/asset/img/b1.jpg",
+							msgCount: 2,
+							time_stamp: '12/18/2016, 11:06:47 AM'
+						}
 					});
 				}, function () {
 				});
+
 			}, function () {
 			});
 
@@ -161,7 +179,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			$scope.$root.showmenu = false;
 			$scope.name = 'name1';
 			$scope.showAlert = false;
-			$scope.hideAlert = function() {
+			$scope.hideAlert = function () {
 				$scope.showAlert = false;
 			}
 
@@ -175,7 +193,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 							$scope.$root.menus = [
 								{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
 								{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
-								{name: 'users', route: '/contacts', nav: true, title: 'Github Users'}
+								{name: 'users', route: '/users', nav: true, title: 'Github Users'}
 							];
 						});
 						location.hash = '#!/welcome';
@@ -195,9 +213,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			//   templateUrl: 'show_orders.html',
 			//   controller: 'ShowOrdersController'
 			// });
-			$routeProvider.when('/contacts', {
+			$routeProvider.when('/users', {
 				// templateUrl: 'app/contact/contact.template.html',
-				template: '<contacts></contacts>'
+				template: '<users></users>'
 			});
 			$routeProvider.when('/comment', {
 				template: '<comment></comment>'
