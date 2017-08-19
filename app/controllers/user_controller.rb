@@ -11,8 +11,8 @@ class UserController < ApplicationController
 		else
 			user = User.new do |u|
 				u.firstname = params['firstname']
-				u.lastname  = params['lastname']
-				u.email     = params['email']
+				u.lastname = params['lastname']
+				u.email = params['email']
 				# salt, hashed = create_password_salt('gege1818')
 				# u.salt = salt
 				# u.password = hashed
@@ -25,15 +25,20 @@ class UserController < ApplicationController
 
 	def user_list
 		offset = params[:offset] || 0
-		limit  = params[:limit] || PAGING_LIMIT
+		limit = params[:limit] || PAGING_LIMIT
 
+		# total, users = User.user_list(session[:org_id], offset, limit)
 		total = User.where(:org_id => session[:org_id]).count
-		users = User.where(:org_id => session[:org_id]).offset(offset).limit(limit).select("id, firstname, lastname, email")
-		render :json => {:total => total, :users =>users.as_json}
+		users = User.where(:org_id => session[:org_id])
+								.offset(offset).limit(limit)
+								.select("id, firstname, lastname, email")
+		total, users = User.user_list(session[:org_id], offset, limit)
+		render :json => {:total => total, :users => users.as_json}
 	end
 
 	def get_user
-		user = User.find(session[:user_id]).select("id, firstname, lastname, email")
+		user = User.joins("LEFT JOIN `user_profile` as up ON up.user_id = users.id")
+							 .find(session[:user_id]).select("id, firstname, lastname, email")
 		user.as_json
 		render :json => user.as_json
 	end

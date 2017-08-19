@@ -11,11 +11,11 @@
 	<!--</div>-->
 	<div style=" float:left;width:80px">
 	<img ng-style="{'width':'80px', 'height':'80px'}"
-		 class="img-rounded" ng-src='{{src.img ? src.img : $root.profile_placeholder}}'/>
+		 class="img-rounded" ng-src='{{src.img_loc ? src.img_loc : $root.profile_placeholder}}'/>
 	</div>
 	<div style="float:right;width:290px;">
 		<div>
-			<a href='javascript: void(0);'><b>{{src.name}}</b></a>
+			<a href='#'><b>{{src.firstname +' '+src.lastname}}</b></a>
 		</div>
 		<div style=" margin-top: 20px;">
 			<span class="label label-default">Default Label</span>
@@ -27,6 +27,7 @@
 		</div>
 	</div>
 	<div style="clear:both"></div>
-	<div style="margin-top: 10px;"><span>crated at {{src.time_stamp}}</span></div>
+	<div style="margin-top: 10px;"><span>Crated at {{src.created_at}}</span></div>
+	<div style="margin-top: 10px;"><span>Last login at {{src.login_at}}</span></div>
 
 </div>

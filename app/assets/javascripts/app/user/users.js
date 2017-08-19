@@ -32,30 +32,9 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						// 	time_stamp: '12/18/2016, 11:06:47 AM'
 						// }
 					];
-					ajaxRequest($scope.newUserForm, '/user/user_list', function (res) {
+					ajaxRequest({}, '/user/user_list', function (res) {
 						$scope.$apply(function () {
-							// debugger
-							$scope.contacts = [
-								// {
-								// 	id        : 1,
-								// 	name      : 'Stefanih',
-								// 	img       : "assets/asset/img/g1.jpg",
-								// 	time_stamp: '12/12/2016, 11:06:47 AM'
-								// },
-								// {
-								// 	id        : 2,
-								// 	name      : 'Exactor',
-								// 	img       : null,
-								// 	time_stamp: '12/15/2016, 10:06:47 AM'
-								// },
-								// {
-								// 	id: 3,
-								// 	name: 'Belle Chang-Li',
-								// 	parent_id: null,
-								// 	img: "assets/asset/img/b1.jpg",
-								// 	time_stamp: '12/18/2016, 11:06:47 AM'
-								// }
-							]
+							$scope.contacts = res.users;
 						});
 						// toastr.success('New user saved successfully.');
 					}, function (res) {

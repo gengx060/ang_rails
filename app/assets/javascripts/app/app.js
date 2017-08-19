@@ -124,15 +124,21 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	window.toastr = toastr;
 	window.BD = BD;
 	window.BD.singletonCount = 1;
+	window.ajaxRequestCount = 0;
 	window.ajaxRequest = function (myPostData, url, success, error, complete) {
 		var process_res = function (res, fun, error_function_flag) {
-			if (typeof res.responseText === "string") {
-				try {
+			try {
+				if (typeof res.responseText === "string") {
 					res.info = {};
 					res.info.server_msg = res.responseText;
 					res.info = JSON.parse(res.responseText);
-				} catch (e) {
+				} else if (typeof res === "string") {
+					var res1;
+					res1 = JSON.parse(res);
+					res1.server_msg = res;
+					res = res1;
 				}
+			} catch (e) {
 			}
 			try {
 				if (fun) {
@@ -164,8 +170,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			},
 			complete: function (res) {
 				process_res(res, complete);
-
-				$("#full-page-loader_unique").hide();
+				ajaxRequestCount--;
+				if (ajaxRequestCount == 0)
+					$("#full-page-loader_unique").hide();
 				// here need to take care login case
 				// generic cases except login
 				// if (['/auth/login', '/auth/login_check', '/account/get_menu'].indexOf(url) == -1
@@ -196,6 +203,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				}
 			}
 		};
+		ajaxRequestCount++;
 		$.ajax(options);
 	}
 	var nonLoginRoutes = ["#!/login", "#!/register"];
@@ -218,7 +226,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					},
 					error: function () {
 						$rootScope.showmenu = false;
-						if (nonLogins.indexOf(nonLoginRoutes.hash) > -1) {
+						if (nonLoginRoutes.indexOf(nonLoginRoutes.hash) > -1) {
 							event.preventDefault();
 						} else {
 							location.href = ("#!/login");

@@ -73,10 +73,18 @@ class AccountController < ApplicationController
 
 	def get_menu
 		if session[:user_id]
-			render :json => {:success => true}
+			render :json => [
+					{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
+					{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
+					{name: 'users', route: '/users', nav: true, title: 'Github Users'}
+			];
 			return
 		end
 		render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
+	end
+
+	def login_profile
+		render :json => User.login_profile(session[:user_id]).as_json
 	end
 
 	private

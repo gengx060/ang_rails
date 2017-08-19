@@ -1,5 +1,10 @@
 <!--<script src="app/contcontacts.jst.js"></script>-->
 <div>
+	<style>
+		.pagination {
+			position: absolute;
+		}
+	</style>
 	<!--<modal-trigger></modal-trigger>-->
 	<div ng-controller="Controller">
 		<button class='btn btn-primary pull-right' ng-click="show()">New user</button>
@@ -11,7 +16,9 @@
 			<th>#</th>
 			<th>Image</th>
 			<th>Name</th>
+			<th>Email</th>
 			<th>Created at</th>
+			<th>Last login</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -21,18 +28,24 @@
 			<td>
 				<vcard type='profile' src='c'></vcard>
 			</td>
-			<td>{{c.name}}</td>
-			<td>{{c.time_stamp}}</td>
+			<td>{{c.firstname +' '+c.lastname}}</td>
+			<td>{{c.email}}</td>
+			<td>{{c.created_at}}</td>
+			<td>{{c.login_at}}</td>
 		</tr>
 		</tbody>
 	</table>
-	<ul class="pagination pagination-sm">
-		<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-		<li><a href="#">1</a></li>
-		<li  class="active"><a href="#">2</a></li>
-		<li><a href="#">...</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-	</ul>
+	<div class="form-inline">
+		<ul class="pagination pagination-sm">
+			<!--<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>-->
+			<li><a href="#" aria-label="Next"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+			<li><a href="#" aria-label="Next"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+			<li class="active"><a href="#">2</a></li>
+			<li><a href="#" aria-label="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+			<li><a href="#" aria-label="Next"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+			<span class="pull-right"> Page size: <a href="#">2</a></span>
+			<span class="pull-right"> Jump to: <input type="text" class="form-control" value="2" style="width:20px;height:27px"></span>
+			<span class="pull-right"> Total: <a href="#">2</a></span>
+		</ul>
+	</div>
 </div>
