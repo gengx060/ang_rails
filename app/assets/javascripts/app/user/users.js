@@ -34,7 +34,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					];
 					ajaxRequest($scope.newUserForm, '/user/user_list', function (res) {
 						$scope.$apply(function () {
-							debugger
+							// debugger
 							$scope.contacts = [
 								// {
 								// 	id        : 1,
@@ -57,7 +57,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 								// }
 							]
 						});
-						toastr.success('New user saved successfully.');
+						// toastr.success('New user saved successfully.');
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);
@@ -98,7 +98,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 							email : ''
 						}
 					});
-					toastr.success('New user saved successfully.');
+					// toastr.success('New user saved successfully.');
 				}, function (res) {
 					// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 					toastr.error(res.info.message ? res.info.message : res.info.server_msg);
