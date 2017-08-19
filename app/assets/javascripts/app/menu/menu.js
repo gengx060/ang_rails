@@ -28,6 +28,7 @@ define(['angular', 'bootstrap', 'app/common/vcard/vcard'], function (angular) {
 						ajaxRequest({}, '/auth/logout', function () {
 							location.reload();
 						}, function () {
+							location.reload();
 						});
 					}
 				},

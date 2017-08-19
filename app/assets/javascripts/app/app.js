@@ -198,6 +198,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 		};
 		$.ajax(options);
 	}
+	var nonLoginRoutes = ["#!/login", "#!/register"];
 	app.run(['$rootScope', '$window', '$location',
 		function ($rootScope, $window, $location) {
 			$rootScope.$on('$locationChangeStart', function (evt, next, current) {
@@ -210,14 +211,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					url: '/auth/login_check',
 					headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
 					async: false,
-					success: function (data) {
-						if (location.hash != "#!/login") {
+					success: function () {
+						if (nonLoginRoutes.indexOf(location.hash) == -1) {
 							$rootScope.showmenu = true;
 						}
 					},
 					error: function () {
 						$rootScope.showmenu = false;
-						if (location.hash == "#!/login") {
+						if (nonLogins.indexOf(nonLoginRoutes.hash) > -1) {
 							event.preventDefault();
 						} else {
 							location.href = ("#!/login");
