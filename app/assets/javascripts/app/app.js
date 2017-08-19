@@ -201,7 +201,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	app.run(['$rootScope', '$window', '$location',
 		function ($rootScope, $window, $location) {
 			$rootScope.$on('$locationChangeStart', function (evt, next, current) {
-				if ($location.$$path == '') {
+				if ($location.$$path == '' && (current != next)) {
 					evt.preventDefault();
 					return;
 				}
