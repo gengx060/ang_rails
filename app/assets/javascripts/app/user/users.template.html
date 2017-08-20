@@ -40,24 +40,5 @@
 		</tr>
 		</tbody>
 	</table>
-	<div class="form-inline row">
-		<ul class="pagination pagination-sm">
-			<!--<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>-->
-			<li><a href="#" ng-click="firstPage()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
-			<li><a href="#" ng-click="prePage()"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-			<li class="active"><a href="#">{{current_page}}</a></li>
-			<li><a href="#" ng-click="nextPage()"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right"
-																	   aria-hidden="true"></i></a></li>
-
-			<span style="margin-left:10px"> Jump to page: <input id="pagesize_input" type="text" style='width:20px' ng-keypress="gotoPage($event)"
-								   ng-model="goto_page"></span>
-			<span style="margin-left:100px">
-				<select class="form-control" ng-change="firstPage_select()" ng-model="limit">
-				<option ng-repeat="x in default_page_sizes"  ng-value="{{x}}">{{x}} items per page</option>
-			  	</select>
-			</span>
-			<span > {{total}} total items</span>
-		</ul>
-	</div>
+	<paging list="contacts" url="/user/user_list"></paging>
 </div>
