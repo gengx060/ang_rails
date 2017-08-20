@@ -9,7 +9,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					restrict: 'E',
 					transclude: true,
 					scope: {},
-					controller: function ($scope, $element) {
+					controller: function ($scope, $element, $routeParams) {
 						$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 						$scope.contacts = [];
 						$scope.total = 0;
@@ -17,7 +17,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						$scope.limit = 5;
 						$scope.current_page = 1;
 						$scope.goto_page = 1;
-						$scope.default_page_sizes = [5,10,50];
+						$scope.default_page_sizes = [5, 10, 50];
 
 						$scope.page = function () {
 							ajaxRequest({
@@ -60,17 +60,17 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						$scope.gotoPage = function (keyEvent) {
 							if (keyEvent.which != 13)
 								return;
-							if($scope.goto_page < 2){
+							if ($scope.goto_page < 2) {
 								$scope.firstPage();
 								return
 							}
 							var lastPage = $scope.total / $scope.limit;
-							if($scope.goto_page >= lastPage){
+							if ($scope.goto_page >= lastPage) {
 								$scope.lastPage();
 								return
 							}
 
-							$scope.offset = ($scope.goto_page-1) * $scope.limit;
+							$scope.offset = ($scope.goto_page - 1) * $scope.limit;
 							$scope.page()
 							$scope.current_page = $scope.goto_page;
 						}
@@ -97,7 +97,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					replace: true
 				};
 			})
-			.controller('Controller', function ($scope, ModalService) {
+			.controller('Controller', function ($scope, $routeParams, $location, ModalService) {
 				$scope.newUserForm = {
 					firstname: '',
 					lastname: '',
@@ -113,11 +113,28 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						modal.close.then(function (result) {
 							console.log(123);
 							$scope.message = "You said 1" + result;
+							$location.search('newuser', null)
 						});
 					});
 				}
+
+				$scope.show_update_hash = function () {
+					$location.search('newuser', null);
+					$location.search('newuser', 'true');
+				}
+
+				$scope.query_params = function() {
+					if ($routeParams.newuser == 'true') {
+						$scope.show();
+					}
+				}
+				$scope.$on('$routeUpdate', function () {
+					$scope.query_params();
+				});
+				$scope.query_params();
+
 			})
-			.controller('ModalController', function ($scope, close) {
+			.controller('ModalController', function ($scope, $location, close) {
 				$scope.submit = function () {
 					ajaxRequest($scope.newUserForm, '/user/new_user', function (res) {
 						$scope.$apply(function () {
