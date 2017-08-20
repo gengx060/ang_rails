@@ -26,6 +26,8 @@ class UserController < ApplicationController
 	def user_list
 		offset = params[:offset] || 0
 		limit = params[:limit] || PAGING_LIMIT
+		offset = 0 if offset < 0
+		limit = PAGING_LIMIT if limit < 0
 
 		# total, users = User.user_list(session[:org_id], offset, limit)
 		total = User.where(:org_id => session[:org_id]).count

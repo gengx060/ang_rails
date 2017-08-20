@@ -4,6 +4,8 @@
 		.pagination {
 			position: absolute;
 		}
+		/*input[type=text] { width: 12px; }*/
+		/*input[type=text]:focus { width: 12px; }*/
 	</style>
 	<!--<modal-trigger></modal-trigger>-->
 	<div ng-controller="Controller">
@@ -38,14 +40,20 @@
 	<div class="form-inline">
 		<ul class="pagination pagination-sm">
 			<!--<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>-->
-			<li><a href="#" aria-label="Next"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
-			<li><a href="#" aria-label="Next"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-			<li class="active"><a href="#">2</a></li>
-			<li><a href="#" aria-label="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			<li><a href="#" aria-label="Next"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
-			<span class="pull-right"> Page size: <a href="#">2</a></span>
-			<span class="pull-right"> Jump to: <input type="text" class="form-control" value="2" style="width:20px;height:27px"></span>
-			<span class="pull-right"> Total: <a href="#">2</a></span>
+			<li><a href="#" ng-click="firstPage()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+			<li><a href="#" ng-click="prePage()"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+			<li class="active"><a href="#">{{current_page}}</a></li>
+			<li><a href="#" ng-click="nextPage()"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+			<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+			<span> Page size: {{limit}} <select class="form-control" id="sel1">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </select>
+			</span>
+			<span> Jump to: <input id="pagesize_input" type="text" style='width:20px' ng-keypress="gotoPage($event)" ng-model="goto_page" ></span>
+			<span> Total: {{total}}</span>
 		</ul>
 	</div>
 </div>
