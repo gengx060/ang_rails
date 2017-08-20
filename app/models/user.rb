@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
 		total = User.where(:org_id => org_id).count
 		users = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 								.joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
-								.select("users.id, firstname, lastname, email, users.is_deleted, users.created_at,
-up.img_loc, MAX(ul.login_at) as login_at")
+								.select("users.id, firstname, lastname, email, users.is_deleted,
+users.group,  users.created_at, up.img_loc, MAX(ul.login_at) as login_at")
 								.where("users.org_id = #{org_id}")
 								.group("users.id")
 								.offset(offset).limit(limit)

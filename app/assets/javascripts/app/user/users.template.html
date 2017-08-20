@@ -4,6 +4,7 @@
 		.pagination {
 			position: absolute;
 		}
+
 		/*input[type=text] { width: 12px; }*/
 		/*input[type=text]:focus { width: 12px; }*/
 	</style>
@@ -19,6 +20,7 @@
 			<th>Image</th>
 			<th>Name</th>
 			<th>Email</th>
+			<th>Type</th>
 			<th>Created at</th>
 			<th>Last login</th>
 		</tr>
@@ -26,34 +28,36 @@
 		<tbody>
 
 		<tr ng-repeat="c in contacts">
-			<th scope="row">{{c.id}}</th>
+			<th scope="row"><a href="#">{{c.id}}</a></th>
 			<td>
 				<vcard type='profile' src='c'></vcard>
 			</td>
 			<td>{{c.firstname +' '+c.lastname}}</td>
 			<td>{{c.email}}</td>
+			<td>{{c.group}}</td>
 			<td>{{c.created_at}}</td>
 			<td>{{c.login_at}}</td>
 		</tr>
 		</tbody>
 	</table>
-	<div class="form-inline">
+	<div class="form-inline row">
 		<ul class="pagination pagination-sm">
 			<!--<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>-->
 			<li><a href="#" ng-click="firstPage()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
 			<li><a href="#" ng-click="prePage()"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
 			<li class="active"><a href="#">{{current_page}}</a></li>
 			<li><a href="#" ng-click="nextPage()"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-			<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
-			<span> Page size: {{limit}} <select class="form-control" id="sel1">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-      </select>
+			<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right"
+																	   aria-hidden="true"></i></a></li>
+
+			<span style="margin-left:10px"> Jump to page: <input id="pagesize_input" type="text" style='width:20px' ng-keypress="gotoPage($event)"
+								   ng-model="goto_page"></span>
+			<span style="margin-left:100px">
+				<select class="form-control" ng-change="firstPage_select()" ng-model="limit">
+				<option ng-repeat="x in default_page_sizes"  ng-value="{{x}}">{{x}} items per page</option>
+			  	</select>
 			</span>
-			<span> Jump to: <input id="pagesize_input" type="text" style='width:20px' ng-keypress="gotoPage($event)" ng-model="goto_page" ></span>
-			<span> Total: {{total}}</span>
+			<span > {{total}} total items</span>
 		</ul>
 	</div>
 </div>

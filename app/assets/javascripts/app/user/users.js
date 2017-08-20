@@ -14,18 +14,10 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 						$scope.contacts = [];
 						$scope.total = 0;
 						$scope.offset = 0;
-						$scope.limit = 2;
+						$scope.limit = 5;
 						$scope.current_page = 1;
 						$scope.goto_page = 1;
-						// ajaxRequest({}, '/user/user_list', function (res) {
-						// 	$scope.$apply(function () {
-						// 		$scope.contacts = res.users;
-						// 		$scope.total = res.total;
-						// 		$scope.offset = $scope.offset + $scope.limit;
-						// 	});
-						// }, function (res) {
-						// 	toastr.error(res.info.message ? res.info.message : res.info.server_msg);
-						// });
+						$scope.default_page_sizes = [5,10,50];
 
 						$scope.page = function () {
 							ajaxRequest({
@@ -42,6 +34,12 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 							});
 						}
 						$scope.page();
+
+						$scope.firstPage_select = function () {
+							$scope.offset = 0;
+							$scope.current_page = 1;
+							$scope.page()
+						}
 
 						$scope.firstPage = function () {
 							if ($scope.offset == 0 && $scope.current_page == 1)
@@ -137,7 +135,6 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 				}
 
 				$scope.close = function (result) {
-					// console.log('closing');
 					close(result, 500); // close, but give 500ms for bootstrap to animate
 				};
 			})
