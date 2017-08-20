@@ -23,7 +23,7 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					lastname: '',
 					email: ''
 				}
-				$scope.show = function () {
+				$scope.$parent.show = function () {
 					ModalService.showModal({
 						templateUrl: 'assets/app/user/new-user.template.html',
 						controller: "ModalController",
@@ -63,6 +63,74 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 							}
 						});
 						toastr.success('New user saved successfully.');
+					}, function (res) {
+						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+						toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+					});
+				}
+
+				$scope.close = function (result) {
+					close(result, 500); // close, but give 500ms for bootstrap to animate
+				};
+			})
+			.controller('UserController', function ($scope, $routeParams, $location, ModalService) {
+				$scope.userForm = {
+					firstname: '',
+					lastname: '',
+					email: ''
+				}
+				$scope.show_user = function (id) {
+						ajaxRequest({user_id:id}, '/user/get_user', function (res) {
+							debugger
+							$scope.$apply(function () {
+								$scope.userForm = {
+									firstname: res.firstname,
+									lastname: res.lastname,
+									email: res.email
+								}
+							});
+						}, function (res) {
+							// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+						});
+					ModalService.showModal({
+						templateUrl: 'assets/app/user/user.template.html',
+						controller: "UserModalController",
+						scope: $scope
+					}).then(function (modal) {
+						modal.element.modal();
+						modal.close.then(function (result) {
+							$location.search('user', null);
+						});
+					});
+				}
+
+				$scope.show_update_hash = function (id) {
+					$location.search('user', null);
+					$location.search('user', id);
+				}
+				$scope.query_params = function() {
+					if ($routeParams.user > 0) {
+						$scope.show_user($routeParams.user);
+					}
+				}
+				$scope.$on('$routeUpdate', function () {
+					$scope.query_params();
+				});
+				$scope.query_params();
+
+			})
+			.controller('UserModalController', function ($scope, $location, close) {
+				$scope.submit = function () {
+					ajaxRequest($scope.newUserForm, '/user/get_user', function (res) {
+						debugger
+						$scope.$apply(function () {
+							$scope.userForm = {
+								firstname: '',
+								lastname: '',
+								email: ''
+							}
+						});
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);

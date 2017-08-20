@@ -209,11 +209,17 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	var nonLoginRoutes = ["#!/login", "#!/register"];
 	app.run(['$rootScope', '$window', '$location',
 		function ($rootScope, $window, $location) {
+		//old_path_reserved is the purpose of preventing search upate trigger login check
+			$location.old_path_reserved = '';
 			$rootScope.$on('$locationChangeStart', function (evt, next, current) {
 				if ($location.$$path == '' && (current != next)) {
 					evt.preventDefault();
 					return;
 				}
+				if( $location.old_path_reserved == $location.$$path) {
+					return;
+				}
+				$location.old_path_reserved = $location.$$path;
 				$.ajax({
 					type: "post",
 					url: '/auth/login_check',

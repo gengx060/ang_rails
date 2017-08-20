@@ -25,10 +25,10 @@
 			<th>Last login</th>
 		</tr>
 		</thead>
-		<tbody>
+		<tbody  ng-controller="UserController">
 
-		<tr ng-repeat="c in contacts">
-			<th scope="row"><a href="#">{{c.id}}</a></th>
+		<tr ng-repeat="c in contacts" >
+			<th scope="row"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>
 			<td>
 				<vcard type='profile' src='c'></vcard>
 			</td>

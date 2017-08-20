@@ -39,9 +39,11 @@ class UserController < ApplicationController
 	end
 
 	def get_user
-		user = User.joins("LEFT JOIN `user_profile` as up ON up.user_id = users.id")
-							 .find(session[:user_id]).select("id, firstname, lastname, email")
-		user.as_json
-		render :json => user.as_json
+		if params[:user_id]
+			render :json => User.get_user(params[:user_id], session[:user_id]).as_json
+		else
+			render :json => {message: 'The user is not from your organization.'}, :status => 500
+		end
+
 	end
 end

@@ -36,4 +36,12 @@ users.group,  users.created_at, up.img_loc, MAX(ul.login_at) as login_at")
 		return total, users
 	end
 
+	def self.get_user(user_id, org_id)
+		user = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
+							 .where("users.id = #{user_id} and users.org_id = #{org_id}")
+							 .select("users.id, firstname, lastname, email")
+							 .first
+		return user
+	end
+
 end
