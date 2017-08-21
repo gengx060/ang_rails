@@ -7,28 +7,27 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 			restrict: 'E',
 			transclude: true,
 			scope: {
-				height:'@'
+				height: '@'
 			},
 			controller: function ($scope, $element) {
 				$scope.tag = $element[0].tagName;
 				$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 				$scope.profile_placeholder = "asset/img/blank-profile.png";
-// debugger
-				$scope.remove = function(item) {
+
+				$scope.remove = function (item) {
 					var i = $scope.droppedFiles.indexOf(item);
 					$scope.droppedFiles.splice(i, 1);
 				}
 
-				$scope.upload = function(item) {
-						var data = {file: item.src};
-						$.ajax({
-						xhr: function() {
+				$scope.upload = function (item) {
+					var data = {file: item.src, name: item.name};
+					$.ajax({
+						xhr: function () {
 							var xhr = new window.XMLHttpRequest();
-							xhr.upload.addEventListener("progress", function(evt) {
+							xhr.upload.addEventListener("progress", function (evt) {
 								if (evt.lengthComputable) {
 									var percentComplete = evt.loaded / evt.total;
 									percentComplete = parseInt(percentComplete * 100);
-									console.log(percentComplete);
 
 									$scope.$apply(function () {
 										item.percentage = percentComplete;
@@ -39,47 +38,14 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 
 							return xhr;
 						},
-						url:  "/resource/upload",
+						url: "/resource/upload",
 						type: "POST",
 						data: JSON.stringify(data),
 						contentType: "application/json",
 						dataType: "json",
-						success: function(result) {
-							console.log(result);
+						success: function (result) {
 						}
 					});
-					// };
-					// reader.readAsArrayBuffer(item.file);
-					// reader.readAsText(item.file);
-					// reader.readAsDataURL(item.file);
-
-					// var reader = new FileReader();
-					// // this.ctrl = createThrobber(img);
-					// var xhr = new XMLHttpRequest();
-					// this.xhr = xhr;
-					//
-					// var self = this;
-					// this.xhr.upload.addEventListener("progress", function(e) {
-					// 	if (e.lengthComputable) {
-					// 		var percentage = Math.round((e.loaded * 100) / e.total);
-					// 		// self.ctrl.update(percentage);
-					// 		item.percentage = percentage;
-					// 	}
-					// }, false);
-					//
-					// xhr.upload.addEventListener("load", function(e){
-					// 	debugger
-					// 	item.percentage = 100;
-					// 	// self.ctrl.update(100);
-					// 	// var canvas = self.ctrl.ctx.canvas;
-					// 	// canvas.parentNode.removeChild(canvas);
-					// }, false);
-					// xhr.open("POST", "/resource/upload");
-					// xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-					// reader.onload = function(evt) {
-					// 	xhr.send(evt.target.result);
-					// };
-					// reader.readAsBinaryString(item.file);
 				}
 				$scope.getPercentage = function () {
 					return $scope.percentage;
@@ -97,12 +63,14 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 							var item = {};
 							// window.URL = window.URL || window.webkitURL;
 							// item.src = window.URL.createObjectURL(f);
-							var reader = new FileReader();
-							reader.readAsDataURL(f);
-							reader.onload = function(evt) {
-								$scope.$apply(function () {
-									item.src = evt.target.result;
-								})
+							if (f.type.indexOf("image") == 0 && f.size < 10000000) { //10M
+								var reader = new FileReader();
+								reader.readAsDataURL(f);
+								reader.onload = function (evt) {
+									$scope.$apply(function () {
+										item.src = evt.target.result;
+									})
+								}
 							}
 							item.percentage = 0;
 							item.name = f.name;

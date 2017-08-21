@@ -19,6 +19,8 @@ class AuthController < ApplicationController
 					ul.user_id  = user.id
 					ul.user_ip  = request.remote_ip
 					ul.login_at = Time.now()
+					ul.login_from = request.user_agent
+
 				end
 				user_login.save!
 
