@@ -1,16 +1,10 @@
 <div>
 	<style>
-		#drop_zone {
-			border: 5px solid blue;
-			width: 200px;
-			height: 100px;
-		}
-
 		.box {
 			font-size: 1.25rem; /* 20 */
 			background-color: #c8dadf;
 			position: relative;
-			padding: 100px 20px;
+			padding: 50px 20px;
 			outline: 2px dashed black;
 			outline-offset: -10px;
 			outline-color: #f1f1f1 !important;
@@ -115,38 +109,49 @@
 		}
 	</style>
 
-	<div class='box'>
+	<div class='box'  ng-style="{'padding-top': height, 'padding-bottom': height}">
+		<!--<div class='box'  ng-style="{'padding-top': height,'padding-bottom': height}">-->
 		<strong> Drag file to here ...</strong>
 	</div>
-	<div class="progress">
-		<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="40"
-			 aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-			<span class="sr-only">40% Complete (success)</span>
-		</div>
-	</div>
+	<ul>
+		<li ng-repeat="f in droppedFiles" class="row">
+			<img class="col-sm-2" ng-src="{{f.src}}" height="60">
+			<span class="col-sm-3">{{f.name}}</span>
+			<div class="progress col-sm-4" style="padding-left: 0;padding-right: 0;">
+				<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{f.percentage}}"
+					 aria-valuemin="0" aria-valuemax="100" style="width: 40%" ng-style="{'width':f.percentage+'%'}">
+					<span class="sr-only">40% Complete (success)</span>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<button type="button" ng-click="upload(f)" class="btn btn-default btn-circle"><i class="fa fa-upload"></i></button>
+				<button type="button" ng-click="remove(f)" class="btn btn-default btn-circle"><i class="fa fa-times"></i></button>
+			</div>
+		</li>
+	</ul>
 
-	<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="options">
-		<!-- Redirect browsers with JavaScript disabled to the origin page -->
-		<noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
-		<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-		<div class="row fileupload-buttonbar">
-			<div class="col-lg-7">
-				<!-- The fileinput-button span is used to style the file input field as button -->
-				<span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
-                    <input type="file" name="files[]" multiple>
-                </span>
-				<!-- The global file processing state -->
-				<span class="fileupload-process"></span>
-			</div>
-			<!-- The global progress state -->
-			<div class="col-lg-5 fade">
-				<!-- The global progress bar -->
-				<div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success"></div></div>
-				<!-- The extended global progress state -->
-				<div class="progress-extended">&nbsp;</div>
-			</div>
-		</div>
-	</form>
+	<!--<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data" data-file-upload="options">-->
+	<!--&lt;!&ndash; Redirect browsers with JavaScript disabled to the origin page &ndash;&gt;-->
+	<!--<noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>-->
+	<!--&lt;!&ndash; The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload &ndash;&gt;-->
+	<!--<div class="row fileupload-buttonbar">-->
+	<!--<div class="col-lg-7">-->
+	<!--&lt;!&ndash; The fileinput-button span is used to style the file input field as button &ndash;&gt;-->
+	<!--<span class="btn btn-success fileinput-button">-->
+	<!--<i class="glyphicon glyphicon-plus"></i>-->
+	<!--<span>Add files...</span>-->
+	<!--<input type="file" name="files[]" multiple>-->
+	<!--</span>-->
+	<!--&lt;!&ndash; The global file processing state &ndash;&gt;-->
+	<!--<span class="fileupload-process"></span>-->
+	<!--</div>-->
+	<!--&lt;!&ndash; The global progress state &ndash;&gt;-->
+	<!--<div class="col-lg-5 fade">-->
+	<!--&lt;!&ndash; The global progress bar &ndash;&gt;-->
+	<!--<div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success"></div></div>-->
+	<!--&lt;!&ndash; The extended global progress state &ndash;&gt;-->
+	<!--<div class="progress-extended">&nbsp;</div>-->
+	<!--</div>-->
+	<!--</div>-->
+	<!--</form>-->
 </div>

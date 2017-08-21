@@ -46,6 +46,8 @@
             function error(message, title, optionsOverride) {
                 return notify({
                     type: toastType.error,
+					timeOut: 0,
+					extendedTimeOut: 0,
                     iconClass: getOptions().iconClasses.error,
                     message: message,
                     optionsOverride: optionsOverride,
@@ -82,6 +84,7 @@
             function success(message, title, optionsOverride) {
                 return notify({
                     type: toastType.success,
+					timeOut: 1000,
                     iconClass: getOptions().iconClasses.success,
                     message: message,
                     optionsOverride: optionsOverride,
