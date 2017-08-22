@@ -10,7 +10,7 @@
 	</style>
 	<!--<modal-trigger></modal-trigger>-->
 	<div ng-controller="Controller">
-		<button class='btn btn-primary pull-right' ng-click="show_update_hash()">New user</button>
+		<button class='btn btn-primary pull-right' ng-click="show_update_hash()">New contact</button>
 	</div>
 
 	<table class="table table-striped table-hover ">
@@ -34,7 +34,9 @@
 			</td>
 			<td>{{c.firstname +' '+c.lastname}}</td>
 			<td>{{c.email}}</td>
-			<td>{{c.group}}</td>
+			<td><i class="btn btn-default btn-lg btn-circle" disabled
+				   style="cursor: default;font-weight:900 !important;"
+				   ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</i></td>
 			<td>{{c.created_at}}</td>
 			<td>{{c.login_at}}</td>
 		</tr>

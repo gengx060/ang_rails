@@ -91,7 +91,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			//   templateUrl: 'show_orders.html',
 			//   controller: 'ShowOrdersController'
 			// });
-			$routeProvider.when('/users', {
+			$routeProvider.when('/contacts', {
 				template: '<users></users>',
 				reloadOnSearch: false
 			});

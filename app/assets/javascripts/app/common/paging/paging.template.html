@@ -1,12 +1,12 @@
 <div>
 	<div class="row">
 		<div style="min-width: 275px;" class="col-xs-4">
-		<button type="button" ng-click="firstPage()" class="btn btn-default btn-circle disabled"><i class="fa fa-angle-double-left"></i>
+		<button type="button" disabled ng-click="firstPage()" class="btn btn-default btn-circle"><i class="fa fa-angle-double-left"></i>
 		</button>
 		<button type="button" ng-click="prePage()" class="btn btn-default btn-circle"><i class="fa fa-angle-left"></i>
 		</button>
 			<!--<span style="margin-left:10px"> page: <input type="text" style='width:20px' ng-model="current_page_bak"> of {{total_page}}</span>-->
-			<span style="margin-left:10px"> page: <input type="text" style='width:20px'
+			<span style="margin-left:10px"> page: <input type="text" style='width:20px;border-radius: 4px;'
 				ng-keypress="gotoPage($event)"
 														 ng-model="current_page_bak"> of {{total_page}}</span>
 		<button type="button" ng-click="nextPage()" class="btn btn-default btn-circle"><i class="fa fa-angle-right"></i>
