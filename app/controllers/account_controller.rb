@@ -87,6 +87,28 @@ class AccountController < ApplicationController
 		render :json => User.login_profile(session[:user_id]).as_json
 	end
 
+	def signup
+		unless params['account'] && params['password'] && params['password'] == params['password1']
+			render :json => {:message => 'Sign up info is invalid.'}, :status => 500
+			return
+		end
+		params['account'] = true
+		User.create(params)
+		render :json => {}
+	end
+
+	def change_password
+		if params['password'] && params['password1'] && params['password'] == params['password1']
+			user = User.find(session['user_id'])
+			salt, hashed = create_password_salt(password)
+			user.salt, user.hashed = salt, hashed
+			user.save!
+			render :json => {:message => 'Your password is updated.'}
+		else
+			render :json => {:message => 'You are logged out.'}, status => 500
+		end
+	end
+
 	private
 
 	def create_password_salt(password)

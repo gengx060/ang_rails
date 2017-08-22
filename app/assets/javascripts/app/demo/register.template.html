@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10">
+			<div class="panel panel-default" style="overflow: auto;">
+
+				<div class="panel-heading">
+					<div class="row">
+					<div class="col-sm-4">
+					<h3 class="panel-title">Sign up form:</h3>
+					</div>
+					</div>
+				</div>
+				<div class="panel-body">
+
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-2">Name:</label>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   ng-model="contact.firstname"  placeholder="Firstname" required>
+							</div>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   placeholder="Lastname" ng-model="contact.lastname" required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Email:</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" maxlength="255" 
+									   placeholder="name@email.com" data-error="Bruh, that email address is invalid" ng-model="contact.email"  required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Password:</label>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   ng-model="contact.password"  placeholder="Password" required>
+							</div>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   placeholder="Confirm your password" ng-model="contact.password2" required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Phone:</label>
+							<div class="col-sm-10">
+								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
+									   placeholder="Phone (optional)" ng-model="contact.phone" required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Address:</label>
+							<div class="col-sm-5">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="Street" ng-model="contact.address.street" required>
+							</div>
+							<div class="col-sm-5">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="Apt/Suite,etc" ng-model="contact.address.apt" required>
+							</div>
+						</div>
+						<div class="row">
+							<label class="control-label col-sm-2"> </label>
+							<div class="col-sm-3">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="City/Town" ng-model="contact.address.city" required>
+							</div>
+							<div class="col-sm-3">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="State/Region" ng-model="contact.address.state" required>
+							</div>
+							<div class="col-sm-4">
+								<input autocomplete="off" class="form-control" type="text" maxlength="50"
+									   placeholder="Postal / Zip Code" ng-model="contact.address.zipcode" required>
+							</div>
+						</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-4">
+						<button type="submit" class="btn btn-primary btn-block">Submit</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-2 text-center">
+						<a href="#!/login" >Sign in</button>
+					</div>
+				</div>
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>

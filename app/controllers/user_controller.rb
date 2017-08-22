@@ -9,17 +9,15 @@ class UserController < ApplicationController
 		if User.exists?(email: params['email'])
 			render :json => {:message => 'Duplicate email found.'}, :status => 500
 		else
-			user = User.new do |u|
-				u.firstname = params['firstname']
-				u.lastname = params['lastname']
-				u.email = params['email']
-				# salt, hashed = create_password_salt('gege1818')
-				# u.salt = salt
-				# u.password = hashed
-				u.org_id = session[:user_id]
-			end
-			user.save!
-			render :json => {:success => true}
+			params_u = {
+				'firstname': params['firstname'],
+				'lastname': params['lastname'],
+				'email': params['email'],
+				'group': params['group'] || 'c',
+				'user_id': params['user_id']
+			}
+			User.create(params_u)
+			render :json => {}
 		end
 	end
 

@@ -83,6 +83,29 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 						});
 					})
 				}
+			}])
+		.controller('signup', ['$scope', '$location', '$http', '$location',
+			function ($scope, $location, $http, $location) {
+				$scope.contact = {
+					email: '',
+					password: '',
+					password1: '',
+					phone: '',
+					address: {
+						street:'',
+						apt:'',
+						city:'',
+						state:'',
+						zipcode:''
+					}
+				};
+				$scope.$root.showmenu = false;
+				$scope.submit = function () {
+					ajaxRequest($scope.contact, '/auth/signup', function () {
+
+						location.hash = '#!/welcome';
+					})
+				}
 			}]);
 
 	app.config(['$routeProvider',
@@ -104,11 +127,15 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			});
 			$routeProvider.when('/welcome', {
 				// controller: 'login',
-				templateUrl: '/assets/app/welcome/welcome.template.html'
+				templateUrl: 'assets/app/welcome/welcome.template.html'
 			});
 			$routeProvider.when('/login', {
 				controller: 'login',
-				templateUrl: '/assets/app/welcome/login.template.html'
+				templateUrl: 'assets/app/welcome/login.template.html'
+			});
+			$routeProvider.when('/signup', {
+				controller: 'signup',
+				templateUrl: 'assets/app/welcome/signup.template.html'
 			});
 			$routeProvider.otherwise({
 				redirectTo: '/login'
@@ -206,7 +233,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 		ajaxRequestCount++;
 		$.ajax(options);
 	}
-	var nonLoginRoutes = ["#!/login", "#!/register"];
+	var nonLoginRoutes = ["#!/login", "#!/signup"];
 	app.run(['$rootScope', '$window', '$location',
 		function ($rootScope, $window, $location) {
 		//old_path_reserved is the purpose of preventing search upate trigger login check

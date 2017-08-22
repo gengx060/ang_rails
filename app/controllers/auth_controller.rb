@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
 	# protect_from_forgery with: :null_session
-	before_action :check_auth, :except => ["login", "logout"]
+	before_action :check_auth, :except => ["login", "singup", "logout"]
 
 	def login
 		user = User.find_by(email: params['email'])
@@ -11,7 +11,7 @@ class AuthController < ApplicationController
 				session[:ip]         = request.remote_ip
 				session[:is_org]     = (user.id == user.org_id)
 				session[:org_id]     = user.org_id
-				session[:expires_at] = 30.minutes.from_now
+				session[:expires_at] = 8.hours.from_now
 
 				last_login = UserLogin.where(:user_id => session[:user_id]).order("login_at DESC").first
 
@@ -46,7 +46,6 @@ class AuthController < ApplicationController
 		reset_session
 		render :json => {:message => 'You are logged out.'}
 	end
-
 
 	# def check_auth
 	# 	return true    if (session[:user] != nil && session[:ip] == request.remote_ip)
