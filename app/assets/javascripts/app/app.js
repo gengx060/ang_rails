@@ -2,111 +2,115 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	'app/menu/menu', 'app/comment/comment', 'app/user/users',
 	'app/welcome/full-page-loader'], function (angular, $, BD, toastr) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment', 'users', 'fullPageLoader'])
-		.factory("srvAuth", ['$rootScope',
-			function ($rootScope) {
+	.factory("srvAuth", ['$rootScope',
+		function ($rootScope) {
 
-				var srvAuth = {};
-				srvAuth.fblogin = function () {
-					FB.login(function (response) {
-						if (response.status === 'connected') {
-							// You can now do what you want with the data fb gave you.
-							console.info(response);
-						}
-					});
-				}
-
-				srvAuth.watchLoginChange = function () {
-					var _self = this;
-					FB.Event.subscribe('auth.authResponseChange', function (res) {
-						if (res.status === 'connected') {
-							FB.api('/me', function (res) {
-								$rootScope.$apply(function () {
-									$rootScope.user = _self.user = res;
-									console.info($rootScope.user);
-								});
-							});
-						} else {
-							alert('Not Connected');
-						}
-					});
-				}
-
-				srvAuth.logout = function () {
-					var _self = this;
-					FB.logout(function (response) {
-						$rootScope.$apply(function () {
-							$rootScope.user = _self.user = {};
-						});
-					});
-				}
-
-				return srvAuth;
-			}
-		])
-		.controller('AuthCtrl', ['srvAuth', '$scope',
-			function (srvAuth, $scope) {
-				$scope.logout = function () {
-					srvAuth.logout();
-				}
-				$scope.fblogin = function () {
-					FB.api(
-						"/me/friends",
-						function (response) {
-							debugger
-							if (response && !response.error) {
-								/* handle the result */
-							}
-						}
-					);
-				}
-			}])
-		.controller('login', ['$scope', '$location', '$http', '$location',
-			function ($scope, $location, $http, $location) {
-				$scope.user = {
-					email: 'gaix01@163.com',
-					password: 'gege1818'
-				};
-				$scope.$root.showmenu = false;
-				$scope.name = 'name1';
-				$scope.showAlert = false;
-				$scope.hideAlert = function () {
-					$scope.showAlert = false;
-				}
-
-				$scope.submit = function () {
-					ajaxRequest($scope.user, '/auth/login', function () {
-
-						location.hash = '#!/welcome';
-					}, function () {
-						$scope.$apply(function () {
-							$scope.showAlert = true;
-						});
-					})
-				}
-			}])
-		.controller('signup', ['$scope', '$location', '$http', '$location',
-			function ($scope, $location, $http, $location) {
-				$scope.contact = {
-					email: '',
-					password: '',
-					password1: '',
-					phone: '',
-					address: {
-						street:'',
-						apt:'',
-						city:'',
-						state:'',
-						zipcode:''
+			var srvAuth = {};
+			srvAuth.fblogin = function () {
+				FB.login(function (response) {
+					if (response.status === 'connected') {
+						// You can now do what you want with the data fb gave you.
+						console.info(response);
 					}
-				};
-				$scope.$root.showmenu = false;
-				$scope.submit = function () {
-					ajaxRequest($scope.contact, '/auth/signup', function () {
+				});
+			}
 
-						location.hash = '#!/welcome';
-					})
+			srvAuth.watchLoginChange = function () {
+				var _self = this;
+				FB.Event.subscribe('auth.authResponseChange', function (res) {
+					if (res.status === 'connected') {
+						FB.api('/me', function (res) {
+							$rootScope.$apply(function () {
+								$rootScope.user = _self.user = res;
+								console.info($rootScope.user);
+							});
+						});
+					} else {
+						alert('Not Connected');
+					}
+				});
+			}
+
+			srvAuth.logout = function () {
+				var _self = this;
+				FB.logout(function (response) {
+					$rootScope.$apply(function () {
+						$rootScope.user = _self.user = {};
+					});
+				});
+			}
+
+			return srvAuth;
+		}
+	])
+	.controller('AuthCtrl', ['srvAuth', '$scope',
+		function (srvAuth, $scope) {
+			$scope.logout = function () {
+				srvAuth.logout();
+			}
+			$scope.fblogin = function () {
+				FB.api(
+					"/me/friends",
+					function (response) {
+						debugger
+						if (response && !response.error) {
+							/* handle the result */
+						}
+					}
+				);
+			}
+		}])
+	.controller('login', ['$scope', '$location', '$http', '$location',
+		function ($scope, $location, $http, $location) {
+			$scope.user = {
+				email: 'gaix01@163.com',
+				password: 'gege1818'
+			};
+			$scope.$root.showmenu = false;
+			$scope.name = 'name1';
+			$scope.showAlert = false;
+			$scope.hideAlert = function () {
+				$scope.showAlert = false;
+			}
+
+			$scope.submit = function () {
+				ajaxRequest($scope.user, '/auth/login', function () {
+
+					location.hash = '#!/welcome';
+				}, function () {
+					$scope.$apply(function () {
+						$scope.showAlert = true;
+					});
+				})
+			}
+		}])
+	.controller('signup', ['$scope', '$location', '$http', '$location',
+		function ($scope, $location, $http, $location) {
+			$scope.contact = {
+				email: '',
+				password: '',
+				password1: '',
+				phone: {
+					are: '',
+					number: '',
+					ext: ''
+				},
+				address: {
+					street: '',
+					apt: '',
+					city: '',
+					state: '',
+					zipcode: ''
 				}
-			}]);
+			};
+			$scope.$root.showmenu = false;
+			$scope.submit = function () {
+				ajaxRequest($scope.contact, '/auth/signup', function () {
+
+					location.hash = '#!/welcome';
+				})
+			}
+		}]);
 
 	app.config(['$routeProvider',
 		function ($routeProvider) {
@@ -200,32 +204,11 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				ajaxRequestCount--;
 				if (ajaxRequestCount == 0)
 					$("#full-page-loader_unique").hide();
-				// here need to take care login case
-				// generic cases except login
-				// if (['/auth/login', '/auth/login_check', '/account/get_menu'].indexOf(url) == -1
-				// debugger
 				if (res.status == 401 && location.hash != '#!/login') {
 					if (BD.singletonCount == 1) {
 						BD.singletonCount--;
-						// var bd = BD.alert({
-						// 	message: 'Redirect to login in 3 secs.',
-						// 	title: res.info.message
-						// });
 						console.log('redirect to login page.');
 						location.href = '#!/login';
-						// debugger
-						// var timeout = 0;
-						// var intr = setInterval(function () {
-						// 	console.log();
-						// 	if (timeout > 0) {
-						// 		timeout--;
-						// 		// bd.setMessage('Redirect to login in ' + timeout-- + ' secs.')
-						// 	} else {
-						// 		BD.singletonCount = 0; // reset to allow BD showup again
-						// 		clearInterval(intr);
-						// 		location.href = '#!/login';
-						// 	}
-						// }, 1000);
 					}
 				}
 			}
@@ -236,14 +219,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 	var nonLoginRoutes = ["#!/login", "#!/signup"];
 	app.run(['$rootScope', '$window', '$location',
 		function ($rootScope, $window, $location) {
-		//old_path_reserved is the purpose of preventing search upate trigger login check
+			//old_path_reserved is the purpose of preventing search upate trigger login check
 			$location.old_path_reserved = '';
 			$rootScope.$on('$locationChangeStart', function (evt, next, current) {
 				if ($location.$$path == '' && (current != next)) {
 					evt.preventDefault();
 					return;
 				}
-				if( $location.old_path_reserved == $location.$$path) {
+				if ($location.old_path_reserved == $location.$$path) {
 					return;
 				}
 				$location.old_path_reserved = $location.$$path;

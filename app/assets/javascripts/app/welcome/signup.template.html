@@ -51,9 +51,17 @@
 
 						<div class="form-group">
 							<label class="control-label col-sm-2">Phone:</label>
-							<div class="col-sm-10">
+							<div class="col-sm-2">
 								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
-									   placeholder="Phone (optional)" ng-model="contact.phone" required>
+									   placeholder="Area" ng-model="contact.phone.area" disabled required>
+							</div>
+							<div class="col-sm-3">
+								<input autocomplete="off" type="text" class="form-control" maxlength="50"
+									   value="5553456" placeholder="Number" ng-model="contact.phone.number" disabled required>
+							</div>
+							<div class="col-sm-2">
+								<input autocomplete="off" type="text" class="form-control" maxlength="10" value="102"
+									   placeholder="Ext" ng-model="contact.phone.ext" disabled required>
 							</div>
 						</div>
 
