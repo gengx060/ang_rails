@@ -5,10 +5,10 @@
 		</button>
 		<button type="button" ng-click="prePage()" class="btn btn-default btn-circle"><i class="fa fa-angle-left"></i>
 		</button>
-
+			<!--<span style="margin-left:10px"> page: <input type="text" style='width:20px' ng-model="current_page_bak"> of {{total_page}}</span>-->
 			<span style="margin-left:10px"> page: <input type="text" style='width:20px'
-														 <!--ng-keypress="gotoPage($event)"-->
-														 ng-model="current_page"> of {{total_page}}</span>
+				ng-keypress="gotoPage($event)"
+														 ng-model="current_page_bak"> of {{total_page}}</span>
 		<button type="button" ng-click="nextPage()" class="btn btn-default btn-circle"><i class="fa fa-angle-right"></i>
 		</button>
 		<button type="button" ng-click="lastPage()" class="btn btn-default btn-circle"><i class="fa fa fa-angle-double-right"></i>
@@ -16,13 +16,13 @@
 		</div>
 
 		<div class="col-xs-3">
-			<select style="max-width: 155px;" class="form-control" ng-change="firstPage_select()" ng-model="limit">
+			<select style="max-width: 155px;" class="form-control pull-right" ng-change="firstPage_select()" ng-model="limit">
 			<option ng-repeat="x in default_page_sizes" ng-value="{{x}}">{{x}} items per page</option>
 			</select>
 		</div>
 
-		<div class="col-xs-5">
-			<div>
+		<div class="col-5 col-xs-3 pull-right">
+			<div class="pull-right">
 			Displaying {{offset+1}}-{{offset+limit > total ? total : offset+limit}} of {{total}}
 			</div>
 		</div>
