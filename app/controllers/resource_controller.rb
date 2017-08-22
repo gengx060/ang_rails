@@ -2,10 +2,11 @@ class ResourceController < ActionController::Base
 
 	def upload
 		data = params[:file]
-		name = Digest::SHA256.digest 'message'
-		File.open(Rails.root.join('app', 'resources', "#{name}"), 'wb') do |file|
-			file.write( Base64.decode64(data['data:image/jpeg;base64,'.length .. -1]))
+		name = params[:name]
+		if data
+			Resource.save_file(name, data, session[:user_id])
 		end
-		render :json =>{}
+
+		render :json => {}
 	end
 end
