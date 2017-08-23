@@ -1,4 +1,4 @@
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.css' />
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.css'/>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -9,39 +9,41 @@
 
 <script>
 
-$(document).ready(function() {
-  // page is ready
-  $('#calendar').fullCalendar({
-      // calendar properties
+	$(document).ready(function () {
+		// page is ready
+		$('#calendar').fullCalendar({
+			// calendar properties
 			header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay'
 			},
+			minTime: "06:00:00",
+			maxTime: "18:00:00",
 			defaultDate: '2014-06-12',
 			defaultView: 'month',
 			editable: true,
-       slotDuration: '00:10:00', // 15 minutes for each row
-        dayClick: function(date, jsEvent, view) {
- console.log($('#calendar').fullCalendar('clientEvents'));
-                // console.log(this.events);
-            // prevTime = typeof currentTime === 'undefined' || currentTime === null
-            //     ? new Date().getTime() - 1000000
-            //     : currentTime;
-            // currentTime = new Date().getTime();
+			slotDuration: '00:10:00', // 15 minutes for each row
+			dayClick: function (date, jsEvent, view) {
+				console.log($('#calendar').fullCalendar('clientEvents'));
+				// console.log(this.events);
+				// prevTime = typeof currentTime === 'undefined' || currentTime === null
+				//     ? new Date().getTime() - 1000000
+				//     : currentTime;
+				// currentTime = new Date().getTime();
 
-            // if (currentTime - prevTime < 500)
-            // {
-            //     //double click call back
-            //     console.log("this is double click");
-            // }
-        },
-        eventClick:  function(event, jsEvent, view) {
-        //set the values and open the modal
-	        $("#eventInfo").html(event.description);
-	        $("#eventLink").attr('href', event.url);
-	        $("#eventContent").dialog({ modal: true, title: event.title });
-	    },
+				// if (currentTime - prevTime < 500)
+				// {
+				//     //double click call back
+				//     console.log("this is double click");
+				// }
+			},
+			eventClick: function (event, jsEvent, view) {
+				//set the values and open the modal
+				$("#eventInfo").html(event.description);
+				$("#eventLink").attr('href', event.url);
+//	        $("#eventContent").dialog({ modal: true, title: event.title });
+			},
 			events: [
 				// {
 				// 	title: 'All Day Event',
@@ -81,8 +83,8 @@ $(document).ready(function() {
 				// 	start: '2014-06-28'
 				// }
 			]
-  })
-});
+		})
+	});
 
 </script>
 

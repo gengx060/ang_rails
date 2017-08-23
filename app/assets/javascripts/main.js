@@ -11,6 +11,8 @@ require.config({
 		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
 		'Enumerable'           : 'asset/linq/linq',
 		'toastr'               : 'asset/toastr/toastr',
+		'moment'               : 'asset/moment/moment.min',
+		'fullcalendar'         : 'asset/fullcalendar/fullcalendar.min',
 		'bootstrap-dialog'     : 'asset/bootstrap-dialog/bootstrap-dialog',
 		'ui-bootstrap'         : 'asset/angular-ui-bootstrap/ui-bootstrap-tpls/2.5.0/ui-bootstrap-tpls-2.5.0',
 		'angular-modal-service': 'asset/angular-modal/angular-modal-service',
@@ -50,6 +52,9 @@ require.config({
 		},
 		'jquery-uploadfile'    : {
 			deps: ['jquery']
+		},
+		'fullcalendar'    : {
+			deps: ['jquery', 'moment']
 		}
 	},
 	

@@ -1,7 +1,8 @@
 define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
-	'app/menu/menu', 'app/comment/comment', 'app/user/users',
+	'app/menu/menu', 'app/comment/comment', 'app/user/users', 'app/appointment/appointment',
 	'app/welcome/full-page-loader'], function (angular, $, BD, toastr) {
-	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment', 'users', 'fullPageLoader'])
+	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
+		'users', 'fullPageLoader', 'appointment'])
 	.factory("srvAuth", ['$rootScope',
 		function ($rootScope) {
 
@@ -120,6 +121,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			// });
 			$routeProvider.when('/contacts', {
 				template: '<users></users>',
+				reloadOnSearch: false
+			});
+			$routeProvider.when('/appointment', {
+				template: '<appointment></appointment>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/comment', {
