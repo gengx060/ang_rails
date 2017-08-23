@@ -4,22 +4,22 @@ class User < ActiveRecord::Base
 	# self.table_name = "users"
 	# attr_accessor :firstname, :lastname, :email
 
-	def create(params)
-		user = User.new do |u|
-			u.firstname = params['firstname']
-			u.lastname  = params['lastname']
-			u.email     = params['email']
-			if params['account'] # create org account
-				salt, hashed = create_password_salt(params['password'])
+	def self.create(params)
+		user = self.new do |u|
+			u.firstname = params[:firstname]
+			u.lastname  = params[:lastname]
+			u.email     = params[:email]
+			if params[:account] # create org account
+				salt, hashed = create_password_salt(params[:password])
 				u.salt       = salt
 				u.password   = hashed
 			else # add contact
-				u.group     = params['group']
-				u.org_id = params['user_id']
+				u.group     = params[:group]
+				u.org_id = params[:user_id]
 			end
 		end
 		user.save!
-		if params['account']
+		if params[:account]
 			u.org_id = u.id
 			u.group  = 'o'
 			user.save!

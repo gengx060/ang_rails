@@ -242,7 +242,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					},
 					error: function () {
 						$rootScope.showmenu = false;
-						if (nonLoginRoutes.indexOf(nonLoginRoutes.hash) > -1) {
+						if (nonLoginRoutes.indexOf(location.hash) > -1) {
 							event.preventDefault();
 						} else {
 							location.href = ("#!/login");
