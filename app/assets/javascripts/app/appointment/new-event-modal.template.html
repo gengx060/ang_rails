@@ -11,9 +11,17 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label class="control-label">Email</label>
-						<input type="email" class="form-control" ng-model="newUserForm.email" placeholder="Email"
-							   data-error="Bruh, that email address is invalid" required>
+						<label class="control-label">Start</label>
+						<input type="text" class="form-control" ng-model="event.start" placeholder="Start time"
+							   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
+							   data-error="Wrong time format" required>
+						<div class="help-block with-errors"></div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">End</label>
+						<input type="text" class="form-control" ng-model="event.end" placeholder="End time"
+							   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
+							   data-error="Wrong time format" required>
 						<div class="help-block with-errors"></div>
 					</div>
 					<div class="form-group">
@@ -32,7 +40,6 @@
 							</div>
 						</div>
 					</div>
-					<dragdrop height="40px"></dragdrop>
 
 				</div>
 				<div class="modal-footer">
