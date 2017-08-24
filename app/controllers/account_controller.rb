@@ -74,9 +74,10 @@ class AccountController < ApplicationController
 	def get_menu
 		if session[:user_id]
 			render :json => [
-					{name: 'welcome', route: '/welcome', nav: false, title: 'Welcome'},
-					{name: 'comments', route: '/comment', nav: true, title: 'Github Users'},
-					{name: 'contacts', route: '/contacts', nav: true, title: 'Github Users'}
+					{name: 'Welcome', route: '/welcome', nav: false, title: 'Welcome'},
+					{name: 'Contacts', route: '/contacts', nav: true, title: 'Github Users'},
+					{name: 'Appointments', route: '/appointments', nav: true, title: 'Github Users'},
+			{name: 'Comments', route: '/comment', nav: true, title: 'Github Users'}
 			];
 			return
 		end

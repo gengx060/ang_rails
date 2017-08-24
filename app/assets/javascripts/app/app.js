@@ -123,7 +123,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				template: '<users></users>',
 				reloadOnSearch: false
 			});
-			$routeProvider.when('/appointment', {
+			$routeProvider.when('/appointments', {
 				template: '<appointment></appointment>',
 				reloadOnSearch: false
 			});
