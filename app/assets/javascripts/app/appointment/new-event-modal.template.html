@@ -1,7 +1,7 @@
 <div class="modal fade" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form data-toggle="validator" ng-submit="submit()" role="form">
+			<form class="form-horizontal" data-toggle="validator" ng-submit="submit()" role="form">
 				<div class="modal-header">
 					<button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal"
 							aria-hidden="true">
@@ -11,33 +11,62 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label class="control-label">Start</label>
+						<label class="col-sm-2 control-label">Title</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="event.title"
+								   placeholder="Add a title for this event"
+								   data-error="Titile cannot be empty" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Location</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="event.title"
+								   placeholder="Add a location for this event"
+								   data-error="Titile cannot be empty" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Start</label>
+						<div class="col-sm-5">
 						<input type="text" class="form-control" ng-model="event.start" placeholder="Start time"
 							   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
 							   data-error="Wrong time format" required>
-						<div class="help-block with-errors"></div>
+						</div>
+						<div class="col-sm-5 ">
+							<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.start_time">
+								<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>
+							</select>
+						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label">End</label>
-						<input type="text" class="form-control" ng-model="event.end" placeholder="End time"
-							   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
-							   data-error="Wrong time format" required>
-						<div class="help-block with-errors"></div>
+						<label class="col-sm-2 control-label">End</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="event.end" placeholder="Start time"
+								   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
+								   data-error="Wrong time format" required>
+						</div>
+						<div class="col-sm-5 ">
+							<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.end_time">
+								<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>
+							</select>
+							<!--<input type="text" class="form-control" ng-model="event.end_time" placeholder="Start time"-->
+								   <!--pattern="(\d{2}):(\d{2})"-->
+								   <!--data-error="Wrong time format" required>-->
+						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label">Name</label>
-						<div class="form-inline row">
-							<div class="form-group col-sm-6">
-								<input type="text" ng-model="newUserForm.firstname" class="form-control"
-									   placeholder="Firstname" pattern="^[A-Za-z]{2,}" required title="2 characters minimum">
-								<!--<div class="help-block">Minimum of 2 characters</div>-->
-							</div>
-							<div class="form-group col-sm-6">
-								<input type="text" data-minlength="2" ng-model="newUserForm.lastname"
-									   class="form-control"
-									   placeholder="Lastname" pattern="^[A-Za-z]{2,}" required title="2 characters minimum">
-								<!--<div class="help-block">Minimum of 2 characters</div>-->
-							</div>
+						<label class="col-sm-2 control-label">With</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="event.for_user_id"
+								   placeholder="Appointment with other contact">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Comment</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="event.comment"
+								   placeholder="Type in event comment here">
 						</div>
 					</div>
 
