@@ -50,19 +50,23 @@ define(['jquery', 'angular', 'Enumerable', 'moment', 'fullcalendar',
 							},
 							eventClick: function (event, jsEvent, view) {
 								//set the values and open the modal
-								$("#eventInfo").html(event.description);
-								$("#eventLink").attr('href', event.url);
+								debugger
+								// $location.search('newevent', date.format("YYYY-MM-DD HH:mm"));
+								// $("#eventInfo").html(event.description);
+								// $("#eventLink").attr('href', event.url);
 							},
 							events: [
 								{
-									id: 999,
-									title: 'Repeating Event',
-									start: '2014-06-16T16:00:00'
+									id: 998,
+									name: 'Repeating Event',
+									start: '2014-06-16 16:00'
 								},
 								{
-									title: 'Meeting',
-									start: '2014-08-24T10:30:00',
-									end: '2014-08-24T12:30:00'
+									id: 999,
+									name: 'Meeting',
+									start: '2017-08-24 10:30',
+									end: '2017-08-24 12:30',
+									dkslkfl: 'adfaf'
 								}
 							]
 						};
@@ -84,20 +88,60 @@ define(['jquery', 'angular', 'Enumerable', 'moment', 'fullcalendar',
 									$scope.fullCalendar_option.defaultDate = $routeParams.date;
 									$(document).ready(function () {
 										$scope.fullCalendar = $('#fullcalendar_div_a').fullCalendar($scope.fullCalendar_option)
-											.on('click', '.fc-agendaMonth-button', function() {
-												alert('Week button clicked');
+										$('.fc-agendaMonth-button').unbind("click");
+										$('.fc-agendaWeek-button').unbind("click");
+										$('.fc-agendaDay-button').unbind("click");
+										$('.fc-today-button').unbind("click");
+										$('.fc-icon-left-single-arrow').unbind("click");
+										$('.fc-icon-right-single-arrow').unbind("click");
+
+
+										$scope.fullCalendar
+											.on('click', '.fc-month-button', function () {
+												$scope.$apply(function () {
+													$location.search('view', 'month');
+												});
 											})
-											.on('click', '.fc-agendaWeek-button', function() {
-												alert('Week button clicked');
+											.on('click', '.fc-agendaWeek-button', function () {
+												$scope.$apply(function () {
+													$location.search('view', 'agendaWeek');
+												});
 											})
-											.on('click', '.fc-agendaDay-button', function() {
-												alert('Week button clicked');
-											}).on('click', '.fc-today-button', function() {
-												alert('Week button clicked');
+											.on('click', '.fc-agendaDay-button', function () {
+												$scope.$apply(function () {
+													$location.search('view', 'agendaDay');
+												});
+											})
+											.on('click', '.fc-icon-left-single-arrow', function () {
+												$scope.$apply(function () {
+													$location.search('date',
+														($scope.fullCalendar.fullCalendar('getDate') - 1).format("YYYY-MM-DD"));
+												});
+											})
+											.on('click', '.fc-icon-right-single-arrow', function () {
+												$scope.$apply(function () {
+													$location.search('date',
+														$scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format());
+												});
+											})
+											.on('click', '.fc-today-button', function () {
+												$scope.$apply(function () {
+													$location.search('date', moment().format("YYYY-MM-DD"));
+												});
 											});
-										});
-									} else if ($scope.fullCalendar.fullCalendar('getView').type != $routeParams.view) {
-									$scope.fullCalendar.fullCalendar('changeView', $routeParams.view, $routeParams.date);
+									});
+								}
+								else {
+									if ($scope.fullCalendar.fullCalendar('getView').type != $routeParams.view) {
+										$scope.fullCalendar.fullCalendar('changeView', $routeParams.view, $routeParams.date);
+									}
+									if ($scope.fullCalendar.fullCalendar('getDate').format() != $routeParams.date) {
+										var date = $routeParams.date;
+										if (!moment($routeParams.date, 'YYYY-MM-DD', true).isValid()) {
+											date = moment().format('YYYY-MM-DD')
+										}
+										$scope.fullCalendar.fullCalendar('gotoDate', date);
+									}
 								}
 							}
 							if (moment($routeParams.newevent, 'YYYY-MM-DD HH:mm', true).isValid()) {
