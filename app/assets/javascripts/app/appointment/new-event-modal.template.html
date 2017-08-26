@@ -7,11 +7,11 @@
 							aria-hidden="true">
 						&times;
 					</button>
-					<h4 class="modal-title">New event</h4>
+					<h4 class="modal-title">Event detail</h4>
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Title</label>
+						<label class="col-sm-2 control-label">Title:</label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" ng-model="event.title"
 								   placeholder="Add a title for this event"
@@ -19,54 +19,68 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Location</label>
+						<label class="col-sm-2 control-label">Location:</label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" ng-model="event.title"
+							<input type="text" class="form-control" ng-model="event.location"
 								   placeholder="Add a location for this event"
 								   data-error="Titile cannot be empty" required>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Start</label>
+						<label class="col-sm-2 control-label">Start:</label>
 						<div class="col-sm-5">
 						<input type="text" class="form-control" ng-model="event.start" placeholder="Start time"
-							   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
-							   data-error="Wrong time format" required>
+
+						data-error="Wrong time format" required>
 						</div>
-						<div class="col-sm-5 ">
-							<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.start_time">
-								<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>
-							</select>
-						</div>
+						<!--<div class="col-sm-5">-->
+						<!--<input type="text" class="form-control" ng-model="event.start" placeholder="Start time"-->
+							   <!--pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"-->
+							   <!--data-error="Wrong time format" required>-->
+						<!--</div>-->
+						<!--<div class="col-sm-5 ">-->
+							<!--<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.start_time">-->
+								<!--<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>-->
+							<!--</select>-->
+						<!--</div>-->
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">End</label>
+						<label class="col-sm-2 control-label">End:</label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" ng-model="event.end" placeholder="Start time"
-								   pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"
+
 								   data-error="Wrong time format" required>
 						</div>
-						<div class="col-sm-5 ">
-							<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.end_time">
-								<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>
-							</select>
-							<!--<input type="text" class="form-control" ng-model="event.end_time" placeholder="Start time"-->
-								   <!--pattern="(\d{2}):(\d{2})"-->
-								   <!--data-error="Wrong time format" required>-->
-						</div>
 					</div>
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-2 control-label">End</label>-->
+						<!--<div class="col-sm-5">-->
+							<!--<input type="text" class="form-control" ng-model="event.end" placeholder="Start time"-->
+								   <!--pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"-->
+								   <!--data-error="Wrong time format" required>-->
+						<!--</div>-->
+						<!--<div class="col-sm-5 ">-->
+							<!--<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.end_time">-->
+								<!--<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>-->
+							<!--</select>-->
+							<!--&lt;!&ndash;<input type="text" class="form-control" ng-model="event.end_time" placeholder="Start time"&ndash;&gt;-->
+								   <!--&lt;!&ndash;pattern="(\d{2}):(\d{2})"&ndash;&gt;-->
+								   <!--&lt;!&ndash;data-error="Wrong time format" required>&ndash;&gt;-->
+						<!--</div>-->
+					<!--</div>-->
 					<div class="form-group">
-						<label class="col-sm-2 control-label">With</label>
+						<label class="col-sm-2 control-label">With:</label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" ng-model="event.for_user_id"
 								   placeholder="Appointment with other contact">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Comment</label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" ng-model="event.comment"
-								   placeholder="Type in event comment here">
+						<label class="col-sm-2 control-label">Comment:</label>
+						<div class="col-sm-8">
+							<!--<input type="text" class="form-control" ng-model="event.comment"-->
+								   <!--placeholder="Type in event comment here">-->
+							<textarea  ng-model="event.comment" class="form-control"></textarea>
 						</div>
 					</div>
 
