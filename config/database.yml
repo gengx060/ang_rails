@@ -67,3 +67,12 @@ production:
   password: Gn6rH!EufTE?
   socket: /var/run/mysqld/mysqld.sock
   database: geng
+#production:
+#    host: sql9.freemysqlhosting.net
+#    adapter: mysql2
+#    encoding: utf8
+#    pool: 5
+#    username: sql9191777
+#    password: nn7FlH8EXM
+#    socket: /var/run/mysqld/mysqld.sock
+#    database: sql9191777

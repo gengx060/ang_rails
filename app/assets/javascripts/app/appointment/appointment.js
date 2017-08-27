@@ -100,22 +100,28 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 									});
 								});
 							},
-							events: [
-								{
-									id: 998,
-									name: 'Repeating Event',
-									start: '2014-06-16 16:00'
-								},
-								{
-									id:1,
-									title: 'Meeting',
-									location: 'office',
-									start: '2017-08-24 10:30 am',
-									end: '2017-08-24 12:30 pm',
-									for_user_id: '123123',
-									comment: 'This is a coment.'
-								}
-							]
+							// eventSources: [
+							// 	// your event source
+							// 	{
+							// 		url: '/event/list',
+							// 		type: 'POST',
+							// 		data: {},
+							// 		error: function () {
+							// 			toastr.error('there was an error while fetching events!');
+							// 		},
+							// 		color: 'yellow',   // a non-ajax option
+							// 		textColor: 'black' // a non-ajax option
+							// 	}
+							// ],
+							events: function(start, end, timezone, callback) {
+								ajaxRequest({ start: start, end: end }, '/event/list', function (res) {
+									var events = res;
+									callback(events);
+								}, function (res) {
+									// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+								});
+							}
 						};
 
 						$scope.show_update_hash = function () {
@@ -224,25 +230,18 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 				$scope.close = function (result) {
 					close(result, 500); // close, but give 500ms for bootstrap to animate
 				}
-				$scope.submit = function() {
+				$scope.submit = function () {
 					var event = {};
 					event.comment = $scope.event.comment;
 					event.end = $scope.event.end;
-					event.for_user_id = $scope.event.for_user_id;
+					event.with_user_id = $scope.event.with_user_id;
 					event.location = $scope.event.location;
 					event.start = $scope.event.start;
 					event.title = $scope.event.title;
 					event.id = $scope.event.id;
 
 					ajaxRequest(event, '/event/edit', function (res) {
-						debugger
-						$scope.$apply(function () {
-							$scope.userForm = {
-								firstname: res.firstname,
-								lastname: res.lastname,
-								email: res.email
-							}
-						});
+						toastr.success(res.message);
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);

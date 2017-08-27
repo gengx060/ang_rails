@@ -1,6 +1,6 @@
-define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
+define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
 		'app/common/dragdrop/dragdrop', 'app/common/paging/paging'],
-	function (angular) {
+	function (angular, moment) {
 		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging'])
 			.directive('users', function () {
 
@@ -12,6 +12,13 @@ define(['angular', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/c
 					controller: function ($scope, $element, $routeParams) {
 						$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 						$scope.contacts = [];
+						$scope.from_now = function(it) {
+							var time =  moment(it).fromNow()
+							if (time == 'Invalid date') {
+								time = ''
+							}
+							return time;
+						};
 					},
 					templateUrl: 'assets/app/user/users.template.html',
 					replace: true

@@ -154,8 +154,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 
 	toastr.options = {
 		closeButton: true,
+		timeout:3000,
 		preventDuplicates: true,
-		positionClass: "toast-bottom-full-width"
+		positionClass: "toast-top-full-width"
 	};
 	window.toastr = toastr;
 	window.BD = BD;
