@@ -1,7 +1,10 @@
 class Event < ActiveRecord::Base
 
 	def self.edit(params)
-		event = Event.where("id = #{params[:id]}").first
+		if params[:id]
+			event = Event.where("id = #{params[:id]}").first
+		end
+
 		params_t = {
 				table: 'event',
 				event: 'new',
@@ -39,6 +42,15 @@ class Event < ActiveRecord::Base
 			Log.create(params_t)
 		end
 
+		return event
+	end
+
+	def self.delete(params)
+		event = Event.where("id = #{params[:id]} and user_id = #{params[:user_id]}").first
+		if event
+			event.is_deleted = 1
+			event.save!
+		end
 	end
 
 end

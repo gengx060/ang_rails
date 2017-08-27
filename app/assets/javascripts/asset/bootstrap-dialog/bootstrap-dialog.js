@@ -1276,7 +1276,7 @@
         var confirmOptions = {};
         var defaultConfirmOptions = {
             type: BootstrapDialog.TYPE_PRIMARY,
-            title: null,
+            title: 'Confirm',
             message: null,
             closable: false,
             draggable: false,

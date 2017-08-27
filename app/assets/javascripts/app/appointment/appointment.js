@@ -95,7 +95,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 									scope: $scope
 								}).then(function (modal) {
 									modal.element.modal();
-									modal.close.then(function (result) {
+									modal.close.then(function () {
 										$location.search('newevent', null);
 									});
 								});
@@ -113,8 +113,8 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 							// 		textColor: 'black' // a non-ajax option
 							// 	}
 							// ],
-							events: function(start, end, timezone, callback) {
-								ajaxRequest({ start: start, end: end }, '/event/list', function (res) {
+							events: function (start, end, timezone, callback) {
+								ajaxRequest({start: start, end: end}, '/event/list', function (res) {
 									var events = res;
 									callback(events);
 								}, function (res) {
@@ -226,10 +226,25 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 				}
 					;
 			})
-			.controller('ModalController', function ($scope, $location, close) {
-				$scope.close = function (result) {
-					close(result, 500); // close, but give 500ms for bootstrap to animate
+			.controller('ModalController', function ($scope, $element, $location, close) {
+				$scope.close = function () {
+					$element.modal('hide');
+					close(null, 500); // close, but give 500ms for bootstrap to animate
 				}
+				$scope.delete_event = function () {
+					BD.confirm('You are going to delete this event, continue?',
+						function (result) {
+							if (result) {
+								alert(123);
+							} else {
+								alert(111);
+								return;
+							}
+						});
+				}
+
+				$scope.delete_event_show = $scope.event.id > 0;
+
 				$scope.submit = function () {
 					var event = {};
 					event.comment = $scope.event.comment;
@@ -241,6 +256,12 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 					event.id = $scope.event.id;
 
 					ajaxRequest(event, '/event/edit', function (res) {
+						$scope.$apply(function () {
+							$scope.close();
+							if (res.event.id != event.id) {
+								$scope.fullCalendar.fullCalendar('renderEvent', res.event);
+							}
+						});
 						toastr.success(res.message);
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
