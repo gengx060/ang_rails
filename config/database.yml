@@ -18,14 +18,22 @@ default: &default
   socket: /var/run/mysqld/mysqld.sock
 
 development:
-  host: mysql5.gear.host
+  host: kevingeng.cakjgm9pe7g4.us-east-1.rds.amazonaws.com
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: geng
-  password: Gn6rH!EufTE?
+  username: kevingeng
+  password: gege1818
   socket: /var/run/mysqld/mysqld.sock
   database: geng
+#  host: mysql5.gear.host
+#  adapter: mysql2
+#  encoding: utf8
+#  pool: 5
+#  username: geng
+#  password: Gn6rH!EufTE?
+#  socket: /var/run/mysqld/mysqld.sock
+#  database: geng
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -59,11 +67,29 @@ test:
 #  username: untitled
 #  password: <%= ENV['UNTITLED_DATABASE_PASSWORD'] %>
 production:
-  host: mysql5.gear.host
+  host: kevingeng.cakjgm9pe7g4.us-east-1.rds.amazonaws.com
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: geng
-  password: Gn6rH!EufTE?
+  username: kevingeng
+  password: gege1818
   socket: /var/run/mysqld/mysqld.sock
   database: geng
+#  host: mysql5.gear.host
+#  adapter: mysql2
+#  encoding: utf8
+#  pool: 5
+#  username: geng
+#  password: Gn6rH!EufTE?
+#  socket: /var/run/mysqld/mysqld.sock
+#  database: geng
+#production:
+#    host: sql9.freemysqlhosting.net
+#    adapter: mysql2
+#    encoding: utf8
+#    pool: 5
+#    username: sql9191777
+#    password: nn7FlH8EXM
+#    socket: /var/run/mysqld/mysqld.sock
+#    database: sql9191777
+
