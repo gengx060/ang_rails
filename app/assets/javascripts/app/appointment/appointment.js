@@ -139,7 +139,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 								if (!$scope.fullCalendar) {
 									$scope.fullCalendar_option.defaultView = $routeParams.view;
 									$scope.fullCalendar_option.defaultDate = $routeParams.date;
-									$(document).ready(function () {
+									// $(document).ready(function () {
 										$scope.fullCalendar = $('#fullcalendar_div_a').fullCalendar($scope.fullCalendar_option)
 										$('.fc-agendaMonth-button').unbind("click");
 										$('.fc-agendaWeek-button').unbind("click");
@@ -166,14 +166,16 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 											})
 											.on('click', '.fc-icon-left-single-arrow', function () {
 												$scope.$apply(function () {
+													console.log($scope.fullCalendar.fullCalendar('getDate').add(-1, 'days').format("YYYY-MM-DD"));
 													$location.search('date',
-														($scope.fullCalendar.fullCalendar('getDate') - 1).format("YYYY-MM-DD"));
+														($scope.fullCalendar.fullCalendar('getDate').add(-1, 'days')).format("YYYY-MM-DD"));
 												});
 											})
 											.on('click', '.fc-icon-right-single-arrow', function () {
 												$scope.$apply(function () {
+													console.log($scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
 													$location.search('date',
-														$scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format());
+														$scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
 												});
 											})
 											.on('click', '.fc-today-button', function () {
@@ -181,7 +183,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 													$location.search('date', moment().format("YYYY-MM-DD"));
 												});
 											});
-									});
+									// });
 								}
 								else {
 									if ($scope.fullCalendar.fullCalendar('getView').type != $routeParams.view) {
