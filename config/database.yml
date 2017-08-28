@@ -18,7 +18,7 @@ default: &default
   socket: /var/run/mysqld/mysqld.sock
 
 development:
-  host: kevingeng.ctmglywrramd.us-east-2.rds.amazonaws.com
+  host: kevingeng.cakjgm9pe7g4.us-east-1.rds.amazonaws.com
   adapter: mysql2
   encoding: utf8
   pool: 5
@@ -67,7 +67,7 @@ test:
 #  username: untitled
 #  password: <%= ENV['UNTITLED_DATABASE_PASSWORD'] %>
 production:
-  host: kevingeng.ctmglywrramd.us-east-2.rds.amazonaws.com
+  host: kevingeng.cakjgm9pe7g4.us-east-1.rds.amazonaws.com
   adapter: mysql2
   encoding: utf8
   pool: 5
