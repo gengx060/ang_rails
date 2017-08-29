@@ -4,27 +4,46 @@ class User < ActiveRecord::Base
 	# self.table_name = "users"
 	# attr_accessor :firstname, :lastname, :email
 
-	def self.create(params)
-		user = self.new do |u|
-			u.firstname = params[:firstname]
-			u.lastname = params[:lastname]
-			u.email = params[:email]
-			if params[:account] # create org account
-				salt, hashed = create_password_salt(params[:password])
-				u.salt = salt
-				u.password = hashed
-			else # add contact
-				u.group = params[:group]
-				u.org_id = params[:user_id]
+	# def self.create(params)
+	# 	user = self.new do |u|
+	# 		u.firstname = params[:firstname]
+	# 		u.lastname = params[:lastname]
+	# 		u.email = params[:email]
+	# 		if params[:account] # create org account
+	# 			salt, hashed = create_password_salt(params[:password])
+	# 			u.salt = salt
+	# 			u.password = hashed
+	# 		else # add contact
+	# 			u.group = params[:group]
+	# 			u.org_id = params[:user_id]
+	# 		end
+	# 	end
+	# 	user.save!
+	# 	if params[:account]
+	# 		user.org_id = user.id
+	# 		user.group = 'o'
+	# 		user.save!
+	# 		return user
+	# 	end
+	# end
+
+	def self.edit(params)
+		if params[:id]
+			user = self.where("id = #{params[:id]}").first
+		end
+
+		unless user
+			user = self.new
+		end
+		if user
+			self.params_to_model(params, user)
+			user.save!
+			if (params[:group] == 'o')
+				user.org_id = user.id
+				user.save!
 			end
 		end
-		user.save!
-		if params[:account]
-			user.org_id = user.id
-			user.group = 'o'
-			user.save!
-			return user
-		end
+		return user
 	end
 
 	def self.login_profile(user_id)

@@ -25,8 +25,8 @@ class AuthController < ApplicationController
 				user_login.save!
 
 				render :json => {:user_id => session[:user_id],
-												 :last_login => last_login ? last_login.login_at : null,
-												 :last_login_ip => last_login ? last_login.user_ip : null}
+												 :last_login => last_login ? last_login.login_at : nil,
+												 :last_login_ip => last_login ? last_login.user_ip : nil}
 				return
 			end
 		end
@@ -53,15 +53,16 @@ class AuthController < ApplicationController
 			render :json => {:message => 'Duplicate email found.'}, :status => 500
 		else
 			User.transaction do
+				salt, hashed = User.create_password_salt(params['password'])
 				params_u = {
 						'firstname': params['firstname'],
 						'lastname': params['lastname'],
 						'email': params['email'],
-						'password': params['password'],
-						'group': 'o',
-						'account': true,
+						'salt': salt,
+						'password': hashed,
+						'group': 'o'
 				}
-				user = User.create(params_u)
+				user = User.edit(params_u)
 				params_u = {
 						'user_id': user.id,
 						'address2': params['address']['apt'],

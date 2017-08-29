@@ -14,9 +14,10 @@ class UserController < ApplicationController
 				'lastname': params['lastname'],
 				'email': params['email'],
 				'group': params['group'] || 'c',
-				'user_id': params['user_id']
+				'user_id': params['user_id'],
+				'org_id': session[:user_id]
 			}
-			User.create(params_u)
+			User.edit(params_u)
 			render :json => {}
 		end
 	end

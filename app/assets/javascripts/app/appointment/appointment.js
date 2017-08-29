@@ -62,7 +62,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 
 							ModalService.showModal({
 								templateUrl: 'assets/app/appointment/new-event-modal.template.html',
-								controller: "ModalController",
+								controller: "EventModalController",
 								scope: $scope
 							}).then(function (modal) {
 								modal.element.modal();
@@ -115,7 +115,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 								$scope.event.end = moment($scope.event.end).format("YYYY-MM-DD H:mm a");
 								ModalService.showModal({
 									templateUrl: 'assets/app/appointment/new-event-modal.template.html',
-									controller: "ModalController",
+									controller: "EventModalController",
 									scope: $scope
 								}).then(function (modal) {
 									modal.element.modal();
@@ -268,7 +268,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 				}
 					;
 			})
-			.controller('ModalController', function ($scope, $element, $location, close) {
+			.controller('EventModalController', function ($scope, $element, $location, close) {
 				$scope.close = function () {
 					$element.modal('hide');
 					close(null, 500); // close, but give 500ms for bootstrap to animate

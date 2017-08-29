@@ -174,6 +174,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 		positionClass: "toast-top-full-width"
 	};
 	window.toastr = toastr;
+	window.development = true;
 	window.BD = BD;
 	window.BD.singletonCount = 1;
 	window.ajaxRequestCount = 0;
@@ -197,7 +198,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					fun(res);
 				} else {
 					if (error_function_flag && res.status != 200) {
-						var message = res.statusText
+						var message = development ? res.responseText : res.statusText
 						if(res.info && res.info.message)
 							message += ': '+res.info.message
 						toastr.error(message);

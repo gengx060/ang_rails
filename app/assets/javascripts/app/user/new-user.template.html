@@ -14,29 +14,52 @@
 					<!--<label for="inputName" class="control-label">Name</label>-->
 					<!--<input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" required>-->
 					<!--</div>-->
-					<div class="form-group">
-						<label class="control-label">Email</label>
-						<input type="email" class="form-control" ng-model="newUserForm.email" placeholder="Email"
-							   data-error="Bruh, that email address is invalid" required>
-						<div class="help-block with-errors"></div>
-					</div>
-					<div class="form-group">
-						<label class="control-label">Name</label>
-						<div class="form-inline row">
-							<div class="form-group col-sm-6">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<div class=" col-xs-2">
+								<label class="control-label ">Email</label>
+							</div>
+							<div class=" col-xs-10">
+								<input type="email" class="form-control" ng-model="newUserForm.email"
+									   placeholder="Email"
+									   data-error="Bruh, that email address is invalid" required>
+								<div class="help-block with-errors"></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class=" col-xs-2">
+								<label class="control-label">Name</label>
+							</div>
+							<!--<div class="form-inline row">-->
+							<div class=" col-xs-5">
 								<input type="text" ng-model="newUserForm.firstname" class="form-control"
-									   placeholder="Firstname" pattern="^[A-Za-z]{2,}" required title="2 characters minimum">
+									   placeholder="Firstname" pattern="^[A-Za-z]{2,}" required
+									   title="2 characters minimum">
 								<!--<div class="help-block">Minimum of 2 characters</div>-->
 							</div>
-							<div class="form-group col-sm-6">
+							<div class="  col-xs-5">
 								<input type="text" data-minlength="2" ng-model="newUserForm.lastname"
 									   class="form-control"
-									   placeholder="Lastname" pattern="^[A-Za-z]{2,}" required title="2 characters minimum">
+									   placeholder="Lastname" pattern="^[A-Za-z]{2,}" required
+									   title="2 characters minimum">
 								<!--<div class="help-block">Minimum of 2 characters</div>-->
+							</div>
+							<!--</div>-->
+						</div>
+						<div class="form-group">
+							<div class=" col-xs-2">
+								<label class="control-label ">Type</label>
+							</div>
+							<div class=" col-xs-10">
+								<select class="form-control">
+									<option selected>Employee</option>
+									<option>Client</option>
+								</select>
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 					</div>
-					<dragdrop height="40px"></dragdrop>
+					<!--<dragdrop height="40px"></dragdrop>-->
 
 				</div>
 				<div class="modal-footer">

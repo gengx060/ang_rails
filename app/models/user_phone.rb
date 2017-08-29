@@ -2,7 +2,7 @@ class UserPhone < ActiveRecord::Base
 
 	def self.edit(params)
 		if params[:id]
-			phone = UserAddress.where("id = #{params[:id]}").first
+			phone = self.where("id = #{params[:id]}").first
 		end
 
 		unless phone

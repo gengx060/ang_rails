@@ -33,7 +33,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.$parent.show = function () {
 					ModalService.showModal({
 						templateUrl: 'assets/app/user/new-user.template.html',
-						controller: "ModalController",
+						controller: "NewUserModalController",
 						scope: $scope
 					}).then(function (modal) {
 						modal.element.modal();
@@ -59,7 +59,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.query_params();
 
 			})
-			.controller('ModalController', function ($scope, $location, close) {
+			.controller('NewUserModalController', function ($scope, $location, close) {
 				$scope.submit = function () {
 					ajaxRequest($scope.newUserForm, '/user/new_user', function (res) {
 						$scope.$apply(function () {
