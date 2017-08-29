@@ -6,6 +6,18 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+module ActiveRecord
+  class Base
+    def self.params_to_model(params, model)
+      if model
+        params.each { |key, value|
+          value && (model["#{key}"] = value)
+        }
+      end
+    end
+  end
+end
+
 module Kgeng
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

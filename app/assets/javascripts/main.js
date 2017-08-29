@@ -11,6 +11,7 @@ require.config({
 		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
 		'Enumerable'           : 'asset/linq/linq',
 		'toastr'               : 'asset/toastr/toastr',
+		'typeahead'            : 'asset/typeahead/typeahead',
 		'moment'               : 'asset/moment/moment.min',
 		'fullcalendar'         : 'asset/fullcalendar/fullcalendar.min',
 		'bootstrap-dialog'     : 'asset/bootstrap-dialog/bootstrap-dialog',

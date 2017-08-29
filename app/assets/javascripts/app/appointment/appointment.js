@@ -1,4 +1,4 @@
-define(['angular', 'Enumerable', 'moment', 'fullcalendar',
+define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 		'angular-modal-service'],
 	function (angular, Enumerable, moment, fullcalendar) {
 		angular.module('appointment', ['angularModalService'])
@@ -285,7 +285,7 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar',
 						});
 				}
 
-				$scope.delete_event_show = $scope.event.id > 0;
+				$scope.delete_event_show = $scope.event && $scope.event.id > 0;
 
 				$scope.submit = function () {
 					var event = {};

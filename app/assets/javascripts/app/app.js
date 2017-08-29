@@ -1,8 +1,8 @@
 define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
 	'app/menu/menu', 'app/comment/comment', 'app/user/users', 'app/appointment/appointment',
-	'app/welcome/full-page-loader'], function (angular, $, BD, toastr) {
+	'app/common/factory/usstates'], function (angular, $, BD, toastr) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
-		'users', 'fullPageLoader', 'appointment'])
+		'users', 'appointment', 'usstates'])
 	.factory("srvAuth", ['$rootScope',
 		function ($rootScope) {
 
@@ -85,31 +85,46 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				})
 			}
 		}])
-	.controller('signup', ['$scope', '$location', '$http', '$location',
-		function ($scope, $location, $http, $location) {
+	.controller('signup', ['$scope', 'usstates',
+		function ($scope, usstates) {
+			$scope.states = usstates;
 			$scope.contact = {
-				email: '',
-				password: '',
-				password1: '',
+				firstname:'Dan',
+				lastname:'Curt',
+				email: 'gaix061@163.com',
+				password: 'gege1818',
+				password1: 'gege1818',
 				phone: {
-					are: '',
-					number: '',
+					area: '218',
+					number: '4616620',
 					ext: ''
 				},
 				address: {
-					street: '',
-					apt: '',
-					city: '',
+					street: '2nd st',
+					apt: 'apt 29',
+					city: 'Miami',
 					state: '',
-					zipcode: ''
+					zipcode: '33064'
 				}
+			};
+			$scope.alert_msg = "";
+			$scope.alert_msg_show = false;
+			$scope.state_select = function () {
+				if($scope.contact.address.state && $scope.contact.address.state != "")
+					$("#state_select").css('color','#000');
 			};
 			$scope.$root.showmenu = false;
 			$scope.submit = function () {
-				ajaxRequest($scope.contact, '/auth/signup', function () {
-
-					location.hash = '#!/welcome';
-				})
+				if ($scope.contact.password != $scope.contact.password1) {
+					$scope.alert_msg = "Password doesn't match.";
+					$scope.alert_msg_show = true;
+				} else {
+					$scope.alert_msg_show = false;
+					ajaxRequest($scope.contact, '/auth/signup', function () {
+						toastr.success('Sign up successful.');
+						setTimeout(function(){ location.hash = '#!/welcome'; }, 1000);
+					})
+				}
 			}
 		}]);
 
@@ -182,7 +197,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					fun(res);
 				} else {
 					if (error_function_flag && res.status != 200) {
-						toastr.error(res.statusText);
+						var message = res.statusText
+						if(res.info && res.info.message)
+							message += ': '+res.info.message
+						toastr.error(message);
 					}
 				}
 			} catch (e) {

@@ -19,6 +19,11 @@
 				<div class="panel-body">
 
 					<form class="form-horizontal">
+						<div class="alert alert-danger alert-dismissible" ng-if='alert_msg_show' role="alert">
+							<button type="button" class="close"  ng-click="hideAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+							<div ng-bind="alert_msg"></div>
+						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2">Name:</label>
 							<div class="col-sm-5">
@@ -43,12 +48,12 @@
 						<div class="form-group">
 							<label class="control-label col-sm-2">Password:</label>
 							<div class="col-sm-5">
-								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+								<input autocomplete="off" type="password" class="form-control" maxlength="255" value=""
 									   ng-model="contact.password" placeholder="Password" required>
 							</div>
 							<div class="col-sm-5">
-								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
-									   placeholder="Confirm your password" ng-model="contact.password2" required>
+								<input autocomplete="off" type="password" class="form-control" maxlength="255" value=""
+									   placeholder="Confirm your password" ng-model="contact.password1" required>
 							</div>
 						</div>
 
@@ -56,16 +61,16 @@
 							<label class="control-label col-sm-2">Phone:</label>
 							<div class="col-sm-2">
 								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
-									   placeholder="Area" ng-model="contact.phone.area" required>
+									   placeholder="Area" ng-model="contact.phone.area" pattern="^[0-9]{3}" title="3 digits" required>
 							</div>
 							<div class="col-sm-3">
 								<input autocomplete="off" type="text" class="form-control" maxlength="50"
-									   value="5553456" placeholder="Number" ng-model="contact.phone.number"
+									    placeholder="Number" ng-model="contact.phone.number" pattern="^[0-9]{7}"title="7 digits"
 									   required>
 							</div>
 							<div class="col-sm-2">
 								<input autocomplete="off" type="text" class="form-control" maxlength="10" value="102"
-									   placeholder="Ext" ng-model="contact.phone.ext" required>
+									   placeholder="Ext" ng-model="contact.phone.ext">
 							</div>
 						</div>
 
@@ -87,8 +92,13 @@
 									   placeholder="City/Town" ng-model="contact.address.city" required>
 							</div>
 							<div class="col-sm-3">
-								<input autocomplete="off" class="form-control" type="text" maxlength="255"
-									   placeholder="State/Region" ng-model="contact.address.state" required>
+								<!--<input autocomplete="off" class="form-control" type="text" maxlength="255"-->
+									   <!--placeholder="State/Region" ng-model="contact.address.state" required>-->
+								<select id="state_select" style="max-width: 155px;color:#A9A9A9;font-size: 14px;height: 45px !important;" class="form-control pull-right"
+										ng-change="state_select()" ng-model="contact.address.state" required>
+									<option value="" disabled selected hidden>State</option>
+									<option ng-repeat="x in states" ng-value="x">{{x}}</option>
+								</select>
 							</div>
 							<div class="col-sm-4">
 								<input autocomplete="off" class="form-control" type="text" maxlength="50"
@@ -97,7 +107,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-6">
-								<button type="submit" class="btn btn-primary  btn-block">Submit</button>
+								<button type="submit" ng-click="submit()" class="btn btn-primary btn-register btn-block">Submit</button>
 							</div>
 						</div>
 					</form>

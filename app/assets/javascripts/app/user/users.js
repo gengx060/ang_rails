@@ -88,7 +88,6 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				}
 				$scope.show_user = function (id) {
 						ajaxRequest({user_id:id}, '/user/get_user', function (res) {
-							debugger
 							$scope.$apply(function () {
 								$scope.userForm = {
 									firstname: res.firstname,
@@ -130,7 +129,6 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 			.controller('UserModalController', function ($scope, $location, close) {
 				$scope.submit = function () {
 					ajaxRequest($scope.newUserForm, '/user/get_user', function (res) {
-						debugger
 						$scope.$apply(function () {
 							$scope.userForm = {
 								firstname: '',
@@ -142,7 +140,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 					});
-				}
+				};
 
 				$scope.close = function (result) {
 					close(result, 500); // close, but give 500ms for bootstrap to animate
