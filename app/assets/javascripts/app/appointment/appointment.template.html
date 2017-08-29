@@ -4,6 +4,36 @@
 		.fc-today {
 			background: #b2ebf2 !important;
 		}
+
+		.custom-menu {
+			display: none;
+			z-index: 1000;
+			position: absolute;
+			overflow: hidden;
+			border: 1px solid #CCC;
+			white-space: nowrap;
+			font-family: sans-serif;
+			background: #FFF;
+			color: #333;
+			border-radius: 5px;
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.custom-menu li {
+			padding: 8px 12px;
+			cursor: pointer;
+		}
+
+		.custom-menu li:hover {
+			background-color: #DEF;
+		}
 	</style>
+	<ul class='custom-menu'>
+		<li ng-click="monthly_view()">First thing</li>
+		<li ng-click="weekly_view()">Second thing</li>
+		<li ng-click="daily_view()">Third thing</li>
+	</ul>
 	<div id="fullcalendar_div_a"></div>
 </div>
