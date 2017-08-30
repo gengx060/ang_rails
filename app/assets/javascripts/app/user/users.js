@@ -12,6 +12,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 					controller: function ($scope, $element, $routeParams) {
 						$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 						$scope.contacts = [];
+						$scope.refresh_list = 0;
 						$scope.from_now = function(it) {
 							var time =  moment(it).fromNow()
 							if (time == 'Invalid date') {
@@ -19,12 +20,16 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 							}
 							return time;
 						};
+
+						$scope.refreshList = function() {
+							$scope.refresh_list++;
+						};
 					},
 					templateUrl: 'assets/app/user/users.template.html',
 					replace: true
 				};
 			})
-			.controller('Controller', function ($scope, $routeParams, $location, ModalService) {
+			.controller('NewUserController', function ($scope, $routeParams, $location, ModalService) {
 				$scope.newUserForm = {
 					firstname: '',
 					lastname: '',
@@ -60,27 +65,25 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.query_params();
 
 			})
-			.controller('NewUserModalController', function ($scope, $location, close) {
+			.controller('NewUserModalController', function ($scope, $element, $location, $route, close) {
 				$scope.panel_name = "New contact";
 				$scope.submit = function () {
-					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
+					ajaxRequest($scope.newUserForm, '/auth/login_check', function (res) {
+						toastr.success('New user has been created.');
 						$scope.$apply(function () {
-							$scope.newUserForm = {
-								firstname: '',
-								lastname: '',
-								email: '',
-								type: 'e'
-							}
+							$scope.close(null);
+							$scope.refreshList();
 						});
-						toastr.success('New user saved successfully.');
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 					});
 				}
 
-				$scope.close = function (result) {
-					close(result, 500); // close, but give 500ms for bootstrap to animate
+				$scope.close = function (res) {
+					// debugger
+					$element.modal('hide');
+					close(res, 500); // close, but give 500ms for bootstrap to animate
 				};
 			})
 			.controller('UserController', function ($scope, $routeParams, $location, ModalService) {
@@ -131,16 +134,14 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.query_params();
 
 			})
-			.controller('UserModalController', function ($scope, $location, close) {
+			.controller('UserModalController', function ($scope, $element, $location, $route, close) {
 				$scope.panel_name = "Update contact";
 				$scope.submit = function () {
 					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
+						toastr.success('User update successful.');
 						$scope.$apply(function () {
-							// $scope.userForm = {
-							// 	firstname: '',
-							// 	lastname: '',
-							// 	email: ''
-							// }
+							$scope.close(null);
+							$scope.refreshList();
 						});
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
@@ -149,6 +150,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				};
 
 				$scope.close = function (result) {
+					$element.modal('hide');
 					close(result, 500); // close, but give 500ms for bootstrap to animate
 				};
 			})

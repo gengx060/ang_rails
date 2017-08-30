@@ -6,17 +6,22 @@ class UserController < ApplicationController
 			return
 		end
 
-		exist_user = User.where("email = \'#{params['email']}\'").select('id').first
+		exist_user = User.where("email = \'#{params['email']}\'").select('id', 'group').first
 
 		if exist_user && exist_user.id != params['id']
-				render :json => {:message => 'Duplicate email found.'}, :status => 500
+			render :json => {:message => 'Duplicate email found.'}, :status => 500
+		elsif exist_user && exist_user.group == 'o' && params['type'] != 'o'
+			render :json => {:message => 'Changing organization type to others is not allowed.'}, :status => 500
 		else
 			params_u = {
 					'firstname': params['firstname'],
 					'lastname': params['lastname'],
-					'email': params['email'],
-					'group': params['type'] || 'c'
+					'email': params['email']
 			}
+			if params['type'] == 'o'
+				params['type'] = 'c' # sanity check dont allow convert type to org
+			end
+			params_u[:group] = params['type']
 			if params['id']
 				params_u[:id] = params['id']
 			else

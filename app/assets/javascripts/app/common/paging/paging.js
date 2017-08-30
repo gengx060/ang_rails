@@ -5,10 +5,10 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 		return {
 			require: '^tabs',
 			restrict: 'E',
-			transclude: true,
 			scope: {
 				list: '=',
 				url: '@',
+				refresh: '='
 			},
 			controller: function ($scope, $element) {
 				$scope.total = 0;
@@ -19,19 +19,12 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 				$scope.goto_page = 1;
 				$scope.default_page_sizes = [5, 10, 50];
 				//
-				// $scope.$watch('current_page_bak', function (newValue, oldValue) {
-				// 	if (isNaN(parseInt(newValue))) {
-				// 		$scope.current_page_bak = $scope.current_page;
-				// 	}
-				// 	else if (parseInt(newValue) > $scope.total) {
-				// 		$scope.current_page = $scope.total;
-				// 		$scope.current_page_bak = $scope.current_page;
-				// 	}
-				// 	else if ($scope.total < 1) {
-				// 		$scope.current_page = 1;
-				// 		$scope.current_page_bak = $scope.current_page;
-				// 	}
-				// });
+				$scope.$watch('refresh', function (newValue, oldValue) {
+					if (newValue > 0) {
+						$scope.set_current_page($scope.current_page);
+						$scope.page();
+					}
+				});
 
 				$scope.set_current_page = function (p) {
 					$scope.current_page = p;

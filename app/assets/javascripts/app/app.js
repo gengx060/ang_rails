@@ -89,8 +89,8 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 		function ($scope, usstates) {
 			$scope.states = usstates;
 			$scope.contact = {
-				firstname:'Dan',
-				lastname:'Curt',
+				firstname: 'Dan',
+				lastname: 'Curt',
 				email: 'gaix061@163.com',
 				password: 'gege1818',
 				password1: 'gege1818',
@@ -110,8 +110,8 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 			$scope.alert_msg = "";
 			$scope.alert_msg_show = false;
 			$scope.state_select = function () {
-				if($scope.contact.address.state && $scope.contact.address.state != "")
-					$("#state_select").css('color','#000');
+				if ($scope.contact.address.state && $scope.contact.address.state != "")
+					$("#state_select").css('color', '#000');
 			};
 			$scope.$root.showmenu = false;
 			$scope.submit = function () {
@@ -122,7 +122,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					$scope.alert_msg_show = false;
 					ajaxRequest($scope.contact, '/auth/signup', function () {
 						toastr.success('Sign up successful.');
-						setTimeout(function(){ location.hash = '#!/welcome'; }, 1000);
+						setTimeout(function () {
+							location.hash = '#!/welcome';
+						}, 1000);
 					})
 				}
 			}
@@ -169,7 +171,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 
 	toastr.options = {
 		closeButton: true,
-		timeout:3000,
+		timeout: 3000,
 		preventDuplicates: true,
 		positionClass: "toast-top-full-width"
 	};
@@ -199,8 +201,8 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 				} else {
 					if (error_function_flag && res.status != 200) {
 						var message = development ? res.responseText : res.statusText
-						if(res.info && res.info.message)
-							message += ': '+res.info.message
+						if (res.info && res.info.message)
+							message += ': ' + res.info.message
 						toastr.error(message);
 					}
 				}
@@ -255,25 +257,37 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 					return;
 				}
 				$location.old_path_reserved = $location.$$path;
-				$.ajax({
-					type: "post",
-					url: '/auth/login_check',
-					headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-					async: false,
-					success: function () {
-						if (nonLoginRoutes.indexOf(location.hash) == -1) {
-							$rootScope.showmenu = true;
-						}
-					},
-					error: function () {
-						$rootScope.showmenu = false;
-						if (nonLoginRoutes.indexOf(location.hash) > -1) {
-							event.preventDefault();
-						} else {
-							location.href = ("#!/login");
-						}
+				ajaxRequest({}, '/auth/login_check', function () {
+					if (nonLoginRoutes.indexOf(location.hash) == -1) {
+						$rootScope.showmenu = true;
+					}
+				}, function () {
+					$rootScope.showmenu = false;
+					if (nonLoginRoutes.indexOf(location.hash) > -1) {
+						event.preventDefault();
+					} else {
+						location.href = ("#!/login");
 					}
 				});
+				// $.ajax({
+				// 	type: "post",
+				// 	url: '/auth/login_check',
+				// 	headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+				// 	async: false,
+				// 	success: function () {
+				// 		if (nonLoginRoutes.indexOf(location.hash) == -1) {
+				// 			$rootScope.showmenu = true;
+				// 		}
+				// 	},
+				// 	error: function () {
+				// 		$rootScope.showmenu = false;
+				// 		if (nonLoginRoutes.indexOf(location.hash) > -1) {
+				// 			event.preventDefault();
+				// 		} else {
+				// 			location.href = ("#!/login");
+				// 		}
+				// 	}
+				// });
 			});
 			$rootScope.user = {};
 			$rootScope.profile_placeholder = "/assets/asset/img/blank-profile.png";

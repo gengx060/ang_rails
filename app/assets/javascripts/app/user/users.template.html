@@ -9,7 +9,7 @@
 		/*input[type=text]:focus { width: 12px; }*/
 	</style>
 	<!--<modal-trigger></modal-trigger>-->
-	<div ng-controller="Controller">
+	<div ng-controller="NewUserController">
 		<button class='btn btn-primary pull-right' ng-click="show_update_hash()">New contact</button>
 	</div>
 
@@ -43,5 +43,5 @@
 		</tr>
 		</tbody>
 	</table>
-	<paging list="contacts" url="/user/user_list"></paging>
+	<paging list="contacts" refresh="refresh_list" url="/user/user_list"></paging>
 </div>
