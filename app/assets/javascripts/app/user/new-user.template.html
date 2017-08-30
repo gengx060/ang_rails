@@ -7,7 +7,7 @@
 							aria-hidden="true">
 						&times;
 					</button>
-					<h4 class="modal-title">New contact</h4>
+					<h4 class="modal-title">{{panel_name}}</h4>
 				</div>
 				<div class="modal-body">
 					<!--<div class="form-group">-->
@@ -51,9 +51,9 @@
 								<label class="control-label ">Type</label>
 							</div>
 							<div class=" col-xs-10">
-								<select class="form-control">
-									<option selected>Employee</option>
-									<option>Client</option>
+								<select class="form-control" ng-model="newUserForm.type">
+									<option value="e" selected>Employee</option>
+									<option value="c">Client</option>
 								</select>
 								<div class="help-block with-errors"></div>
 							</div>

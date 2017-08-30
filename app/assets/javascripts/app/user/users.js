@@ -28,7 +28,8 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.newUserForm = {
 					firstname: '',
 					lastname: '',
-					email: ''
+					email: '',
+					type: 'e'
 				}
 				$scope.$parent.show = function () {
 					ModalService.showModal({
@@ -60,13 +61,15 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 
 			})
 			.controller('NewUserModalController', function ($scope, $location, close) {
+				$scope.panel_name = "New contact";
 				$scope.submit = function () {
-					ajaxRequest($scope.newUserForm, '/user/new_user', function (res) {
+					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
 						$scope.$apply(function () {
 							$scope.newUserForm = {
 								firstname: '',
 								lastname: '',
-								email: ''
+								email: '',
+								type: 'e'
 							}
 						});
 						toastr.success('New user saved successfully.');
@@ -81,7 +84,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				};
 			})
 			.controller('UserController', function ($scope, $routeParams, $location, ModalService) {
-				$scope.userForm = {
+				$scope.newUserForm = {
 					firstname: '',
 					lastname: '',
 					email: ''
@@ -89,10 +92,12 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.show_user = function (id) {
 						ajaxRequest({user_id:id}, '/user/get_user', function (res) {
 							$scope.$apply(function () {
-								$scope.userForm = {
+								$scope.newUserForm = {
+									id: res.id,
 									firstname: res.firstname,
 									lastname: res.lastname,
-									email: res.email
+									email: res.email,
+									type: res.group
 								}
 							});
 						}, function (res) {
@@ -100,7 +105,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 						});
 					ModalService.showModal({
-						templateUrl: 'assets/app/user/user.template.html',
+						templateUrl: 'assets/app/user/new-user.template.html',
 						controller: "UserModalController",
 						scope: $scope
 					}).then(function (modal) {
@@ -127,14 +132,15 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 
 			})
 			.controller('UserModalController', function ($scope, $location, close) {
+				$scope.panel_name = "Update contact";
 				$scope.submit = function () {
-					ajaxRequest($scope.newUserForm, '/user/get_user', function (res) {
+					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
 						$scope.$apply(function () {
-							$scope.userForm = {
-								firstname: '',
-								lastname: '',
-								email: ''
-							}
+							// $scope.userForm = {
+							// 	firstname: '',
+							// 	lastname: '',
+							// 	email: ''
+							// }
 						});
 					}, function (res) {
 						// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
