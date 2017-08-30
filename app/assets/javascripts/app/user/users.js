@@ -68,7 +68,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 			.controller('NewUserModalController', function ($scope, $element, $location, $route, close) {
 				$scope.panel_name = "New contact";
 				$scope.submit = function () {
-					ajaxRequest($scope.newUserForm, '/auth/login_check', function (res) {
+					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
 						toastr.success('New user has been created.');
 						$scope.$apply(function () {
 							$scope.close(null);

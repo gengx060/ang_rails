@@ -76,9 +76,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'angular-route', 'ang
 
 			$scope.submit = function () {
 				ajaxRequest($scope.user, '/auth/login', function () {
-
+					$scope.$apply(function () {
+						$scope.$root.showmenu = true;
+					});
 					location.hash = '#!/welcome';
-				}, function () {
+				}, function (res) {
+					if(res.status == 422) {
+						location.reload();
+					}
 					$scope.$apply(function () {
 						$scope.showAlert = true;
 					});

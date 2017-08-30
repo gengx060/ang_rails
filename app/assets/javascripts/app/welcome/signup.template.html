@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-		<div class="col-sm-8 col-xs-10 col-sm-offset-2">
+		<div class="col-md-10 col-xs-10 col-xs-offset-1">
 			<div class="panel  panel-login" style="overflow: auto;">
 
 				<div class="panel-heading">
@@ -18,7 +18,7 @@
 				</div>
 				<div class="panel-body">
 
-					<form class="form-horizontal">
+					<form class="form-horizontal"  ng-submit="submit()">
 						<div class="alert alert-danger alert-dismissible" ng-if='alert_msg_show' role="alert">
 							<button type="button" class="close"  ng-click="hideAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
@@ -107,7 +107,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-6">
-								<button type="submit" ng-click="submit()" class="btn btn-primary btn-register btn-block">Submit</button>
+								<button type="submit" class="btn btn-primary btn-register btn-block">Submit</button>
 							</div>
 						</div>
 					</form>
