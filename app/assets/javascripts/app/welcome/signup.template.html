@@ -1,4 +1,13 @@
 <div class="container">
+	<style>
+		.select2-container--bootstrap .select2-selection--single {
+			height: 45px !important;
+			font-size: 16px !important;
+		}
+		.select2-hidden-accessible {
+			top: 45px;
+		}
+	</style>
 	<div class="row">
 		<div class="col-md-10 col-xs-10 col-xs-offset-1">
 			<div class="panel  panel-login" style="overflow: auto;">
@@ -18,9 +27,10 @@
 				</div>
 				<div class="panel-body">
 
-					<form class="form-horizontal"  ng-submit="submit()">
+					<form class="form-horizontal" ng-submit="submit()">
 						<div class="alert alert-danger alert-dismissible" ng-if='alert_msg_show' role="alert">
-							<button type="button" class="close"  ng-click="hideAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<button type="button" class="close" ng-click="hideAlert()" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
 
 							<div ng-bind="alert_msg"></div>
 						</div>
@@ -61,11 +71,13 @@
 							<label class="control-label col-sm-2">Phone:</label>
 							<div class="col-sm-2">
 								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
-									   placeholder="Area" ng-model="contact.phone.area" pattern="^[0-9]{3}" title="3 digits" required>
+									   placeholder="Area" ng-model="contact.phone.area" pattern="^[0-9]{3}"
+									   title="3 digits" required>
 							</div>
 							<div class="col-sm-3">
 								<input autocomplete="off" type="text" class="form-control" maxlength="50"
-									    placeholder="Number" ng-model="contact.phone.number" pattern="^[0-9]{7}"title="7 digits"
+									   placeholder="Number" ng-model="contact.phone.number" pattern="^[0-9]{7}"
+									   title="7 digits"
 									   required>
 							</div>
 							<div class="col-sm-2">
@@ -92,13 +104,7 @@
 									   placeholder="City/Town" ng-model="contact.address.city" required>
 							</div>
 							<div class="col-sm-3">
-								<!--<input autocomplete="off" class="form-control" type="text" maxlength="255"-->
-									   <!--placeholder="State/Region" ng-model="contact.address.state" required>-->
-								<select id="state_select" style="max-width: 155px;color:#A9A9A9;font-size: 14px;height: 45px !important;" class="form-control pull-right"
-										ng-change="state_select()" ng-model="contact.address.state" required>
-									<option value="" disabled selected hidden>State</option>
-									<option ng-repeat="x in states" ng-value="x">{{x}}</option>
-								</select>
+								<input type="text" id="e10" ng-model="contact.address.state" required>
 							</div>
 							<div class="col-sm-4">
 								<input autocomplete="off" class="form-control" type="text" maxlength="50"

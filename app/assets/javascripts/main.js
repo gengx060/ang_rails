@@ -9,6 +9,7 @@ require.config({
 		'angular-sanitize'     : 'asset/angularjs/1.6.1/angular-sanitize',
 		'bootstrap'            : 'asset/bootstrap/3.3.7/bootstrap.min',
 		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
+		'select2'              : 'asset/select2/4.0.3/js/select2.full',
 		'Enumerable'           : 'asset/linq/linq',
 		'toastr'               : 'asset/toastr/toastr',
 		'typeahead'            : 'asset/typeahead/typeahead',
@@ -43,6 +44,9 @@ require.config({
 			deps: ['jquery']
 		},
 		'toastr'               : {
+			deps: ['jquery']
+		},
+		'select2'               : {
 			deps: ['jquery']
 		},
 		'bootstrap-dialog'     : {
