@@ -5,7 +5,6 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 		'users', 'appointment', 'usstates'])
 		.factory("srvAuth", ['$rootScope',
 			function ($rootScope) {
-
 				var srvAuth = {};
 				srvAuth.fblogin = function () {
 					FB.login(function (response) {
@@ -64,7 +63,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 		.controller('login', ['$scope', '$location', '$http', '$location',
 			function ($scope, $location, $http, $location) {
 				$scope.user = {
-					email: 'gaix01@163.com',
+					email   : 'gaix01@163.com',
 					password: 'gege1818'
 				};
 				$scope.$root.showmenu = false;
@@ -85,7 +84,11 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 							location.reload();
 						}
 						$scope.$apply(function () {
-							$scope.showAlert = true;
+							if (res.info.message == 'Incorrect username or password.') {
+								$scope.showAlert = true;
+							} else {
+								toastr.error(res.responseText);
+							}
 						});
 					})
 				}
@@ -94,26 +97,26 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 			function ($scope, usstates) {
 				$scope.states = usstates;
 				$("#e10").select2({
-					data: usstates,
+					data       : usstates,
 					placeholder: "Select a state",
-					theme: "bootstrap"
+					theme      : "bootstrap"
 				});
 				$scope.contact = {
 					firstname: 'Dan',
-					lastname: 'Curt',
-					email: 'gaix061@163.com',
-					password: 'gege1818',
+					lastname : 'Curt',
+					email    : 'gaix061@163.com',
+					password : 'gege1818',
 					password1: 'gege1818',
-					phone: {
-						area: '218',
+					phone    : {
+						area  : '218',
 						number: '4616620',
-						ext: ''
+						ext   : ''
 					},
-					address: {
-						street: '2nd st',
-						apt: 'apt 29',
-						city: 'Miami',
-						state: '',
+					address  : {
+						street : '2nd st',
+						apt    : 'apt 29',
+						city   : 'Miami',
+						state  : '',
 						zipcode: '33064'
 					}
 				};
@@ -148,18 +151,18 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 			//   controller: 'ShowOrdersController'
 			// });
 			$routeProvider.when('/contacts', {
-				template: '<users></users>',
+				template      : '<users></users>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/appointments', {
-				template: '<appointment></appointment>',
+				template      : '<appointment></appointment>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/comment', {
 				template: '<comment></comment>'
 			});
 			$routeProvider.when('/callback', {
-				controller: 'AuthCtrl1',
+				controller : 'AuthCtrl1',
 				templateUrl: 'app/welcome/callback.template.html'
 			});
 			$routeProvider.when('/welcome', {
@@ -167,11 +170,11 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 				templateUrl: 'assets/app/welcome/welcome.template.html'
 			});
 			$routeProvider.when('/login', {
-				controller: 'login',
+				controller : 'login',
 				templateUrl: 'assets/app/welcome/login.template.html'
 			});
 			$routeProvider.when('/signup', {
-				controller: 'signup',
+				controller : 'signup',
 				templateUrl: 'assets/app/welcome/signup.template.html'
 			});
 			$routeProvider.otherwise({
@@ -180,16 +183,17 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 		}]);
 
 	toastr.options = {
-		closeButton: true,
-		timeout: 3000,
+		closeButton      : true,
+		timeout          : 3000,
 		preventDuplicates: true,
-		positionClass: "toast-top-full-width"
+		positionClass    : "toast-top-full-width"
 	};
 	window.toastr = toastr;
 	window.development = true;
 	window.BD = BD;
 	window.BD.singletonCount = 1;
 	window.ajaxRequestCount = 0;
+	window.nonLoginRoutes = ["#!/login", "#!/signup"];
 	window.ajaxRequest = function (myPostData, url, success, error, complete) {
 		var process_res = function (res, fun, error_function_flag) {
 			try {
@@ -219,25 +223,24 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 			} catch (e) {
 			}
 		};
-		var nonLoginRoutes = ["#!/login", "#!/signup"];
 		var headers = {};
 		headers.antiForgeryToken = sessionStorage.getItem("antiForgeryToken");
 		$("#full-page-loader_unique").show();
 		var options = {
-			url: url,
-			type: "post",
-			data: JSON.stringify(myPostData),
+			url        : url,
+			type       : "post",
+			data       : JSON.stringify(myPostData),
 			contentType: "application/json; charset=UTF-8",
-			dataType: "text",
-			headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-			context: this,
-			success: function (res) {
+			dataType   : "text",
+			headers    : {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+			context    : this,
+			success    : function (res) {
 				process_res(res, success);
 			},
-			error: function (res) {
+			error      : function (res) {
 				process_res(res, error, 1);
 			},
-			complete: function (res) {
+			complete   : function (res) {
 				process_res(res, complete);
 				ajaxRequestCount--;
 				if (ajaxRequestCount == 0)
@@ -269,7 +272,6 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 				$location.old_path_reserved = $location.$$path;
 				ajaxRequest({}, '/auth/login_check', function () {
 					if (nonLoginRoutes.indexOf(location.hash) == -1) {
-						debugger
 						$rootScope.showmenu = true;
 					}
 				}, function () {
@@ -286,9 +288,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 			$window.fbAsyncInit = function () {
 				// Executed when the SDK is loaded
 				FB.init({
-					appId: '123129551645487',
-					cookie: true,
-					xfbml: true,
+					appId  : '123129551645487',
+					cookie : true,
+					xfbml  : true,
 					version: 'v2.8'
 				});
 

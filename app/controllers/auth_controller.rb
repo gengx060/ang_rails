@@ -31,7 +31,7 @@ class AuthController < ApplicationController
 				return
 			end
 		end
-		render :json => {:message => 'Incorrect username or password.'}, :status => 401
+		render :json => {message: 'Incorrect username or password.'}, :status => 401
 
 	end
 
