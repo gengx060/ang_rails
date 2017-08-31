@@ -12,7 +12,8 @@ class AuthController < ApplicationController
 				session[:is_org] = (user.id == user.org_id)
 				session[:org_id] = user.org_id
 				session[:expires_at] = 8.hours.from_now
-
+				@username = user.firstname + ' ' + user.lastname
+				Notifier.welcome(user.email).deliver_now
 				last_login = UserLogin.where(:user_id => session[:user_id]).order("login_at DESC").first
 
 				user_login = UserLogin.new do |ul|

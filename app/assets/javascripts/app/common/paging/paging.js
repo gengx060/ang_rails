@@ -1,7 +1,6 @@
-define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
+define(['angular', 'jquery'], function (angular, $) {
 	angular.module('paging', [])
 	.directive('paging', function () {
-		// https://blueimp.github.io/jQuery-File-Upload/angularjs.html
 		return {
 			require: '^tabs',
 			restrict: 'E',

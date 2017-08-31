@@ -269,6 +269,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 				$location.old_path_reserved = $location.$$path;
 				ajaxRequest({}, '/auth/login_check', function () {
 					if (nonLoginRoutes.indexOf(location.hash) == -1) {
+						debugger
 						$rootScope.showmenu = true;
 					}
 				}, function () {
