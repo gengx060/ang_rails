@@ -1,7 +1,6 @@
 define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 	angular.module('dragdrop', [])
 		.directive('dragdrop', function () {
-			// https://blueimp.github.io/jQuery-File-Upload/angularjs.html
 			return {
 				require: '^tabs',
 				restrict: 'E',
