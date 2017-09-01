@@ -1,6 +1,6 @@
-define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
+define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select2', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
 	'app/menu/menu', 'app/comment/comment', 'app/user/users', 'app/appointment/appointment',
-	'app/common/factory/usstates'], function (angular, $, BD, toastr) {
+	'app/common/factory/usstates'], function (angular, $, BD, toastr, Enumerable) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
 		'users', 'appointment', 'usstates'])
 		.factory("srvAuth", ['$rootScope',
@@ -189,12 +189,13 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 		positionClass    : "toast-top-full-width"
 	};
 	window.toastr = toastr;
+	window.Enumerable = Enumerable;
 	window.development = true;
 	window.BD = BD;
 	window.BD.singletonCount = 1;
 	window.ajaxRequestCount = 0;
 	window.nonLoginRoutes = ["#!/login", "#!/signup"];
-	window.jsonCompare = function(obj, obj1){ 
+	window.jsonEqual = function(obj, obj1){
 		return Enumerable.From(Object.entries(obj).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',') 
 			== Enumerable.From(Object.entries(obj1).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',')
 	}
