@@ -1,22 +1,12 @@
-
-Dear <%= @username %>,
-
-You are logged in <%= Time.now %>,
-
-We are pleased to inform you that your Exactor account has been created.  You will find a copy of the electronically-executed contract for the Exactor sales and use tax services attached to this email. Please keep it for your records.
-
-Please go to: <%=  @username %> to sign into the Merchant Administration site.  We suggest that you bookmark this URL for easy access in the future.
-
-Your account information is:
-Account #: <%=  @username %>
-User Name: <%=  @username %>
-Password:  <%=  @username %>
-
-
-Thank you,
-
-The Exactor Team
-
-
-
-<%=  @username %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>Hi <%= @username %></h1>
+<p>
+  Sample mail sent using smtp.
+</p>
+</body>
+</html>
