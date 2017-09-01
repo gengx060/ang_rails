@@ -9,7 +9,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				url: '@',
 				refresh: '='
 			},
-			controller: function ($scope, $element) {
+			controller: function ($scope, $element, $routeParams) {
 				$scope.total = 0;
 				$scope.offset = 0;
 				$scope.limit = 5;
@@ -17,6 +17,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.current_page_bak = 1;
 				$scope.goto_page = 1;
 				$scope.default_page_sizes = [5, 10, 50];
+				$scope.params = {};
 				//
 				$scope.$watch('refresh', function (newValue, oldValue) {
 					if (newValue > 0) {
@@ -29,13 +30,27 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.current_page = p;
 					$scope.current_page_bak = p;
 
-				}
+				};
+
+				$scope.route_to_params = function() {
+					Object.entries($routeParams).forEach(function (it) {
+						if (it[0].startsWith('sortby')) {
+							if (typeof $scope.params['sortby'] === 'undefined' || !$scope.params['sortby'])
+								$scope.params['sortby'] = {};
+							$scope.params['sortby'][it[0].substring(6)] = it[1];
+						}
+					});
+				};
+
+				$scope.$on('$routeUpdate', function (next, current) {
+					$scope.page();
+				});
 
 				$scope.page = function () {
-					ajaxRequest({
-						offset: $scope.offset,
-						limit: $scope.limit
-					}, $scope.url, function (res) {
+					$scope.params.offset = $scope.offset;
+					$scope.params.limit = $scope.limit;
+					$scope.route_to_params();
+					ajaxRequest($scope.params, $scope.url, function (res) {
 						$scope.$apply(function () {
 							$scope.list = res.users;
 							$scope.total = res.total;
@@ -48,7 +63,9 @@ define(['angular', 'jquery'], function (angular, $) {
 					}, function (res) {
 						toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 					});
-				}
+					$scope.params = {}; // reset params
+				};
+				$scope.route_to_params();
 				$scope.page();
 
 				$scope.firstPage_select = function () {
@@ -56,7 +73,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					// $scope.current_page = 1;
 					$scope.set_current_page(1);
 					$scope.page()
-				}
+				};
 
 				$scope.firstPage = function () {
 					if ($scope.offset == 0 && $scope.current_page == 1)
@@ -65,15 +82,16 @@ define(['angular', 'jquery'], function (angular, $) {
 					// $scope.current_page = 1;
 					$scope.set_current_page(1);
 					$scope.page();
-				}
+				};
+
 				$scope.prePage = function () {
 					if ($scope.offset < 0 || $scope.current_page == 1)
 						return;
 					$scope.offset -= $scope.limit;
 					// $scope.current_page--;;
-					$scope.set_current_page($scope.current_page-1);
+					$scope.set_current_page($scope.current_page - 1);
 					$scope.page();
-				}
+				};
 
 				$scope.gotoPage = function (keyEvent) {
 					if (keyEvent.which != 13)
@@ -124,7 +142,8 @@ define(['angular', 'jquery'], function (angular, $) {
 					// $scope.offset = ($scope.goto_page - 1) * $scope.limit;
 					// $scope.page()
 					// $scope.current_page = $scope.goto_page;
-				}
+				};
+
 				$scope.nextPage = function () {
 					if ($scope.offset + $scope.limit >= $scope.total)
 						return;
@@ -132,7 +151,8 @@ define(['angular', 'jquery'], function (angular, $) {
 					// $scope.current_page++;
 					$scope.set_current_page($scope.current_page + 1)
 					$scope.page()
-				}
+				};
+
 				$scope.lastPage = function () {
 					if ($scope.offset + $scope.limit >= $scope.total)
 						return;

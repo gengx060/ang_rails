@@ -6,24 +6,28 @@ define(['angular', 'jquery'], function (angular, $) {
 			restrict: 'E',
 			transclude: true,
 			scope: {
-				sortname: '='
+				sortbyname: '='
 			},
 			controller: function ($scope, $element, $routeParams, $location) {
 				$scope.sort_class = 'fa-sort';
-				debugger
-				if ($routeParams[$scope.sortname]){
 
+				var sort_name = eval("$routeParams."+$scope.sortbyname);
+				if (sort_name == 'asc'){
+					$scope.sort_class = 'fa-sort-asc';
+				}else if (sort_name == 'desc') {
+					$scope.sort_class = 'fa-sort-desc';
 				}
+
 				$scope.sortClick = function() {
 					if ($scope.sort_class == 'fa-sort') {
 						$scope.sort_class = 'fa-sort-desc';
-						$location.search($scope.sortname, 'desc');
+						$location.search($scope.sortbyname, 'desc');
 					} else if ($scope.sort_class == 'fa-sort-desc') {
 						$scope.sort_class = 'fa-sort-asc';
-						$location.search($scope.sortname, 'asc');
+						$location.search($scope.sortbyname, 'asc');
 					} else if ($scope.sort_class == 'fa-sort-asc') {
 						$scope.sort_class = 'fa-sort';
-						$location.search($scope.sortname, null);
+						$location.search($scope.sortbyname, null);
 					}
 				};
 			},

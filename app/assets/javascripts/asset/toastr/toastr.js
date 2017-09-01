@@ -48,6 +48,8 @@
 					type: toastType.error,
 					iconClass: getOptions().iconClasses.error,
 					message: message,
+					timeOut: 0,
+					extendedTimeOut: 0,
 					optionsOverride: optionsOverride,
 					title: title
 				});

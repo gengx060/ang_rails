@@ -194,6 +194,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'select2', 'angular-r
 	window.BD.singletonCount = 1;
 	window.ajaxRequestCount = 0;
 	window.nonLoginRoutes = ["#!/login", "#!/signup"];
+	window.jsonCompare = function(obj, obj1){ 
+		return Enumerable.From(Object.entries(obj).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',') 
+			== Enumerable.From(Object.entries(obj1).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',')
+	}
 	window.ajaxRequest = function (myPostData, url, success, error, complete) {
 		var process_res = function (res, fun, error_function_flag) {
 			try {
