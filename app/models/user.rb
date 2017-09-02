@@ -49,9 +49,9 @@ class User < ActiveRecord::Base
 	def self.login_profile(user_id)
 		user = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 				   .joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
-				   .select("users.id, firstname, lastname, email, up.img_loc, ul.login_at")
-				   .where("users.id = #{user_id} and  (users.is_deleted is NULL or users.is_deleted=0)")
-				   .order("ul.login_at DESC")
+				   .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at")
+				   .where("users.id = #{user_id} and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)")
+				   .order("ul.created_at DESC")
 				   .first
 		return user
 	end

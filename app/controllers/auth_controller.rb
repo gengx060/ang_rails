@@ -7,30 +7,30 @@ class AuthController < ApplicationController
 		if user
 			hashed = Digest::SHA512.hexdigest("#{params['password']} #{user.salt}")
 			if hashed == user.password
-				session[:user_id] = user.id
-				session[:ip] = request.remote_ip
-				session[:is_org] = (user.id == user.org_id)
-				session[:org_id] = user.org_id
+				session[:user_id]    = user.id
+				session[:ip]         = request.remote_ip
+				session[:is_org]     = (user.id == user.org_id)
+				session[:org_id]     = user.org_id
 				session[:expires_at] = 8.hours.from_now
-				params = {
-						email: user.email,
+				params               = {
+						email:        user.email,
 						emailSubject: "Welcome to login.",
-						username: "#{user.firstname}, #{user.lastname}"
+						username:     "#{user.firstname}, #{user.lastname}"
 				}
 				Notifier.welcome(params).deliver_later
-				last_login = UserLogin.where(:user_id => session[:user_id]).order("login_at DESC").first
+				last_login = UserLogin.where("user_id = #{session[:user_id]} and status='login'")
+												 .order("created_at DESC").first
 
-				user_login = UserLogin.new do |ul|
-					ul.user_id = user.id
-					ul.user_ip = request.remote_ip
-					ul.login_at = Time.now()
-					ul.login_from = request.user_agent
+				params_u = {
+						user_id: user.id,
+						user_ip: request.remote_ip,
+						user_agent: request.user_agent,
+						status: 'Login'
+				}
+				UserLogin.record(params_u);
 
-				end
-				user_login.save!
-
-				render :json => {:user_id => session[:user_id],
-												 :last_login => last_login ? last_login.login_at : nil,
+				render :json => {:user_id       => session[:user_id],
+												 :last_login    => last_login ? last_login.created_at : nil,
 												 :last_login_ip => last_login ? last_login.user_ip : nil}
 				return
 			end
@@ -48,7 +48,14 @@ class AuthController < ApplicationController
 	end
 
 	def logout
+		params_u = {
+				user_id: session[:user_id],
+				user_ip: request.remote_ip,
+				user_agent: request.user_agent,
+				status: 'Logout'
+		}
 		reset_session
+		UserLogin.record(params_u);
 		render :json => {:message => 'You are logged out.'}
 	end
 
@@ -59,30 +66,30 @@ class AuthController < ApplicationController
 		else
 			User.transaction do
 				salt, hashed = User.create_password_salt(params['password'])
-				params_u = {
+				params_u     = {
 						'firstname': params['firstname'],
-						'lastname': params['lastname'],
-						'email': params['email'],
-						'salt': salt,
-						'password': hashed,
-						'group': 'o'
+						'lastname':  params['lastname'],
+						'email':     params['email'],
+						'salt':      salt,
+						'password':  hashed,
+						'group':     'o'
 				}
-				user = User.edit(params_u)
-				params_u = {
-						'user_id': user.id,
+				user         = User.edit(params_u)
+				params_u     = {
+						'user_id':  user.id,
 						'address2': params['address']['apt'],
 						'address1': params['address']['street'],
-						'city': params['address']['city'],
-						'state': params['address']['state'],
-						'country': params['address']['country'] || 'US',
-						'zipcode': params['address']['zipcode'],
+						'city':     params['address']['city'],
+						'state':    params['address']['state'],
+						'country':  params['address']['country'] || 'US',
+						'zipcode':  params['address']['zipcode'],
 				}
 				UserAddress.edit(params_u)
 				params_u = {
 						'user_id': user.id,
-						'area': params['phone']['area'],
-						'number': params['phone']['number'],
-						'ext': params['phone']['ext']
+						'area':    params['phone']['area'],
+						'number':  params['phone']['number'],
+						'ext':     params['phone']['ext']
 				}
 				UserPhone.edit(params_u)
 			end
