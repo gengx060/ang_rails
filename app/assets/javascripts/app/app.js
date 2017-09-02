@@ -176,7 +176,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				templateUrl: 'assets/app/welcome/signup.template.html'
 			});
 			$routeProvider.otherwise({
-				redirectTo: '/login'
+				redirectTo: '/welcome'
 			});
 		}]);
 

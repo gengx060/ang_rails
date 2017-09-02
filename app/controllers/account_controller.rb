@@ -9,8 +9,8 @@ class AccountController < ApplicationController
 		else
 			user = User.new do |u|
 				u.firstname = params['firstname']
-				u.lastname = params['lastname']
-				u.email = params['email']
+				u.lastname  = params['lastname']
+				u.email     = params['email']
 				# salt, hashed = create_password_salt('gege1818')
 				# u.salt = salt
 				# u.password = hashed
@@ -75,15 +75,28 @@ class AccountController < ApplicationController
 		if session[:user_id]
 			render :json => [
 					{name: 'Welcome', route: '/welcome', nav: false, title: 'Welcome'},
-					{name: 'Contacts', dropdown: true, title: 'Github Users',
+					{name:      'Contact', dropdown: true, title: 'Github Users',
 					 dropdowns: [
-							 {name: 'Contact list', route: '/contacts', nav: true, title: 'Github Users'},
-							 {separator: true},
-							 {name: 'New contact', route: '/contacts?newuser=true', nav: true, title: 'Github Users'}
-					 ]
+													{name: 'Contact list', route: '/contacts', nav: true, title: 'Github Users'},
+													{separator: true},
+													{name: 'New contact', route: '/contacts?newuser=true', nav: true, title: 'Github Users'}
+											]
 					},
-					{name: 'Appointments', route: '/appointments', nav: true, title: 'Github Users'},
-					{name: 'Comments', route: '/comment', nav: true, title: 'Github Users'}
+					{name:      'Resource', dropdown: true, title: 'Github Users',
+					 dropdowns: [
+													{name: 'Resource list', route: '/resources', nav: true, title: 'Github Users'},
+													{separator: true},
+													{name: 'New resource', route: '/resources?newresource=true', nav: true, title: 'Github Users'}
+											]
+					},
+					{name: 'Schedule', route: '/appointments', nav: true, title: 'Github Users'},
+					{name:      'Message', dropdown: true, title: 'Github Users',
+					 dropdowns: [
+													{name: 'Message list', route: '/comment', nav: true, title: 'Github Users'},
+													{separator: true},
+													{name: 'New message', route: '/comment?newresource=true', nav: true, title: 'Github Users'}
+											]
+					}
 			];
 			return
 		end
@@ -106,8 +119,8 @@ class AccountController < ApplicationController
 
 	def change_password
 		if params['password'] && params['password1'] && params['password'] == params['password1']
-			user = User.find(session['user_id'])
-			salt, hashed = create_password_salt(password)
+			user                   = User.find(session['user_id'])
+			salt, hashed           = create_password_salt(password)
 			user.salt, user.hashed = salt, hashed
 			user.save!
 			render :json => {:message => 'Your password is updated.'}
