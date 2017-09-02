@@ -57,7 +57,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.page = function () {
 						$scope.params.offset = $scope.offset;
 						$scope.params.limit = $scope.limit;
-						$scope.route_to_params();
+						// $scope.route_to_params();
 						ajaxRequest($scope.params, $scope.url, function (res) {
 							$scope.$apply(function () {
 								$scope.list = res.users;

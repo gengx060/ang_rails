@@ -75,9 +75,15 @@ class AccountController < ApplicationController
 		if session[:user_id]
 			render :json => [
 					{name: 'Welcome', route: '/welcome', nav: false, title: 'Welcome'},
-					{name: 'Contacts', route: '/contacts', nav: true, title: 'Github Users'},
+					{name: 'Contacts', dropdown: true, title: 'Github Users',
+					 dropdowns: [
+							 {name: 'Contact list', route: '/contacts', nav: true, title: 'Github Users'},
+							 {separator: true},
+							 {name: 'New contact', route: '/contacts?newuser=true', nav: true, title: 'Github Users'}
+					 ]
+					},
 					{name: 'Appointments', route: '/appointments', nav: true, title: 'Github Users'},
-			{name: 'Comments', route: '/comment', nav: true, title: 'Github Users'}
+					{name: 'Comments', route: '/comment', nav: true, title: 'Github Users'}
 			];
 			return
 		end
