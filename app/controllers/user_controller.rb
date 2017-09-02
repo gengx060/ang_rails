@@ -56,7 +56,7 @@ class UserController < ApplicationController
 		if params[:user_id]
 			render :json => User.get_user(params[:user_id], session[:org_id]).as_json
 		else
-			render :json => {message: 'The user is not from your organization.'}, :status => 500
+			render :json => {message: 'The contact is not from your organization.'}, :status => 500
 		end
 	end
 

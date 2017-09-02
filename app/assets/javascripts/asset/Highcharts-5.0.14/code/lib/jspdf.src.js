@@ -450,7 +450,7 @@
     			/*
         Axial patterns shade between the two points specified in coords, radial patterns between the inner
         and outer circle.
-          The user can specify an array (colors) that maps t-Values in [0, 1] to RGB colors. These are now
+          The contact can specify an array (colors) that maps t-Values in [0, 1] to RGB colors. These are now
         interpolated to equidistant samples and written to pdf as a sample (type 0) function.
         */
 
@@ -781,7 +781,7 @@
     			beginPage(width, height);
     		},
     		    endFormObject = function endFormObject(key) {
-    			// only add it if it is not already present (the keys provided by the user must be unique!)
+    			// only add it if it is not already present (the keys provided by the contact must be unique!)
     			if (renderTargetMap[key]) return;
 
     			// save the created xObject
@@ -806,7 +806,7 @@
        * @param {API.Pattern} pattern The pattern
        */
     		addPattern = function addPattern(key, pattern) {
-    			// only add it if it is not already present (the keys provided by the user must be unique!)
+    			// only add it if it is not already present (the keys provided by the contact must be unique!)
     			if (patternMap[key]) return;
 
     			var prefix = pattern instanceof API.ShadingPattern ? "Sh" : "P";
@@ -826,7 +826,7 @@
        * @param {Object} gState The gState object
        */
     		addGState = function addGState(key, gState) {
-    			// only add it if it is not already present (the keys provided by the user must be unique!)
+    			// only add it if it is not already present (the keys provided by the contact must be unique!)
     			if (key && gStatesMap[key]) return;
 
     			var duplicate = false;
@@ -847,7 +847,7 @@
     				gState.id = gStateKey;
     			}
 
-    			// several user keys may point to the same GState object
+    			// several contact keys may point to the same GState object
     			key && (gStatesMap[key] = gState.id);
 
     			events.publish('addGState', gState);
@@ -1086,7 +1086,7 @@
     			out('/Info ' + (objectNumber - 1) + ' 0 R');
     		},
     		    beginPage = function beginPage(width, height) {
-    			// Dimensions are stored as user units and converted to points on output
+    			// Dimensions are stored as contact units and converted to points on output
     			var orientation = typeof height === 'string' && height.toLowerCase();
     			if (typeof width === 'string') {
     				var format = width.toLowerCase();
@@ -1691,7 +1691,7 @@
        * @methodOf jsPDF#
        */
     		API.beginFormObject = function (x, y, width, height, matrix) {
-    			// The user can set the output target to a new form object. Nested form objects are possible.
+    			// The contact can set the output target to a new form object. Nested form objects are possible.
     			// Currently, they use the resource dictionary of the surrounding stream. This should be changed, as
     			// the PDF-Spec states:
     			// "In PDF 1.2 and later versions, form XObjects may be independent of the content streams in which
@@ -1934,9 +1934,9 @@
     			}
 
     			// If there are any newlines in text, we assume
-    			// the user wanted to print multiple lines, so break the
+    			// the contact wanted to print multiple lines, so break the
     			// text up into an array.  If the text is already an array,
-    			// we assume the user knows what they are doing.
+    			// we assume the contact knows what they are doing.
     			// Convert text into an array anyway to simplify
     			// later code.
     			if (typeof text === 'string') {
@@ -2145,7 +2145,7 @@
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
        * @param {Boolean} closed If true, the path is closed with a straight line from the end of the last curve to the starting point.
        * @param {String} patternKey The pattern key for the pattern that should be used to fill the path.
-       * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+       * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
        * will modify the pattern on use.
        * @function
        * @returns {jsPDF}
@@ -2216,7 +2216,7 @@
        * six and "h" an empty array (or undefined).
        * @param {String} style  The style
        * @param {String} patternKey The pattern key for the pattern that should be used to fill the path.
-       * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+       * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
        * will modify the pattern on use.
        * @function
        * @returns {jsPDF}
@@ -2261,7 +2261,7 @@
        * @param {Number} h Height (in units declared at inception of PDF document)
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
          * @param {String} patternKey The pattern key for the pattern that should be used to fill the primitive.
-         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
          * will modify the pattern on use.
          * @function
        * @returns {jsPDF}
@@ -2287,7 +2287,7 @@
        * @param {Number} y3 Coordinate (in units declared at inception of PDF document) against upper edge of the page
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
          * @param {String} patternKey The pattern key for the pattern that should be used to fill the primitive.
-         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
          * will modify the pattern on use.
          * @function
        * @returns {jsPDF}
@@ -2314,7 +2314,7 @@
        * @param {Number} ry Radius along y axis (in units declared at inception of PDF document)
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
          * @param {String} patternKey The pattern key for the pattern that should be used to fill the primitive.
-         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
          * will modify the pattern on use.
          * @function
        * @returns {jsPDF}
@@ -2341,7 +2341,7 @@
        * @param {Number} ry Radius along y axis (in units declared at inception of PDF document)
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
          * @param {String} patternKey The pattern key for the pattern that should be used to fill the primitive.
-         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
          * will modify the pattern on use.
          * @function
        * @returns {jsPDF}
@@ -2370,7 +2370,7 @@
        * @param {Number} r Radius (in units declared at inception of PDF document)
        * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
          * @param {String} patternKey The pattern key for the pattern that should be used to fill the primitive.
-         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into user space, or an object that
+         * @param {Matrix|PatternData} patternData The matrix that transforms the pattern into contact space, or an object that
          * will modify the pattern on use.
          * @function
        * @returns {jsPDF}
@@ -4086,7 +4086,7 @@ Q\n";
         // Set Print in the Annot Flag
         this.F = AcroForm.internal.setBitPosition(this.F, 3, 1);
 
-        // Set AppearanceCharacteristicsDictionary with default appearance if field is not interacting with user
+        // Set AppearanceCharacteristicsDictionary with default appearance if field is not interacting with contact
         this.MK = this._AppearanceType.createMK(); // (8) -> Cross, (1)-> Circle, ()-> nothing
 
         // Default Appearance is Off
@@ -4798,7 +4798,7 @@ Q\n";
     			var src = '' + element.getAttribute('src');
     			if (!angle && src.indexOf('data:image/') === 0) return src;
 
-    			// only if the user doesn't care about a format
+    			// only if the contact doesn't care about a format
     			if (!format && /\.png(?:[?#].*)?$/i.test(src)) format = 'png';
     		}
 
@@ -5904,7 +5904,7 @@ Q\n";
             margins.width = this.internal.pageSize.width;
 
             if (config) {
-                //override config defaults if the user has specified non-default behavior:
+                //override config defaults if the contact has specified non-default behavior:
                 if (config.autoSize === true) {
                     autoSize = true;
                 }
@@ -10766,10 +10766,10 @@ Q\n";
     		// wSize-MAX_MATCH bytes, but this ensures that IO is always
     		// performed with a length multiple of the block size. Also, it limits
     		// the window size to 64K, which is quite useful on MSDOS.
-    		// To do: use the user input buffer as sliding window.
+    		// To do: use the contact input buffer as sliding window.
 
     		var window_size;
-    		// Actual size of window: 2*wSize, except when the user input buffer
+    		// Actual size of window: 2*wSize, except when the contact input buffer
     		// is directly used as sliding window.
 
     		var prev;

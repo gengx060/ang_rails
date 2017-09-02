@@ -23,7 +23,7 @@ class AccountController < ApplicationController
 
 	def create_password_from_group_account
 		unless params['user_id'] && params['password']
-			render :json => {:message => 'Missing password or user id.'}, :status => 500
+			render :json => {:message => 'Missing password or contact id.'}, :status => 500
 			return
 		end
 		if session[:is_org]
@@ -66,7 +66,7 @@ class AccountController < ApplicationController
 				user.save!
 				render :json => {:message => 'Password updated successfully.'}
 			else
-				render :json => {:message => 'Hash or user does not exist.'}, status => 500
+				render :json => {:message => 'Hash or contact does not exist.'}, status => 500
 			end
 		end
 	end
@@ -87,7 +87,7 @@ class AccountController < ApplicationController
 			];
 			return
 		end
-		render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
+		render :json => {:error => 'Unauthorized contact, please login back in.'}, :status => 401
 	end
 
 	def login_profile

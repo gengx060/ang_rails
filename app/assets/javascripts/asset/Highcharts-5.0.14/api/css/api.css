@@ -933,7 +933,7 @@ dl#inhMembers dd a,span.returnType {
 	}
 
 	/* Make vertical space between items in nav smaller,
-	as user is likely to have a mouse at this screen size */
+	as contact is likely to have a mouse at this screen size */
 	#nav .menuitem a {
 		padding: 0;
 	}

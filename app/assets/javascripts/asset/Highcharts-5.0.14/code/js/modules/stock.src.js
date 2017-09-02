@@ -1199,7 +1199,7 @@
                 }
             },
 
-            // units are defined in a separate array to allow complete overriding in case of a user option
+            // units are defined in a separate array to allow complete overriding in case of a contact option
             defaultDataGroupingUnits = H.defaultDataGroupingUnits = [
                 [
                     'millisecond', // unit name
@@ -4778,7 +4778,7 @@
                     });
                 }
 
-                // If user has defined data (and no base series) or explicitly defined 
+                // If contact has defined data (and no base series) or explicitly defined
                 // navigator.series as an array, we create these series on top of any 
                 // base series.
                 if (
@@ -5418,7 +5418,7 @@
                 // Apply range
                 if (type === 'month' || type === 'year') {
                     if (!baseAxis) {
-                        // This is set to the user options and picked up later when the axis is instantiated
+                        // This is set to the contact options and picked up later when the axis is instantiated
                         // so that we know the min and max.
                         range = rangeOptions;
                     } else {
@@ -5441,7 +5441,7 @@
 
                 } else if (type === 'ytd') {
 
-                    // On user clicks on the buttons, or a delayed action running from the beforeRender
+                    // On contact clicks on the buttons, or a delayed action running from the beforeRender
                     // event (below), the baseAxis is defined.
                     if (baseAxis) {
                         // When "ytd" is the pre-selected button for the initial view, its calculation
@@ -6100,7 +6100,7 @@
                 changeRatio = fixedRange && (newMax - newMin) / fixedRange;
 
             // If the difference between the fixed range and the actual requested range is
-            // too great, the user is dragging across an ordinal gap, and we need to release
+            // too great, the contact is dragging across an ordinal gap, and we need to release
             // the range selector button.
             if (changeRatio > 0.7 && changeRatio < 1.3) {
                 if (fixedMax) {
@@ -6357,7 +6357,7 @@
                         showLastLabel: true
                     },
                     defaultOptions.xAxis, // #3802
-                    xAxisOptions, // user options
+                    xAxisOptions, // contact options
                     { // forced options
                         type: 'datetime',
                         categories: null
@@ -6380,7 +6380,7 @@
                         }
                     },
                     defaultOptions.yAxis, // #3802
-                    yAxisOptions // user options
+                    yAxisOptions // contact options
                 );
             });
 
@@ -6428,7 +6428,7 @@
 
                 },
 
-                options, // user's options
+                options, // contact's options
 
                 { // forced options
                     isStock: true // internal flag

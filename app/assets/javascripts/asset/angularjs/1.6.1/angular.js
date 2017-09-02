@@ -1828,7 +1828,7 @@ function bootstrap(element, modules, config) {
     }]);
 
     if (config.debugInfoEnabled) {
-      // Pushing so that this overrides `debugInfoEnabled` setting defined in user's `modules`.
+      // Pushing so that this overrides `debugInfoEnabled` setting defined in contact's `modules`.
       modules.push(['$compileProvider', function($compileProvider) {
         $compileProvider.debugInfoEnabled(true);
       }]);
@@ -4178,7 +4178,7 @@ function annotate(fn, strictDi, name) {
  * @name $injector#has
  *
  * @description
- * Allows the user to query if the particular service exists.
+ * Allows the contact to query if the particular service exists.
  *
  * @param {string} name Name of the service to query.
  * @returns {boolean} `true` if injector has given service.
@@ -5127,7 +5127,7 @@ function $AnchorScrollProvider() {
       else if (hash === 'top') scrollTo(null);
     }
 
-    // does not scroll when user clicks on anchor link that is currently on
+    // does not scroll when contact clicks on anchor link that is currently on
     // (no url change, no $location.hash() change), browser native does scroll
     if (autoScrollingEnabled) {
       $rootScope.$watch(function autoScrollWatch() {return $location.hash();},
@@ -6300,9 +6300,9 @@ function Browser(window, document, $log, $sniffer) {
    * Register callback function that will be called, when url changes.
    *
    * It's only called when the url is changed from outside of angular:
-   * - user types different url into address bar
-   * - user clicks on history (forward/back) button
-   * - user clicks on a link
+   * - contact types different url into address bar
+   * - contact clicks on history (forward/back) button
+   * - contact clicks on a link
    *
    * It's not called when url is changed by $browser.url() method
    *
@@ -6318,7 +6318,7 @@ function Browser(window, document, $log, $sniffer) {
     // TODO(vojta): refactor to use node's syntax for events
     if (!urlChangeInit) {
       // We listen on both (hashchange/popstate) when available, as some browsers (e.g. Opera)
-      // don't fire popstate when user change the address bar and don't fire hashchange when url
+      // don't fire popstate when contact change the address bar and don't fire hashchange when url
       // changed by push/replaceState
 
       // html5 history api - popstate event
@@ -10220,7 +10220,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       }
 
       if (jqLite.hasData(firstElementToRemove)) {
-        // Copy over user data (that includes Angular's $scope etc.). Don't copy private
+        // Copy over contact data (that includes Angular's $scope etc.). Don't copy private
         // data here because there's no public interface in jQuery to do that and copying over
         // event listeners (which is the main use of private data) wouldn't work anyway.
         jqLite.data(newNode, jqLite.data(firstElementToRemove));
@@ -12764,7 +12764,7 @@ function $InterpolateProvider() {
       // concatenated values are unsafe to use and could easily lead to XSS.  By requiring that a
       // single expression be used for iframe[src], object[src], etc., we ensure that the value
       // that's used is assigned or constructed by some JS code somewhere that is more testable or
-      // make it obvious that you bound the value to some user controlled value.  This helps reduce
+      // make it obvious that you bound the value to some contact controlled value.  This helps reduce
       // the load when auditing for XSS issues.
       if (trustedContext && concat.length > 1) {
           $interpolateMinErr.throwNoconcat(text);
@@ -13810,7 +13810,7 @@ forEach([LocationHashbangInHtml5Url, LocationHashbangUrl, LocationHtml5Url], fun
       throw $locationMinErr('nostate', 'History API state support is available only ' +
         'in HTML5 mode and only in browsers supporting HTML5 History API');
     }
-    // The user might modify `stateObject` after invoking `$location.state(stateObject)`
+    // The contact might modify `stateObject` after invoking `$location.state(stateObject)`
     // but we're changing the $$state reference to $browser.state() during the $digest
     // so the modification window is narrow.
     this.$$state = isUndefined(state) ? null : state;
@@ -13858,7 +13858,7 @@ function locationGetterSetter(property, preprocess) {
  * - Exposes the current URL in the browser address bar, so you can
  *   - Watch and observe the URL.
  *   - Change the URL.
- * - Synchronizes the URL with the browser when the user
+ * - Synchronizes the URL with the browser when the contact
  *   - Changes the address bar.
  *   - Clicks the back or forward button (or clicks a History link).
  *   - Clicks on a link.
@@ -14362,7 +14362,7 @@ var objectValueOf = {}.constructor.prototype.valueOf;
 //
 //   {}.toString.constructor('alert("evil JS code")')
 //
-// It is important to realize that if you create an expression from a string that contains user provided
+// It is important to realize that if you create an expression from a string that contains contact provided
 // content then it is possible that your application contains a security vulnerability to an XSS style attack.
 //
 // See https://docs.angularjs.org/guide/security
@@ -15977,14 +15977,14 @@ function getValueOf(value) {
  * Converts Angular {@link guide/expression expression} into a function.
  *
  * ```js
- *   var getter = $parse('user.name');
+ *   var getter = $parse('contact.name');
  *   var setter = getter.assign;
- *   var context = {user:{name:'angular'}};
- *   var locals = {user:{name:'local'}};
+ *   var context = {contact:{name:'angular'}};
+ *   var locals = {contact:{name:'local'}};
  *
  *   expect(getter(context)).toEqual('angular');
  *   setter(context, 'newValue');
- *   expect(context.user.name).toEqual('newValue');
+ *   expect(context.contact.name).toEqual('newValue');
  *   expect(getter(context, locals)).toEqual('local');
  * ```
  *
@@ -22635,12 +22635,12 @@ function nullFormRenameControl(control, name) {
  * @ngdoc type
  * @name form.FormController
  *
- * @property {boolean} $pristine True if user has not interacted with the form yet.
- * @property {boolean} $dirty True if user has already interacted with the form.
+ * @property {boolean} $pristine True if contact has not interacted with the form yet.
+ * @property {boolean} $dirty True if contact has already interacted with the form.
  * @property {boolean} $valid True if all of the containing forms and controls are valid.
  * @property {boolean} $invalid True if at least one containing control or form is invalid.
  * @property {boolean} $pending True if at least one containing control or form is pending.
- * @property {boolean} $submitted True if user has submitted the form even if its invalid.
+ * @property {boolean} $submitted True if contact has submitted the form even if its invalid.
  *
  * @property {Object} $error Is an object hash, containing references to controls or
  *  forms with failing validators, where:
@@ -24577,13 +24577,13 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
       deferListener(event, this, this.value);
     });
 
-    // if user modifies input value using context menu in IE, we need "paste" and "cut" events to catch it
+    // if contact modifies input value using context menu in IE, we need "paste" and "cut" events to catch it
     if ($sniffer.hasEvent('paste')) {
       element.on('paste cut', deferListener);
     }
   }
 
-  // if user paste into input using mouse on older browser
+  // if contact paste into input using mouse on older browser
   // or form autocomplete on newer browser, we need "change" event to catch it
   element.on('change', listener);
 
@@ -25166,7 +25166,7 @@ function checkboxInputType(scope, element, attr, ctrl, $sniffer, $browser, $filt
  *    **Note:** Avoid using the `g` flag on the RegExp, as it will cause each successive search to
  *    start at the index of the last search's match, thus not taking the whole input value into
  *    account.
- * @param {string=} ngChange Angular expression to be executed when input changes due to user
+ * @param {string=} ngChange Angular expression to be executed when input changes due to contact
  *    interaction with the input element.
  * @param {boolean=} [ngTrim=true] If set to false Angular will not automatically trim the input.
  *
@@ -28092,7 +28092,7 @@ NgModelController.prototype = {
    * @name ngModel.NgModelController#$render
    *
    * @description
-   * Called when the view needs to be updated. It is expected that the user of the ng-model
+   * Called when the view needs to be updated. It is expected that the contact of the ng-model
    * directive will implement this method.
    *
    * The `$render()` method is invoked in the following situations:
@@ -28189,7 +28189,7 @@ NgModelController.prototype = {
    * This method can be called to remove the `ng-touched` class and set the control to its
    * untouched state (`ng-untouched` class). Upon compilation, a model is set as untouched
    * by default, however this function can be used to restore that state if the model has
-   * already been touched by the user.
+   * already been touched by the contact.
    */
   $setUntouched: function() {
     this.$touched = false;
@@ -28205,7 +28205,7 @@ NgModelController.prototype = {
    * Sets the control to its touched state.
    *
    * This method can be called to remove the `ng-untouched` class and set the control to its
-   * touched state (`ng-touched` class). A model is considered to be touched when the user has
+   * touched state (`ng-touched` class). A model is considered to be touched when the contact has
    * first focused the control element and then shifted focus away from the control (blur event).
    */
   $setTouched: function() {
@@ -28627,7 +28627,7 @@ function setupModelWatcher(ctrl) {
   // model -> value
   // Note: we cannot use a normal scope.$watch as we want to detect the following:
   // 1. scope value is 'a'
-  // 2. user enters 'b'
+  // 2. contact enters 'b'
   // 3. ng-change kicks in and reverts scope value to 'a'
   //    -> scope value did not change since the last digest as
   //       ng-change executes in apply phase
@@ -29845,7 +29845,7 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
 
         // If we are using `track by` then we must watch the tracked value on the model
         // since ngModel only watches for object identity change
-        // FIXME: When a user selects an option, this watch will fire needlessly
+        // FIXME: When a contact selects an option, this watch will fire needlessly
         if (ngOptions.trackBy) {
           scope.$watch(
             function() { return ngOptions.getTrackByValue(ngModelCtrl.$viewValue); },

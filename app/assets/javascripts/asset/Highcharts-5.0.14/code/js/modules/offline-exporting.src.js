@@ -448,7 +448,7 @@
 
         /**
          * Exporting and offline-exporting modules required. Export a chart to an image
-         * locally in the user's browser.
+         * locally in the contact's browser.
          *
          * @param  {Object} exportingOptions
          *         Exporting options, the same as in {@link

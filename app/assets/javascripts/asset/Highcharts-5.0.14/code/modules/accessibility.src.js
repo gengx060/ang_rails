@@ -222,7 +222,7 @@
                  * Formatter function to use instead of the default for point descriptions.
                  * Receives one argument, `point`, referring to the point to describe.
                  * Should return a String with the description of the point for a screen
-                 * reader user.
+                 * reader contact.
                  * 
                  * @type {Function}
                  * @see [point.description](#series<line>.data.description)
@@ -249,7 +249,7 @@
                  * Formatter function to use instead of the default for series descriptions.
                  * Receives one argument, `series`, referring to the series to describe.
                  * Should return a String with the description of the series for a
-                 * screen reader user.
+                 * screen reader contact.
                  * 
                  * @type {Function}
                  * @see [series.description](#plotOptions.series.description)
@@ -1107,7 +1107,7 @@
                 })
             ];
 
-            // Init nav module index. We start at the first module, and as the user navigates through the chart the index will increase to use different handler modules.
+            // Init nav module index. We start at the first module, and as the contact navigates through the chart the index will increase to use different handler modules.
             chart.keyboardNavigationModuleIndex = 0;
 
             // Make chart reachable by tab
@@ -1169,7 +1169,7 @@
             if (chart.getCSV) {
                 tableShortcutAnchor.innerHTML = 'View as data table.';
                 tableShortcutAnchor.href = '#' + tableId;
-                tableShortcutAnchor.setAttribute('tabindex', '-1'); // Make this unreachable by user tabbing
+                tableShortcutAnchor.setAttribute('tabindex', '-1'); // Make this unreachable by contact tabbing
                 tableShortcutAnchor.onclick = a11yOptions.onTableAnchorClick || function() {
                     chart.viewData();
                     doc.getElementById(tableId).focus();

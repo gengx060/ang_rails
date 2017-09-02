@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 	PAGING_LIMIT = 2
 
 	def check_auth
-		# unless (session[:user] != nil && session[:ip] == request.remote_ip)
+		# unless (session[:contact] != nil && session[:ip] == request.remote_ip)
 		if (session[:user_id] && session[:expires_at] && session[:ip] == request.remote_ip)
 			if session[:expires_at].to_time - Time.now > 0
 				return true
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 				return false
 			end
 		else
-			render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
+			render :json => {:error => 'Unauthorized contact, please login back in.'}, :status => 401
 			return false
 		end
 	end

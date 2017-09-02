@@ -6629,7 +6629,7 @@
                 /**
                  * Whether to use UTC time for axis scaling, tickmark placement and
                  * time display in `Highcharts.dateFormat`. Advantages of using UTC
-                 * is that the time displays equally regardless of the user agent's
+                 * is that the time displays equally regardless of the contact agent's
                  * time zone settings. Local time can be used when the data is loaded
                  * in real time or when correct Daylight Saving Time transitions are
                  * required.
@@ -7099,7 +7099,7 @@
                 spacing: [10, 10, 15, 10],
 
                 /**
-                 * The button that appears after a selection zoom, allowing the user
+                 * The button that appears after a selection zoom, allowing the contact
                  * to reset zoom.
                  * 
                  * @product highcharts highstock highmaps
@@ -7404,7 +7404,7 @@
                  */
 
                 /**
-                 * Decides in what dimensions the user can zoom by dragging the mouse.
+                 * Decides in what dimensions the contact can zoom by dragging the mouse.
                  * Can be one of `x`, `y` or `xy`.
                  * 
                  * @validvalue [null, "x", "y", "xy"]
@@ -7905,7 +7905,7 @@
              * The loading options control the appearance of the loading screen
              * that covers the plot area on chart operations. This screen only
              * appears after an explicit call to `chart.showLoading()`. It is a
-             * utility for developers to communicate to the end user that something
+             * utility for developers to communicate to the end contact that something
              * is going on, for example while retrieving new data via an XHR connection.
              * The "Loading..." text itself is not part of this configuration
              * object, but part of the `lang` object.
@@ -7938,7 +7938,7 @@
 
 
             /**
-             * Options for the tooltip that appears when the user hovers over a
+             * Options for the tooltip that appears when the contact hovers over a
              * series or point.
              * 
              * @product highcharts highstock highmaps
@@ -10966,7 +10966,7 @@
             },
 
             /**
-             * Set the scale based on data min and max, user set min and max or options.
+             * Set the scale based on data min and max, contact set min and max or options.
              * 
              * @private
              */
@@ -11735,7 +11735,7 @@
                 // Render the axis line
                 axis.renderLine();
 
-                // handle automatic or user set offset
+                // handle automatic or contact set offset
                 axis.offset = directionFactor * pick(options.offset, axisOffset[side]);
 
                 axis.tickRotCorr = axis.tickRotCorr || {
@@ -12989,7 +12989,7 @@
                     userOptions = this.userOptions;
 
                 if (obj) { // #2189
-                    // Add it to the user options for exporting and Axis.update
+                    // Add it to the contact options for exporting and Axis.update
                     if (coll) {
                         userOptions[coll] = userOptions[coll] || [];
                         userOptions[coll].push(options);
@@ -13238,7 +13238,7 @@
 
             update: function(options) {
                 this.destroy();
-                // Update user options (#6218)
+                // Update contact options (#6218)
                 merge(true, this.chart.options.tooltip.userOptions, options);
                 this.init(this.chart, merge(true, this.options, options));
             },
@@ -13479,7 +13479,7 @@
             },
 
             /**
-             * In case no user defined formatter is given, this will be used. Note that the context
+             * In case no contact defined formatter is given, this will be used. Note that the context
              * here is an object holding point, series, x, y etc.
              *
              * @returns {String|Array<String>}
@@ -14943,7 +14943,7 @@
                 if (outOfBounds) {
 
                     // Modify the touchNow position in order to create an elastic drag movement. This indicates
-                    // to the user that the chart is responsive but can't be dragged further.
+                    // to the contact that the chart is responsive but can't be dragged further.
                     touch0Now -= 0.8 * (touch0Now - lastValidTouch[xy][0]);
                     if (!singleTouch) {
                         touch1Now -= 0.8 * (touch1Now - lastValidTouch[xy][1]);
@@ -14988,7 +14988,7 @@
                         chart.runTrackerClick) || self.runChartClick),
                     clip = {};
 
-                // Don't initiate panning until the user has pinched. This prevents us from
+                // Don't initiate panning until the contact has pinched. This prevents us from
                 // blocking page scrolling as users scroll down a long page (#4210).
                 if (touchesLength > 1) {
                     self.initiated = true;
@@ -16421,7 +16421,7 @@
                 userOptions.series = null;
                 options = merge(defaultOptions, userOptions); // do the merge
 
-                // Override (by copy of user options) or clear tooltip options
+                // Override (by copy of contact options) or clear tooltip options
                 // in chart.options.plotOptions (#6218)
                 for (type in options.plotOptions) {
                     options.plotOptions[type].tooltip = (
@@ -18939,7 +18939,7 @@
 
             /**
              * You can set the cursor to "pointer" if you have click events attached
-             * to the series, to signal to the user that the points and lines can
+             * to the series, to signal to the contact that the points and lines can
              * be clicked.
              * 
              * @validvalue [null, "default", "none", "help", "pointer", "crosshair"]
@@ -20397,7 +20397,7 @@
                 );
 
                 // When shared tooltip, stickyTracking is true by default,
-                // unless user says otherwise.
+                // unless contact says otherwise.
                 this.stickyTracking = pick(
                     itemOptions.stickyTracking,
                     userPlotOptions[this.type] &&
@@ -22084,7 +22084,7 @@
 
                 // Call the afterAnimate function on animation complete (but don't
                 // overwrite the animation.complete option which should be available to
-                // the user).
+                // the contact).
                 if (!hasRendered) {
                     series.animationTimeout = syncTimeout(function() {
                         series.afterAnimate();
@@ -22349,7 +22349,7 @@
 
             // The align options and text align varies on whether the stack is negative 
             // and if the chart is inverted or not.
-            // First test the user supplied value, then use the dynamic.
+            // First test the contact supplied value, then use the dynamic.
             this.alignOptions = {
                 align: options.align ||
                     (inverted ? (isNegative ? 'left' : 'right') : 'center'),
@@ -23579,7 +23579,7 @@
             update: function(newOptions, redraw) {
                 var series = this,
                     chart = series.chart,
-                    // must use user options when changing type because series.options
+                    // must use contact options when changing type because series.options
                     // is merged in with type specific plotOptions
                     oldOptions = series.userOptions,
                     oldType = series.oldType || series.type,

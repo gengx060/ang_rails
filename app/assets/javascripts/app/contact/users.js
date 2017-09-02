@@ -27,7 +27,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 							$scope.refresh_list++;
 						};
 					},
-					templateUrl: 'assets/app/user/users.template.html',
+					templateUrl: 'assets/app/contact/users.template.html',
 					replace: true
 				};
 			})
@@ -40,7 +40,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				};
 				$scope.$parent.show = function () {
 					ModalService.showModal({
-						templateUrl: 'assets/app/user/new-user.template.html',
+						templateUrl: 'assets/app/contact/new-user.template.html',
 						controller: "NewUserModalController",
 						scope: $scope
 					}).then(function (modal) {
@@ -71,7 +71,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 				$scope.panel_name = "New contact";
 				$scope.submit = function () {
 					ajaxRequest($scope.newUserForm, '/user/edit', function (res) {
-						toastr.success('New user has been created.');
+						toastr.success('New contact has been created.');
 						$scope.$apply(function () {
 							$scope.close(null);
 							$scope.refreshList();
@@ -110,7 +110,7 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 						});
 					ModalService.showModal({
-						templateUrl: 'assets/app/user/new-user.template.html',
+						templateUrl: 'assets/app/contact/new-user.template.html',
 						controller: "UserModalController",
 						scope: $scope
 					}).then(function (modal) {

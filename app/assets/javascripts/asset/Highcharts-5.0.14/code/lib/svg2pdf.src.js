@@ -2979,7 +2979,7 @@ SOFTWARE.
           var fill = getFromDefs(fillUrl, defs);
           if (fill && nodeIs(fill, "lineargradient,radialgradient")) {
 
-            // matrix to convert between gradient space and user space
+            // matrix to convert between gradient space and contact space
             // for "userSpaceOnUse" this is the current transformation: tfMatrix
             // for "objectBoundingBox" or default, the gradient gets scaled and transformed to the bounding box
             var gradientUnitsMatrix = tfMatrix;

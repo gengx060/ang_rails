@@ -24,12 +24,6 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 							});
 						}
 					});
-					// // to address @blesh's comment, set attribute value to 'false'
-					// // on blur event:
-					// element.bind('blur', function () {
-					//     console.log('blur');
-					//     scope.$apply(model.assign(scope, false));
-					// });
 				}
 			};
 		}])
@@ -41,7 +35,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 				scope      : {},
 				controller : function ($scope, $element, $http) {
 					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
-					
+
 					// $scope.code_text = '';
 					// $scope.code_text_show = false;
 					// $scope.profile_placeholder = "asset/img/blank-profile.png";
@@ -61,15 +55,15 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 										});
 									return;
 								}
-								
+
 								// Simple GET request example:
 								$scope.$root['ajax_loader'].show = true;
-								var user = {name:'adfadf'};
+								var user = {name: 'adfadf'};
 								$http({
-                                    // method: 'POST',
-                                    method: 'GET',
-                                    // data: encodeURIComponent(user),
-                                    data: user,
+									// method: 'POST',
+									method: 'GET',
+									// data: encodeURIComponent(contact),
+									data  : user,
 									url   : '/welcome/ajax'
 								}).then(function successCallback(response) {
 									debugger
@@ -79,7 +73,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 									// called asynchronously if an error occurs
 									// or server returns response with an error status.
 								}).then(function () {
-									
+
 									if (self.content != '') {
 										self.show = false;
 										var newc = {
@@ -118,7 +112,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						}
 					};
 					$scope.newcomment_top = $scope.newcomment();
-					
+
 					$scope.comments = [
 						{
 							id        : 1,
@@ -145,7 +139,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						// {
 						// 	id:3,
 						// 	topic_id: 1,
-						// 	user:'Stefanih',
+						// 	contact:'Stefanih',
 						// 	msg:'Thank you! I\'ve looked at many sources, and it appears that both web design and graphic design are taxable in Texas. Thank you for the info about only collecting from clients in Texas. That\'s what we\'ve been doing! YAY! :)',
 						// 	parent_id: 2,
 						// 	img:null,
@@ -156,7 +150,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						// {
 						// 	id:4,
 						// 	topic_id: 1,
-						// 	user:'Belle Chang-Li',
+						// 	contact:'Belle Chang-Li',
 						// 	msg:'I would ONLY have to charge them the cost of my product + shipping? Thanks guys!!',
 						// 	parent_id: null,
 						// 	img:null,
@@ -165,16 +159,16 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						// 	newcomment: $scope.newcomment()
 						// }
 					];
-					
+
 					var sort = function (cc) {
 						cc = Enumerable.From(cc).OrderBy('$.lvl').ThenBy('$.id').ToArray();
-						
+
 						// var rs=[Enumerable.From(cc).Where('$.parent==null').MinBy('$.id')], rs_index=0;
 						var rs = [cc[0]], rs_index = 0, stack = [0];
-						
+
 						// cc.splice(cc.indexOf(Enumerable.From(cc).Where('$.parent==null').MinBy('$.id')), 1);
 						cc.splice(0, 1);
-						
+
 						while (cc.length > 0) {
 							for (var i = 0; i < cc.length; i++) {
 								if (typeof rs[rs_index] == 'undefined')
@@ -206,7 +200,7 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						}
 						$scope.comments = rs;
 					}
-					
+
 				},
 				templateUrl: 'assets/app/comment/comment.template.html',
 				replace    : true

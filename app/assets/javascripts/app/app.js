@@ -1,5 +1,5 @@
 define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select2', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
-	'app/menu/menu', 'app/comment/comment', 'app/user/users', 'app/appointment/appointment',
+	'app/menu/menu', 'app/comment/comment', 'app/contact/users', 'app/appointment/appointment',
 	'app/common/factory/usstates'], function (angular, $, BD, toastr, Enumerable) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
 			'users', 'appointment', 'usstates'])

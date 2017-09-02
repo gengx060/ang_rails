@@ -44,7 +44,7 @@ class AuthController < ApplicationController
 			render :json => {:success => true}
 			return
 		end
-		render :json => {:message => 'Unauthorized user, please login back in.'}, :status => 401
+		render :json => {:message => 'Unauthorized contact, please login back in.'}, :status => 401
 	end
 
 	def logout
