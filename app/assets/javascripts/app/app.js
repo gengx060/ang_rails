@@ -2,7 +2,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 	'app/menu/menu', 'app/comment/comment', 'app/user/users', 'app/appointment/appointment',
 	'app/common/factory/usstates'], function (angular, $, BD, toastr, Enumerable) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
-		'users', 'appointment', 'usstates'])
+			'users', 'appointment', 'usstates'])
 		.factory("srvAuth", ['$rootScope',
 			function ($rootScope) {
 				var srvAuth = {};
@@ -98,8 +98,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				$scope.states = usstates;
 				$("#e10").select2({
 					data       : usstates,
-					placeholder: "Select a state",
-					theme      : "bootstrap"
+					placeholder: "Select a state"
 				});
 				$scope.contact = {
 					firstname: 'Dan',
@@ -128,7 +127,6 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				};
 				$scope.$root.showmenu = false;
 				$scope.submit = function () {
-					debugger
 					if ($scope.contact.password != $scope.contact.password1) {
 						$scope.alert_msg = "Password doesn't match.";
 						$scope.alert_msg_show = true;
@@ -195,9 +193,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 	window.BD.singletonCount = 1;
 	window.ajaxRequestCount = 0;
 	window.nonLoginRoutes = ["#!/login", "#!/signup"];
-	window.jsonEqual = function(obj, obj1){
-		return Enumerable.From(Object.entries(obj).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',') 
-			== Enumerable.From(Object.entries(obj1).map(function(i){return i.join(',')})).OrderBy().ToArray().join(',')
+	$.fn.select2.defaults.set("theme", "bootstrap");
+	window.jsonEqual = function (obj, obj1) {
+		return Enumerable.From(Object.entries(obj).map(function (i) {
+				return i.join(',')
+			})).OrderBy().ToArray().join(',')
+			== Enumerable.From(Object.entries(obj1).map(function (i) {
+				return i.join(',')
+			})).OrderBy().ToArray().join(',')
 	}
 	window.ajaxRequest = function (myPostData, url, success, error, complete) {
 		var process_res = function (res, fun, error_function_flag) {
