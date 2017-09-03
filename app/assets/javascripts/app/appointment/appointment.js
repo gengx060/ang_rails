@@ -1,6 +1,6 @@
-define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
+define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 'typeahead',
 		'angular-modal-service'],
-	function (angular, Enumerable, moment, fullcalendar) {
+	function (angular, Enumerable, moment, moment_timezone, fullcalendar) {
 		angular.module('appointment', ['angularModalService'])
 		.directive('appointment', function () {
 			return {
@@ -73,20 +73,22 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 					}
 
 					$scope.fullCalendar_option = {
-						header         : {
+						header        : {
 							left  : 'prev,next today',
 							center: 'title',
 							right : 'month,agendaWeek,agendaDay'
 						},
-						minTime        : "00:00:00", // "06:00:00",
-						maxTime        : "24:00:00", // "18:00:00",
-						defaultDate    : moment(),
-						defaultView    : 'month',
-						editable       : true,
-						fixedWeekCount : false,
-						slotDuration   : '00:10:00', // 10 minutes for each row
-						slotLabelFormat: 'h(:mm)a',
-						dayClick       : function (date, jsEvent, view) {
+						minTime       : "00:00:00", // "06:00:00",
+						maxTime       : "24:00:00", // "18:00:00",
+						timezone      : "America/New_York",
+						defaultDate   : moment(),
+						defaultView   : 'month',
+						editable      : true,
+						fixedWeekCount: false,
+						slotDuration  : '00:10:00', // 10 minutes for each row
+						lazyFetching  : false,
+						// slotLabelFormat: 'h(:mm)a',
+						dayClick      : function (date, jsEvent, view) {
 							// console.log(this.events);
 							prevTime = typeof currentTime === 'undefined' || currentTime === null
 								? new Date().getTime() - 1000000
@@ -108,11 +110,11 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 								//double click call back
 							}
 						},
-						eventClick     : function (event, jsEvent, view) {
+						eventClick    : function (event, jsEvent, view) {
 							//set the values and open the modal
 							$scope.event = event;
-							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD H:mm a");
-							$scope.event.end_f = moment($scope.event.end).format("YYYY-MM-DD H:mm a");
+							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD HH:mm a");// moment($scope.event.start).tz('America/New_York').format("YYYY-MM-DD H:mm a");
+							$scope.event.end_f = moment($scope.event.end).format("YYYY-MM-DD HH:mm a");//moment($scope.event.end).tz('America/New_York').format("YYYY-MM-DD H:mm a");
 							ModalService.showModal({
 								templateUrl: 'assets/app/appointment/new-event-modal.template.html',
 								controller : "EventModalController",
@@ -124,15 +126,41 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 								});
 							});
 						},
-						events         : function (start, end, timezone, callback) {
-							ajaxRequest({start: start, end: end}, '/event/list', function (res) {
-								var events = res;
-								callback(events);
-							}, function (res) {
-								// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
-								toastr.error(res.info.message ? res.info.message : res.info.server_msg);
-							});
-						}
+						events        : function (start, end, timezone, callback) {
+							ajaxRequest({start: start, end: end, timezone: timezone},
+								'/event/list', function (res) {
+									// $scope.$apply(function(){
+									// 	$scope.fullCalendar.fullCalendar('removeEvents' );
+									// 	// $scope.fullCalendar.fullCalendar('refetchEvents');
+									// });
+									var events = res;
+									events.forEach(function (i) {
+										i.start = moment(i.start).tz('America/New_York').format();
+										i.end = moment(i.end).tz('America/New_York').format();
+									});
+									callback(events);
+								}, function (res) {
+									// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
+									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+								});
+						},
+						// eventRender    : function (event, element) {
+						// 	// event.start = event.start.tz('America/New_York').format('YYYY-MM-DD HH:mm');
+						// 	// event.end = event.end.tz('America/New_York').format('YYYY-MM-DD HH:mm');
+						//
+						// 	// 	i.e
+						// 	// debugger
+						// 	// element.find('.fc-content').prepend( 'name' + ' - ' + 'title' );
+						// 	// element.qtip({
+						// 	// 	content: event.description
+						// 	// });
+						// 	// return
+						// 	// if (event.start.hasZone()) {
+						// 	// 	element.find('.fc-title').after(
+						// 	// 		$('<div class="tzo"/>').text(event.start.format('Z'))
+						// 	// 	);
+						// 	// }
+						// }
 					};
 
 					$scope.show_update_hash = function () {
@@ -151,97 +179,99 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 								$scope.fullCalendar_option.defaultView = $routeParams.view;
 								$scope.fullCalendar_option.defaultDate = $routeParams.date;
 								// $(document).ready(function () {
-								$scope.fullCalendar = $('#fullcalendar_div_a').fullCalendar($scope.fullCalendar_option)
-								$('.fc-agendaMonth-button').unbind("click");
-								$('.fc-agendaWeek-button').unbind("click");
-								$('.fc-agendaDay-button').unbind("click");
-								$('.fc-today-button').unbind("click");
-								$('.fc-prev-button').unbind("click");
-								$('.fc-next-button').unbind("click");
+								setTimeout(function () {
+									$scope.fullCalendar = $('#fullcalendar_div_a').fullCalendar($scope.fullCalendar_option)
+									$('.fc-agendaMonth-button').unbind("click");
+									$('.fc-agendaWeek-button').unbind("click");
+									$('.fc-agendaDay-button').unbind("click");
+									$('.fc-today-button').unbind("click");
+									$('.fc-prev-button').unbind("click");
+									$('.fc-next-button').unbind("click");
 
-								$scope.fullCalendar.bind("contextmenu", function (event, e) {
-									// Avoid the real one
-									if ($routeParams.view != 'month')
-										return
-									$scope.$apply(function () {
-										$scope.right_click_date = '';
-									})
-
-									if (moment($(event.target).attr("data-date"), 'YYYY-MM-DD', true).isValid()) {
+									$scope.fullCalendar.bind("contextmenu", function (event, e) {
+										// Avoid the real one
+										if ($routeParams.view != 'month')
+											return
 										$scope.$apply(function () {
-											$scope.right_click_date = $(event.target).attr("data-date");
+											$scope.right_click_date = '';
 										})
-									}
-									event.preventDefault();
-									// Show contextmenu
-									$(".custom-menu").finish().toggle(100).css({
-										top : event.pageY + "px",
-										left: event.pageX + "px"
-									});
-								});
 
-								// If the document is clicked somewhere
-								$scope.fullCalendar.bind("mousedown", function (e) {
-									// If the clicked element is not the menu
-									if (!$(e.target).parents(".custom-menu").length > 0) {
-										// Hide it
-										$(".custom-menu").hide(100);
-									}
-								});
-								$scope.fullCalendar
-								.on('click', '.fc-month-button', function () {
-									$scope.$apply(function () {
-										$location.search('view', 'month');
+										if (moment($(event.target).attr("data-date"), 'YYYY-MM-DD', true).isValid()) {
+											$scope.$apply(function () {
+												$scope.right_click_date = $(event.target).attr("data-date");
+											})
+										}
+										event.preventDefault();
+										// Show contextmenu
+										$(".custom-menu").finish().toggle(100).css({
+											top : event.pageY + "px",
+											left: event.pageX + "px"
+										});
 									});
-								})
-								.on('click', '.fc-agendaWeek-button', function () {
-									$scope.$apply(function () {
-										$location.search('view', 'agendaWeek');
+
+									// If the document is clicked somewhere
+									$scope.fullCalendar.bind("mousedown", function (e) {
+										// If the clicked element is not the menu
+										if (!$(e.target).parents(".custom-menu").length > 0) {
+											// Hide it
+											$(".custom-menu").hide(100);
+										}
 									});
-								})
-								.on('click', '.fc-agendaDay-button', function () {
-									$scope.$apply(function () {
-										$location.search('view', 'agendaDay');
+									$scope.fullCalendar
+									.on('click', '.fc-month-button', function () {
+										$scope.$apply(function () {
+											$location.search('view', 'month');
+										});
+									})
+									.on('click', '.fc-agendaWeek-button', function () {
+										$scope.$apply(function () {
+											$location.search('view', 'agendaWeek');
+										});
+									})
+									.on('click', '.fc-agendaDay-button', function () {
+										$scope.$apply(function () {
+											$location.search('view', 'agendaDay');
+										});
+									})
+									.on('click', '.fc-prev-button', function () {
+										var date = $scope.fullCalendar.fullCalendar('getDate');
+										if ($routeParams.view === 'agendaWeek')
+											date = moment(date).add(-7, 'days');
+										else if ($routeParams.view === 'month')
+											date = moment(moment(moment(date).format("YYYY-MM")).add(-1, 'months'));
+										else
+											date = moment(date).add(-1, 'days');
+										$scope.$apply(function () {
+											// console.log($scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
+											$location.search('date', date.format("YYYY-MM-DD"));
+										});
+									})
+									.on('click', '.fc-next-button', function () {
+										var date = $scope.fullCalendar.fullCalendar('getDate');
+										if ($routeParams.view === 'agendaWeek')
+											date = moment(date).add(7, 'days');
+										else if ($routeParams.view === 'month')
+											date = moment(moment(moment(date).format("YYYY-MM")).add(1, 'months'));
+										else
+											date = moment(date).add(1, 'days');
+										$scope.$apply(function () {
+											// console.log($scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
+											$location.search('date', date.format("YYYY-MM-DD"));
+										});
+									})
+									.on('click', '.fc-today-button', function () {
+										$scope.$apply(function () {
+											$location.search('date', moment().format("YYYY-MM-DD"));
+										});
 									});
-								})
-								.on('click', '.fc-prev-button', function () {
-									var date = $scope.fullCalendar.fullCalendar('getDate');
-									if ($routeParams.view === 'agendaWeek')
-										date = moment(date).add(-7, 'days');
-									else if ($routeParams.view === 'month')
-										date = moment(moment(moment(date).format("YYYY-MM")).add(-1, 'months'));
-									else
-										date = moment(date).add(-1, 'days');
-									$scope.$apply(function () {
-										// console.log($scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
-										$location.search('date', date.format("YYYY-MM-DD"));
-									});
-								})
-								.on('click', '.fc-next-button', function () {
-									var date = $scope.fullCalendar.fullCalendar('getDate');
-									if ($routeParams.view === 'agendaWeek')
-										date = moment(date).add(7, 'days');
-									else if ($routeParams.view === 'month')
-										date = moment(moment(moment(date).format("YYYY-MM")).add(1, 'months'));
-									else
-										date = moment(date).add(1, 'days');
-									$scope.$apply(function () {
-										// console.log($scope.fullCalendar.fullCalendar('getDate').add(1, 'days').format("YYYY-MM-DD"));
-										$location.search('date', date.format("YYYY-MM-DD"));
-									});
-								})
-								.on('click', '.fc-today-button', function () {
-									$scope.$apply(function () {
-										$location.search('date', moment().format("YYYY-MM-DD"));
-									});
-								});
-								// });
+								}, 100);
 							}
 							else {
-								if ($scope.fullCalendar.fullCalendar('getView').type != $routeParams.view) {
+								// $scope.fullCalendar.fullCalendar('option', 'timezone', "America/New_York");
+								if ($scope.fullCalendar.fullCalendar('getView').type !== $routeParams.view) {
 									$scope.fullCalendar.fullCalendar('changeView', $routeParams.view, $routeParams.date);
 								}
-								if ($scope.fullCalendar.fullCalendar('getDate').format() != $routeParams.date) {
+								if ($scope.fullCalendar.fullCalendar('getDate').format() !== $routeParams.date) {
 									var date = $routeParams.date;
 									if (!moment($routeParams.date, 'YYYY-MM-DD', true).isValid()) {
 										date = moment().format('YYYY-MM-DD')
@@ -302,13 +332,13 @@ define(['angular', 'Enumerable', 'moment', 'fullcalendar', 'typeahead',
 			$scope.submit = function () {
 				var event = {};
 				event.comment = $scope.event.comment;
-				event.end = $scope.event.end;
+				event.end = moment.utc($scope.event.end_f).format();
 				event.with_user_id = $scope.event.with_user_id;
 				event.location = $scope.event.location;
-				event.start = $scope.event.start;
+				event.start = moment.utc($scope.event.start_f).format();
 				event.title = $scope.event.title;
 				event.id = $scope.event.id;
-
+				debugger
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();

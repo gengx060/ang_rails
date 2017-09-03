@@ -1,7 +1,7 @@
 require.config({
-	
+
 	baseUrl: "assets/",
-	
+
 	// alias libraries paths
 	paths: {
 		'angular'              : 'asset/angularjs/1.6.1/angular',
@@ -14,18 +14,19 @@ require.config({
 		'toastr'               : 'asset/toastr/toastr',
 		'typeahead'            : 'asset/typeahead/typeahead',
 		'moment'               : 'asset/moment/moment.min',
+		'moment-timezone'      : 'asset/moment/moment-timezone',
 		'fullcalendar'         : 'asset/fullcalendar/fullcalendar.min',
 		'bootstrap-dialog'     : 'asset/bootstrap-dialog/bootstrap-dialog',
 		'ui-bootstrap'         : 'asset/angular-ui-bootstrap/ui-bootstrap-tpls/2.5.0/ui-bootstrap-tpls-2.5.0',
 		'angular-modal-service': 'asset/angular-modal/angular-modal-service',
-		'jquery-uploadfile'	   : 'asset/jquery/jquery-uploadfile/jquery.uploadfile',
+		'jquery-uploadfile'    : 'asset/jquery/jquery-uploadfile/jquery.uploadfile',
 		'async'                : '../lib/requirejs/async',
 		'ngload'               : '../lib/requirejs/ngload',
 		'prettify'             : '../lib/google-code-prettify/prettify'
-		
+
 		// 'HomeController': 'controller/home_ctrl',
 	},
-	
+
 	// Add angular modules that does not support AMD out of the box, put it in a shim
 	shim: {
 		'angular'              : {
@@ -46,7 +47,7 @@ require.config({
 		'toastr'               : {
 			deps: ['jquery']
 		},
-		'select2'               : {
+		'select2'              : {
 			deps: ['jquery']
 		},
 		'bootstrap-dialog'     : {
@@ -58,11 +59,14 @@ require.config({
 		'jquery-uploadfile'    : {
 			deps: ['jquery']
 		},
-		'fullcalendar'    : {
+		'moment-timezone'              : {
+			deps: ['moment']
+		},
+		'fullcalendar'         : {
 			deps: ['jquery', 'moment']
 		}
 	},
-	
+
 	// kick start application
 	deps: ['app/app']
 });
