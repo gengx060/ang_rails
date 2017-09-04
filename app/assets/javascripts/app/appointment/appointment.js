@@ -2,7 +2,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 		'angular-modal-service'],
 	function (angular, Enumerable, moment, moment_timezone, fullcalendar) {
 		angular.module('appointment', ['angularModalService'])
-		.directive('appointment', function () {
+		.directive('appointment', function ($compile) {
 			return {
 				require    : '^tabs',
 				restrict   : 'E',
@@ -21,6 +21,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						'9:00 pm', '9:30 pm', '10:00 pm', '10:30 pm', '11:00 pm', '11:30 pm']
 					$scope.view_type = 'month';
 					$scope.menu_show = false;
+					var time_zone = 'America/New_York';
 
 					$scope.right_click_date = '';
 					$scope.monthly_view = function (e) {
@@ -80,7 +81,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						},
 						minTime       : "00:00:00", // "06:00:00",
 						maxTime       : "24:00:00", // "18:00:00",
-						timezone      : "America/New_York",
+						timezone      : time_zone,
 						defaultDate   : moment(),
 						defaultView   : 'month',
 						editable      : true,
@@ -113,8 +114,8 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						eventClick    : function (event, jsEvent, view) {
 							//set the values and open the modal
 							$scope.event = event;
-							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD HH:mm a");// moment($scope.event.start).tz('America/New_York').format("YYYY-MM-DD H:mm a");
-							$scope.event.end_f = moment($scope.event.end).format("YYYY-MM-DD HH:mm a");//moment($scope.event.end).tz('America/New_York').format("YYYY-MM-DD H:mm a");
+							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD hh:mm a");// moment($scope.event.start).tz('America/New_York').format("YYYY-MM-DD H:mm a");
+							$scope.event.end_f = moment($scope.event.end).format("YYYY-MM-DD hh:mm a");//moment($scope.event.end).tz('America/New_York').format("YYYY-MM-DD H:mm a");
 							ModalService.showModal({
 								templateUrl: 'assets/app/appointment/new-event-modal.template.html',
 								controller : "EventModalController",
@@ -129,38 +130,27 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						events        : function (start, end, timezone, callback) {
 							ajaxRequest({start: start, end: end, timezone: timezone},
 								'/event/list', function (res) {
-									// $scope.$apply(function(){
-									// 	$scope.fullCalendar.fullCalendar('removeEvents' );
-									// 	// $scope.fullCalendar.fullCalendar('refetchEvents');
-									// });
 									var events = res;
 									events.forEach(function (i) {
-										i.start = moment(i.start).tz('America/New_York').format();
-										i.end = moment(i.end).tz('America/New_York').format();
-									});
+										i.start = moment(i.start).tz(time_zone).format();
+										i.end = moment(i.end).tz(time_zone).format();
+									}); //});
 									callback(events);
 								}, function (res) {
 									// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 								});
 						},
-						// eventRender    : function (event, element) {
-						// 	// event.start = event.start.tz('America/New_York').format('YYYY-MM-DD HH:mm');
-						// 	// event.end = event.end.tz('America/New_York').format('YYYY-MM-DD HH:mm');
-						//
-						// 	// 	i.e
-						// 	// debugger
-						// 	// element.find('.fc-content').prepend( 'name' + ' - ' + 'title' );
-						// 	// element.qtip({
-						// 	// 	content: event.description
-						// 	// });
-						// 	// return
-						// 	// if (event.start.hasZone()) {
-						// 	// 	element.find('.fc-title').after(
-						// 	// 		$('<div class="tzo"/>').text(event.start.format('Z'))
-						// 	// 	);
-						// 	// }
-						// }
+						eventRender   : function (event, element) {
+							var el = $compile("<vcard type='profile' src='{firstname:\"Andy\",lastname:\"Geng\"}'></vcard>")($scope);
+							var html = "<div style=\"margin-top:35px; font-weight:600\">Attending:</div>";
+							element.find(".fc-content").append(html);
+							element.find(".fc-content").append(el);
+							// element.find(".fc-content").on('click', 'a', function(event) {
+							// 	event.stopPropagation();
+							// 	$(event.currentTarget).popover('show');
+							// });// add event to vcard
+						}
 					};
 
 					$scope.show_update_hash = function () {
@@ -169,7 +159,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 					};
 
 					$scope.query_params = function () {
-						if ($scope.view_types.indexOf($routeParams.view) == -1) {
+						if ($scope.view_types.indexOf($routeParams.view) === -1) {
 							$location.search('view', 'month');
 							$location.search('date', moment().format("YYYY-MM-DD"));
 							return;
@@ -267,6 +257,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 								}, 100);
 							}
 							else {
+
 								// $scope.fullCalendar.fullCalendar('option', 'timezone', "America/New_York");
 								if ($scope.fullCalendar.fullCalendar('getView').type !== $routeParams.view) {
 									$scope.fullCalendar.fullCalendar('changeView', $routeParams.view, $routeParams.date);
@@ -314,7 +305,15 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 			$scope.close = function () {
 				$element.modal('hide');
 				close(null, 500); // close, but give 500ms for bootstrap to animate
-			}
+			};
+
+			$scope.on_blur = function (v) {
+				v = moment(v, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD hh:mm a')
+				if(v==="Invalid date") {
+					v = ''
+				}
+			};
+
 			$scope.delete_event = function () {
 				BD.confirm('You are going to delete this event, continue?',
 					function (result) {
@@ -325,20 +324,22 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 							return;
 						}
 					});
-			}
+			};
 
 			$scope.delete_event_show = $scope.event && $scope.event.id > 0;
 
 			$scope.submit = function () {
 				var event = {};
 				event.comment = $scope.event.comment;
-				event.end = moment.utc($scope.event.end_f).format();
+				event.end = moment($scope.event.end_f, ['YYYY-MM-DD hh:mm a']).format();
 				event.with_user_id = $scope.event.with_user_id;
 				event.location = $scope.event.location;
-				event.start = moment.utc($scope.event.start_f).format();
+				event.start = moment($scope.event.start_f, ['YYYY-MM-DD hh:mm a']).format();
 				event.title = $scope.event.title;
 				event.id = $scope.event.id;
-				debugger
+				$scope.event.end = moment($scope.event.end_f, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD HH:mm');
+				$scope.event.start = moment($scope.event.start_f, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD HH:mm');
+				$scope.fullCalendar.fullCalendar( 'updateEvent', $scope.event );
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();

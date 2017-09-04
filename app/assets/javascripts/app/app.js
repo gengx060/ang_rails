@@ -2,145 +2,145 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 	'app/menu/menu', 'app/comment/comment', 'app/contact/users', 'app/appointment/appointment',
 	'app/common/factory/usstates'], function (angular, $, BD, toastr, Enumerable) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
-			'users', 'appointment', 'usstates'])
-		.factory("srvAuth", ['$rootScope',
-			function ($rootScope) {
-				var srvAuth = {};
-				srvAuth.fblogin = function () {
-					FB.login(function (response) {
-						if (response.status === 'connected') {
-							// You can now do what you want with the data fb gave you.
-							console.info(response);
-						}
-					});
-				}
-
-				srvAuth.watchLoginChange = function () {
-					var _self = this;
-					FB.Event.subscribe('auth.authResponseChange', function (res) {
-						if (res.status === 'connected') {
-							FB.api('/me', function (res) {
-								$rootScope.$apply(function () {
-									$rootScope.user = _self.user = res;
-									console.info($rootScope.user);
-								});
-							});
-						} else {
-							alert('Not Connected');
-						}
-					});
-				}
-
-				srvAuth.logout = function () {
-					var _self = this;
-					FB.logout(function (response) {
-						$rootScope.$apply(function () {
-							$rootScope.user = _self.user = {};
-						});
-					});
-				}
-
-				return srvAuth;
+		'users', 'appointment', 'usstates'])
+	.factory("srvAuth", ['$rootScope',
+		function ($rootScope) {
+			var srvAuth = {};
+			srvAuth.fblogin = function () {
+				FB.login(function (response) {
+					if (response.status === 'connected') {
+						// You can now do what you want with the data fb gave you.
+						console.info(response);
+					}
+				});
 			}
-		])
-		.controller('AuthCtrl', ['srvAuth', '$scope',
-			function (srvAuth, $scope) {
-				$scope.logout = function () {
-					srvAuth.logout();
-				}
-				$scope.fblogin = function () {
-					FB.api(
-						"/me/friends",
-						function (response) {
-							debugger
-							if (response && !response.error) {
-								/* handle the result */
-							}
-						}
-					);
-				}
-			}])
-		.controller('login', ['$scope', '$location', '$http', '$location',
-			function ($scope, $location, $http, $location) {
-				$scope.user = {
-					email   : 'gaix01@163.com',
-					password: 'gege1818'
-				};
-				$scope.$root.showmenu = false;
-				$scope.name = 'name1';
-				$scope.showAlert = false;
-				$scope.hideAlert = function () {
-					$scope.showAlert = false;
-				}
 
-				$scope.submit = function () {
-					ajaxRequest($scope.user, '/auth/login', function () {
-						$scope.$apply(function () {
-							$scope.$root.showmenu = true;
+			srvAuth.watchLoginChange = function () {
+				var _self = this;
+				FB.Event.subscribe('auth.authResponseChange', function (res) {
+					if (res.status === 'connected') {
+						FB.api('/me', function (res) {
+							$rootScope.$apply(function () {
+								$rootScope.user = _self.user = res;
+								console.info($rootScope.user);
+							});
 						});
-						location.hash = '#!/welcome';
-					}, function (res) {
-						if (res.status == 422) {
-							location.reload();
+					} else {
+						alert('Not Connected');
+					}
+				});
+			}
+
+			srvAuth.logout = function () {
+				var _self = this;
+				FB.logout(function (response) {
+					$rootScope.$apply(function () {
+						$rootScope.user = _self.user = {};
+					});
+				});
+			}
+
+			return srvAuth;
+		}
+	])
+	.controller('AuthCtrl', ['srvAuth', '$scope',
+		function (srvAuth, $scope) {
+			$scope.logout = function () {
+				srvAuth.logout();
+			}
+			$scope.fblogin = function () {
+				FB.api(
+					"/me/friends",
+					function (response) {
+						debugger
+						if (response && !response.error) {
+							/* handle the result */
 						}
-						$scope.$apply(function () {
-							if (res.info.message == 'Incorrect username or password.') {
-								$scope.showAlert = true;
-							} else {
-								toastr.error(res.responseText);
-							}
-						});
+					}
+				);
+			}
+		}])
+	.controller('login', ['$scope', '$location', '$http', '$location',
+		function ($scope, $location, $http, $location) {
+			$scope.user = {
+				email   : 'gaix01@163.com',
+				password: 'gege1818'
+			};
+			$scope.$root.showmenu = false;
+			$scope.name = 'name1';
+			$scope.showAlert = false;
+			$scope.hideAlert = function () {
+				$scope.showAlert = false;
+			}
+
+			$scope.submit = function () {
+				ajaxRequest($scope.user, '/auth/login', function () {
+					$scope.$apply(function () {
+						$scope.$root.showmenu = true;
+					});
+					location.hash = '#!/welcome';
+				}, function (res) {
+					if (res.status == 422) {
+						location.reload();
+					}
+					$scope.$apply(function () {
+						if (res.info.message == 'Incorrect username or password.') {
+							$scope.showAlert = true;
+						} else {
+							toastr.error(res.responseText);
+						}
+					});
+				})
+			}
+		}])
+	.controller('signup', ['$scope', 'usstates',
+		function ($scope, usstates) {
+			$scope.states = usstates;
+			$("#e10").select2({
+				data       : usstates,
+				placeholder: "Select a state"
+			});
+			$scope.contact = {
+				firstname: 'Dan',
+				lastname : 'Curt',
+				email    : 'gaix061@163.com',
+				password : 'gege1818',
+				password1: 'gege1818',
+				phone    : {
+					area  : '218',
+					number: '4616620',
+					ext   : ''
+				},
+				address  : {
+					street : '2nd st',
+					apt    : 'apt 29',
+					city   : 'Miami',
+					state  : '',
+					zipcode: '33064'
+				}
+			};
+			$scope.alert_msg = "";
+			$scope.alert_msg_show = false;
+			$scope.state_select = function () {
+				if ($scope.contact.address.state && $scope.contact.address.state != "")
+					$("#state_select").css('color', '#000');
+			};
+			$scope.$root.showmenu = false;
+			$scope.submit = function () {
+				if ($scope.contact.password != $scope.contact.password1) {
+					$scope.alert_msg = "Password doesn't match.";
+					$scope.alert_msg_show = true;
+				} else {
+					$scope.alert_msg_show = false;
+					ajaxRequest($scope.contact, '/auth/signup', function () {
+						toastr.success('Sign up successful.');
+						setTimeout(function () {
+							location.hash = '#!/welcome';
+						}, 1000);
 					})
 				}
-			}])
-		.controller('signup', ['$scope', 'usstates',
-			function ($scope, usstates) {
-				$scope.states = usstates;
-				$("#e10").select2({
-					data       : usstates,
-					placeholder: "Select a state"
-				});
-				$scope.contact = {
-					firstname: 'Dan',
-					lastname : 'Curt',
-					email    : 'gaix061@163.com',
-					password : 'gege1818',
-					password1: 'gege1818',
-					phone    : {
-						area  : '218',
-						number: '4616620',
-						ext   : ''
-					},
-					address  : {
-						street : '2nd st',
-						apt    : 'apt 29',
-						city   : 'Miami',
-						state  : '',
-						zipcode: '33064'
-					}
-				};
-				$scope.alert_msg = "";
-				$scope.alert_msg_show = false;
-				$scope.state_select = function () {
-					if ($scope.contact.address.state && $scope.contact.address.state != "")
-						$("#state_select").css('color', '#000');
-				};
-				$scope.$root.showmenu = false;
-				$scope.submit = function () {
-					if ($scope.contact.password != $scope.contact.password1) {
-						$scope.alert_msg = "Password doesn't match.";
-						$scope.alert_msg_show = true;
-					} else {
-						$scope.alert_msg_show = false;
-						ajaxRequest($scope.contact, '/auth/signup', function () {
-							toastr.success('Sign up successful.');
-							setTimeout(function () {
-								location.hash = '#!/welcome';
-							}, 1000);
-						})
-					}
-				}
-			}]);
+			}
+		}]);
 
 	app.config(['$routeProvider',
 		function ($routeProvider) {
@@ -254,11 +254,11 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				if (ajaxRequestCount == 0)
 					$("#full-page-loader_unique").hide();
 				if (res.status == 401 && nonLoginRoutes.indexOf(location.hash) == -1) {
-					if (BD.singletonCount == 1) {
-						BD.singletonCount--;
-						console.log('redirect to login page.');
-						location.href = '#!/login';
-					}
+					// if (BD.singletonCount == 1) {
+					// 	BD.singletonCount--;
+					console.log('redirect to login page.');
+					location.href = '#!/login';
+					// }
 				}
 			}
 		};
@@ -292,7 +292,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				});
 			});
 			$rootScope.user = {};
-			$rootScope.profile_placeholder = "/assets/asset/img/blank-profile.png";
+			$rootScope.profile_placeholder = "assets/asset/img/blank-profile.png";
 			$window.fbAsyncInit = function () {
 				// Executed when the SDK is loaded
 				FB.init({

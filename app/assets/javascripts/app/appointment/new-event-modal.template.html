@@ -29,44 +29,32 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Start:</label>
 						<div class="col-sm-5">
-						<input type="text" class="form-control" ng-model="event.start_f" placeholder="Start time"
-
-						data-error="Wrong time format" required>
+							<input type="text" class="form-control" ng-model="event.start_f" placeholder="Start time"
+								   ng-blur="on_blur(event.start_f)" data-error="Wrong time format" required>
 						</div>
-						<!--<div class="col-sm-5">-->
-						<!--<input type="text" class="form-control" ng-model="event.start" placeholder="Start time"-->
-							   <!--pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"-->
-							   <!--data-error="Wrong time format" required>-->
-						<!--</div>-->
-						<!--<div class="col-sm-5 ">-->
-							<!--<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.start_time">-->
-								<!--<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>-->
-							<!--</select>-->
-						<!--</div>-->
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">End:</label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" ng-model="event.end_f" placeholder="Start time"
-
-								   data-error="Wrong time format" required>
+								   ng-blur="on_blur(event.end_f)" data-error="Wrong time format" required>
 						</div>
 					</div>
 					<!--<div class="form-group">-->
-						<!--<label class="col-sm-2 control-label">End</label>-->
-						<!--<div class="col-sm-5">-->
-							<!--<input type="text" class="form-control" ng-model="event.end" placeholder="Start time"-->
-								   <!--pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"-->
-								   <!--data-error="Wrong time format" required>-->
-						<!--</div>-->
-						<!--<div class="col-sm-5 ">-->
-							<!--<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.end_time">-->
-								<!--<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>-->
-							<!--</select>-->
-							<!--&lt;!&ndash;<input type="text" class="form-control" ng-model="event.end_time" placeholder="Start time"&ndash;&gt;-->
-								   <!--&lt;!&ndash;pattern="(\d{2}):(\d{2})"&ndash;&gt;-->
-								   <!--&lt;!&ndash;data-error="Wrong time format" required>&ndash;&gt;-->
-						<!--</div>-->
+					<!--<label class="col-sm-2 control-label">End</label>-->
+					<!--<div class="col-sm-5">-->
+					<!--<input type="text" class="form-control" ng-model="event.end" placeholder="Start time"-->
+					<!--pattern="(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})"-->
+					<!--data-error="Wrong time format" required>-->
+					<!--</div>-->
+					<!--<div class="col-sm-5 ">-->
+					<!--<select style="max-width: 155px;" class="form-control" ng-change="" ng-model="event.end_time">-->
+					<!--<option ng-repeat="x in datetimes" ng-value="'{{x}}'">{{x}}</option>-->
+					<!--</select>-->
+					<!--&lt;!&ndash;<input type="text" class="form-control" ng-model="event.end_time" placeholder="Start time"&ndash;&gt;-->
+					<!--&lt;!&ndash;pattern="(\d{2}):(\d{2})"&ndash;&gt;-->
+					<!--&lt;!&ndash;data-error="Wrong time format" required>&ndash;&gt;-->
+					<!--</div>-->
 					<!--</div>-->
 					<div class="form-group">
 						<label class="col-sm-2 control-label">With:</label>
@@ -79,15 +67,17 @@
 						<label class="col-sm-2 control-label">Comment:</label>
 						<div class="col-sm-8">
 							<!--<input type="text" class="form-control" ng-model="event.comment"-->
-								   <!--placeholder="Type in event comment here">-->
-							<textarea  ng-model="event.comment" class="form-control"></textarea>
+							<!--placeholder="Type in event comment here">-->
+							<textarea ng-model="event.comment" class="form-control"></textarea>
 						</div>
 					</div>
-
+				
 				</div>
 				<div class="modal-footer">
-					<button type="button" ng-if="delete_event_show" ng-click="delete_event(event.id)"  class="btn btn-danger pull-left">Delete</button>
-
+					<button type="button" ng-if="delete_event_show" ng-click="delete_event(event.id)"
+							class="btn btn-danger pull-left">Delete
+					</button>
+					
 					<button type="button" ng-click="close('No')" class="btn btn-default" data-dismiss="modal">Cancel
 					</button>
 					<button type="submit" class="btn btn-primary">Submit</button>

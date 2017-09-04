@@ -15,6 +15,9 @@ define(['angular', 'ui-bootstrap'], function (angular) {
 					title      : 'Title'
 				};
 				$scope.triggerStyle = {'padding-top':'8px', 'padding-right':'8px', 'padding-bottom': '0px'};
+				$scope.click_a = function($event) {
+					$event.stopPropagation();
+				}
 			},
 			templateUrl  : 'assets/app/common/vcard/vcard-trigger.template.html',
 			replace   : true
