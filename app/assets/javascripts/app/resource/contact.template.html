@@ -1,0 +1,128 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10">
+			<div class="panel panel-default" style="overflow: auto;">
+
+				<div class="panel-heading">
+					<div class="row">
+					<div class="col-sm-4">
+					<a>Contacts <<</a>
+					<h3 class="panel-title">Contact Information</h3>
+					</div>
+					<div class="col-sm-8">
+					<a class="btn btn-default pull-right">Edit</a>
+					</div>
+					</div>
+				</div>
+				<div class="panel-body">
+
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-2">Primary Person:</label>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   ng-model="contact.firstname"  placeholder="Firstname" disabled required>
+							</div>
+							<div class="col-sm-5">
+								<input autocomplete="off" type="text" class="form-control" maxlength="255" value=""
+									   placeholder="Lastname" ng-model="contact.lastname" disabled required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Email:</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" maxlength="255" 
+									   placeholder="name@email.com" data-error="Bruh, that email address is invalid" ng-model="contact.email"  disabled required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Phone:</label>
+							<div class="col-sm-2">
+								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
+									   placeholder="Area" ng-model="contact.phone.area" disabled required>
+							</div>
+							<div class="col-sm-3">
+								<input autocomplete="off" type="text" class="form-control" maxlength="50"
+									   value="5553456" placeholder="Number" ng-model="contact.phone.number" disabled required>
+							</div>
+							<div class="col-sm-2">
+								<input autocomplete="off" type="text" class="form-control" maxlength="10" value="102"
+									   placeholder="Ext" ng-model="contact.phone.ext" disabled required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">Fax:</label>
+							<div class="col-sm-2">
+								<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
+									   placeholder="Area" ng-model="contact.fax.area" disabled required>
+							</div>
+							<div class="col-sm-3">
+								<input autocomplete="off" type="text" class="form-control" maxlength="50"
+									   value="5553456" placeholder="Number" ng-model="contact.fax.number" disabled required>
+							</div>
+							<div class="col-sm-2">
+								<input autocomplete="off" type="text" class="form-control" maxlength="10" value="102"
+									   placeholder="Ext" ng-model="contact.fax.ext" disabled required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Skype Name/Number:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" maxlength="255" value=""
+									   placeholder="Skype Name/Number" ng-model="contact.lastname" disabled required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Website:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" maxlength="255" value=""
+									   placeholder="http://www.website.com" ng-model="contact.website" disabled required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">Address:</label>
+							<div class="col-sm-5">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="Street" ng-model="contact.address.street" disabled required>
+							</div>
+							<div class="col-sm-5">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="Apt/Suite,etc" ng-model="contact.address.apt" disabled required>
+							</div>
+						</div>
+						<div class="row">
+							<label class="control-label col-sm-2"> </label>
+							<div class="col-sm-3">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="City/Town" ng-model="contact.address.city" disabled required>
+							</div>
+							<div class="col-sm-3">
+								<input autocomplete="off" class="form-control" type="text" maxlength="255"
+									   placeholder="State/Region" ng-model="contact.address.state" disabled required>
+							</div>
+							<div class="col-sm-4">
+								<input autocomplete="off" class="form-control" type="text" maxlength="50"
+									   placeholder="Postal / Zip Code" ng-model="contact.address.zipcode" disabled required>
+							</div>
+						</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+				<div class="form-group">
+				</div>
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>

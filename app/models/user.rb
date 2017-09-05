@@ -1,32 +1,5 @@
 class User < ActiveRecord::Base
 
-	# validates_presence_of :email
-	# self.table_name = "users"
-	# attr_accessor :firstname, :lastname, :email
-
-	# def self.create(params)
-	# 	contact = self.new do |u|
-	# 		u.firstname = params[:firstname]
-	# 		u.lastname = params[:lastname]
-	# 		u.email = params[:email]
-	# 		if params[:account] # create org account
-	# 			salt, hashed = create_password_salt(params[:password])
-	# 			u.salt = salt
-	# 			u.password = hashed
-	# 		else # add contact
-	# 			u.group = params[:group]
-	# 			u.org_id = params[:user_id]
-	# 		end
-	# 	end
-	# 	contact.save!
-	# 	if params[:account]
-	# 		contact.org_id = contact.id
-	# 		contact.group = 'o'
-	# 		contact.save!
-	# 		return contact
-	# 	end
-	# end
-
 	def self.edit(params)
 		if params[:id]
 			user = self.where("id = #{params[:id]}").first
@@ -38,7 +11,7 @@ class User < ActiveRecord::Base
 		if user
 			self.params_to_model(params, user)
 			user.save!
-			if (params[:group] == 'o')
+			if params[:group] == 'o'
 				user.org_id = user.id
 				user.save!
 			end
@@ -56,26 +29,13 @@ class User < ActiveRecord::Base
 		return user
 	end
 
-#
-# 	def self.user_list(org_id, offset, limit)
-# 		total = User.where(:org_id => org_id).count
-# 		users = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
-# 					.joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
-# 					.select("users.id, firstname, lastname, email, users.is_deleted,
-# users.group,  users.created_at, up.img_loc, MAX(ul.login_at) as login_at")
-# 					.where("users.org_id = #{org_id}")
-# 					.group("users.id")
-# 					.offset(offset).limit(limit)
-# 		return total, users
-# 	end
-
 	def self.user_list(params)
-		total = User.where(:org_id => params[:org_id]).count
-		users = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
+		total = self.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ").count
+		users = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 								.joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id and ul.status = 'login'")
 								.select("users.id, firstname, lastname, email, users.is_deleted,
 users.group,  users.created_at, up.img_loc, MAX(ul.created_at) as login_at")
-								.where("users.org_id = #{params[:org_id]}")
+								.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ")
 								.group("users.id")
 								.order(params[:sortby])
 								.offset(params[:offset]).limit(params[:limit])
@@ -83,7 +43,7 @@ users.group,  users.created_at, up.img_loc, MAX(ul.created_at) as login_at")
 	end
 
 	def self.get_user(user_id, org_id)
-		user = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
+		user = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 							 .where("users.id = #{user_id} and users.org_id = #{org_id}")
 							 .select("users.id, firstname, lastname, email, users.group")
 							 .first

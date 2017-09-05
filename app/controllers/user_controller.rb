@@ -47,9 +47,8 @@ class UserController < ApplicationController
 			}
 		end
 
-
 		total, users = User.user_list(params_u)
-		render :json => {:total => total, :users => users.as_json}
+		render :json => {total: total, users: users.as_json}
 	end
 
 	def get_user

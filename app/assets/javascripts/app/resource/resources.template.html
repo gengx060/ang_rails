@@ -1,0 +1,45 @@
+<!--<script src="app/contcontacts.jst.js"></script>-->
+<div>
+	<style>
+		.pagination {
+			position: absolute;
+		}
+	</style>
+	<!--<modal-trigger></modal-trigger>-->
+	<div>
+		<button class='btn btn-primary pull-right'>New resource</button>
+	</div>
+
+	<table class="table table-striped table-hover ">
+		<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>
+				Length
+				<!--<sorting colname="'Name'" sortbyname="'sortbyfirstname'"></sorting>-->
+			</th>
+			<th>Type</th>
+			<th>
+				Owned by
+				<!--<sorting colname="'Created at'" sortbyname="'sortbycreated_at'">-->
+			</th>
+			<th>Created at</th>
+		</tr>
+		</thead>
+		<tbody>
+
+		<tr ng-repeat="r in resources">
+			<th><a href="#">{{r.id}}</a></th>
+			<td>{{r.name}}
+			</td>
+			<td>{{r.length}}</td>
+			<td>{{r.kind}}</td>
+			<td>{{r.user_id}}
+			</td>
+			<td>{{from_now(r.created_at)}}</td>
+		</tr>
+		</tbody>
+	</table>
+	<paging list="resources" listname="resources" url="/resource/resource_list"></paging>
+</div>

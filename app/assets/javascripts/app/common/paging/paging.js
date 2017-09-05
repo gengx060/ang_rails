@@ -6,6 +6,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				restrict   : 'E',
 				scope      : {
 					list   : '=',
+					listname: '@',
 					url    : '@',
 					refresh: '='
 				},
@@ -60,7 +61,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						// $scope.route_to_params();
 						ajaxRequest($scope.params, $scope.url, function (res) {
 							$scope.$apply(function () {
-								$scope.list = res.users;
+								$scope.list = res[$scope.listname];
 								$scope.total = res.total;
 								var total_page = res.total / $scope.limit;
 								$scope.total_page = parseInt(total_page) + (total_page > parseInt(total_page) ? 1 : 0);
