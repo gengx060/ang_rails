@@ -51,15 +51,21 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						var date = moment($routeParams.newevent).format('YYYY-MM-DD');
 						var time = moment($routeParams.newevent).format('h:mm a');
 						time = (time == "12:00 am" ? "8:00 am" : time);
+						var start_f = moment(date + " " + time, 'YYYY-MM-DD h:mm a');
+						var end_f = moment(date + " " + time, 'YYYY-MM-DD h:mm a').add(30, 'm');
 						$scope.event = {
-							start     : moment(date + " " + time, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD h:mm a'),
-							end       : moment(date + " " + time, 'YYYY-MM-DD h:mm a').add(30, 'm').format('YYYY-MM-DD h:mm a'),
+							start_f   : start_f.format('YYYY-MM-DD h:mm a'),
+							end_f     : end_f.format('YYYY-MM-DD h:mm a'),
+							start     : moment(start_f, 'YYYY-MM-DD hh:mm a').tz(time_zone).format(),
+							end       : moment(end_f, 'YYYY-MM-DD hh:mm a').tz(time_zone).format(),
 							start_date: date,
 							end_date  : date,
 							start_time: time,
 							end_time  : moment(time, 'h:mm a').add(30, 'm').format('h:mm a'),
 							title     : ''
 						};
+						// debugger
+						// return
 
 						ModalService.showModal({
 							templateUrl: 'assets/app/appointment/new-event-modal.template.html',
@@ -142,10 +148,16 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 								});
 						},
 						eventRender   : function (event, element) {
-							var el = $compile("<vcard type='profile' src='{firstname:\"Andy\",lastname:\"Geng\"}'></vcard>")($scope);
-							var html = "<div style=\"margin-top:35px; font-weight:600\">Attending:</div>";
-							element.find(".fc-content").append(html);
-							element.find(".fc-content").append(el);
+							if (event.attendees instanceof Array && event.attendees.length > 0) {
+								var html = "<div style=\"margin-top:35px; font-weight:600\">Attending:</div>";
+								element.find(".fc-content").append(html);
+								event.attendees.forEach(function (a) {
+									var scope = $scope.$new(true);
+									scope.attendees = a;
+									var el = $compile("<vcard type='profile' src='attendees'></vcard>")(scope);
+									element.find(".fc-content").append(el);
+								});
+							}
 							// element.find(".fc-content").on('click', 'a', function(event) {
 							// 	event.stopPropagation();
 							// 	$(event.currentTarget).popover('show');
@@ -309,7 +321,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 
 			$scope.on_blur = function (v) {
 				v = moment(v, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD hh:mm a')
-				if(v==="Invalid date") {
+				if (v === "Invalid date") {
 					v = ''
 				}
 			};
@@ -327,24 +339,28 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 			};
 
 			$scope.delete_event_show = $scope.event && $scope.event.id > 0;
+			var time_zone = 'America/New_York';
 
 			$scope.submit = function () {
 				var event = {};
 				event.comment = $scope.event.comment;
-				event.end = moment($scope.event.end_f, ['YYYY-MM-DD hh:mm a']).format();
+				event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').tz(time_zone).format();
 				event.with_user_id = $scope.event.with_user_id;
 				event.location = $scope.event.location;
-				event.start = moment($scope.event.start_f, ['YYYY-MM-DD hh:mm a']).format();
+				event.start = moment($scope.event.start_f, 'YYYY-MM-DD hh:mm a').tz(time_zone).format();
 				event.title = $scope.event.title;
 				event.id = $scope.event.id;
-				$scope.event.end = moment($scope.event.end_f, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD HH:mm');
-				$scope.event.start = moment($scope.event.start_f, ['YYYY-MM-DD hh:mm a']).format('YYYY-MM-DD HH:mm');
-				$scope.fullCalendar.fullCalendar( 'updateEvent', $scope.event );
+				$scope.event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
+				$scope.event.start = moment($scope.event.start_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
+				// debugger
+				// return
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();
 						if (res.event.id != event.id) {
-							$scope.fullCalendar.fullCalendar('renderEvent', res.event);
+							$scope.fullCalendar.fullCalendar('renderEvent', $scope.event);
+						} else {
+							$scope.fullCalendar.fullCalendar('updateEvent', $scope.event);
 						}
 					});
 					toastr.success(res.message);
