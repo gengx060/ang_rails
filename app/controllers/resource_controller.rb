@@ -31,6 +31,7 @@ class ResourceController < ActionController::Base
 		end
 
 		total, resources = Resource.resource_list(params_u)
-		render :json => {total: total, resources: resources.as_json}
+
+		render :json => {total: total, resources: resources}
 	end
 end

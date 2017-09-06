@@ -50,6 +50,13 @@ users.group,  users.created_at, up.img_loc, MAX(ul.created_at) as login_at")
 		return user
 	end
 
+	def self.get_vcard(user_id)
+		vcard = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
+										.select("users.id, firstname, lastname, email, users.created_at, up.img_loc")
+										.where("users.id = #{user_id}").first
+		return vcard
+	end
+
 	def self.create_password_salt(password)
 		require 'securerandom'
 		salt = SecureRandom.hex(5)
