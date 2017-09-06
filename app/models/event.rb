@@ -54,7 +54,10 @@ class Event < ActiveRecord::Base
 			Log.create(params_t)
 		end
 
-		return event, EventAttendee.list_with_user(event.id)
+		event = event.as_json
+		event['attendees'] = self.get_attendees(event['id']).as_json
+
+		return event
 	end
 
 	def self.delete(params)

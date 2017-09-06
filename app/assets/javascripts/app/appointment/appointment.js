@@ -148,13 +148,18 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 								});
 						},
 						eventRender   : function (event, element) {
+							if ($routeParams.view == 'month') {
+								return; // only show attendees in week and daily view mode
+							}
+							var mins = event.end.diff(event.start,'minutes');
 							if (event.attendees instanceof Array && event.attendees.length > 0) {
-								var html = "<div style=\"margin-top:35px; font-weight:600\">Attending:</div>";
+								var html = "<div style=\"margin-top:"+(mins-27)+"px; font-weight:600\">Attending:</div>";
 								element.find(".fc-content").append(html);
 								event.attendees.forEach(function (a) {
 									var scope = $scope.$new(true);
 									scope.attendees = a;
-									var el = $compile("<vcard type='profile' src='attendees'></vcard>")(scope);
+									scope.size = '20px'
+									var el = $compile("<vcard type='profile' triggersize='size' src='attendees'></vcard>")(scope);
 									element.find(".fc-content").append(el);
 								});
 							}
@@ -352,12 +357,12 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 				event.id = $scope.event.id;
 				$scope.event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
 				$scope.event.start = moment($scope.event.start_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
-				// debugger
-				// return
+
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();
-						if (res.event.id != event.id) {
+						if (res.event.id !== event.id) {
+							$scope.event.attendees = res.event.attendees;
 							$scope.fullCalendar.fullCalendar('renderEvent', $scope.event);
 						} else {
 							$scope.fullCalendar.fullCalendar('updateEvent', $scope.event);

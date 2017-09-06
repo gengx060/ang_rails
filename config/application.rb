@@ -11,6 +11,7 @@ module ActiveRecord
     def self.params_to_model(params, model)
       if model
         params.each { |key, value|
+          next if key == 'id'
           value && (model["#{key}"] = value)
         }
       end

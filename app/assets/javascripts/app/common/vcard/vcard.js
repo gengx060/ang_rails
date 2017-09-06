@@ -7,9 +7,11 @@ define(['angular', 'ui-bootstrap'], function (angular) {
 			transclude: true,
 			scope     : {
 				type: '@',
-				src : '='
+				src : '=',
+				triggersize:'='
 			},
 			controller: function ($scope) {
+				$scope.triggersize = $scope.triggersize ? $scope.triggersize : '36px';
 				$scope.conf = {
 					templateUrl: $scope.type == 'profile' ? 'assets/app/common/vcard/vcard.template.html' : '',
 					title      : 'Title'
