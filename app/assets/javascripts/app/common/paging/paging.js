@@ -13,7 +13,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				controller : function ($scope, $element, $routeParams) {
 					$scope.total = 0;
 					$scope.offset = 0;
-					$scope.limit = 20;
+					$scope.limit = $scope.$root.user_preferrence.pagesize;
 					$scope.current_page = 1;
 					$scope.current_page_bak = 1;
 					$scope.goto_page = 1;

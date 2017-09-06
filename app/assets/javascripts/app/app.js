@@ -63,7 +63,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 	.controller('login', ['$scope', '$location', '$http', '$location',
 		function ($scope, $location, $http, $location) {
 			$scope.user = {
-				email   : 'gaix01@163.com',
+				email: 'gaix01@163.com',
 				password: 'gege1818'
 			};
 			$scope.$root.showmenu = false;
@@ -77,8 +77,13 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				ajaxRequest($scope.user, '/auth/login', function () {
 					$scope.$apply(function () {
 						$scope.$root.showmenu = true;
+						$scope.$root.user_preferrence = {
+							pagesize: 20,
+							timezone: 'America/New_York',
+							loginpage: '#!/contacts'
+						};
 					});
-					location.hash = '#!/welcome';
+					location.hash = $scope.$root.user_preferrence.loginpage;
 				}, function (res) {
 					if (res.status == 422) {
 						location.reload();
@@ -97,25 +102,25 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		function ($scope, usstates) {
 			$scope.states = usstates;
 			$("#e10").select2({
-				data       : usstates,
+				data: usstates,
 				placeholder: "Select a state"
 			});
 			$scope.contact = {
 				firstname: 'Dan',
-				lastname : 'Curt',
-				email    : 'gaix061@163.com',
-				password : 'gege1818',
+				lastname: 'Curt',
+				email: 'gaix061@163.com',
+				password: 'gege1818',
 				password1: 'gege1818',
-				phone    : {
-					area  : '218',
+				phone: {
+					area: '218',
 					number: '4616620',
-					ext   : ''
+					ext: ''
 				},
-				address  : {
-					street : '2nd st',
-					apt    : 'apt 29',
-					city   : 'Miami',
-					state  : '',
+				address: {
+					street: '2nd st',
+					apt: 'apt 29',
+					city: 'Miami',
+					state: '',
 					zipcode: '33064'
 				}
 			};
@@ -144,27 +149,23 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 
 	app.config(['$routeProvider',
 		function ($routeProvider) {
-			// $routeProvider.when('/ShowOrders', {
-			//   templateUrl: 'show_orders.html',
-			//   controller: 'ShowOrdersController'
-			// });
 			$routeProvider.when('/resources', {
-				template      : '<resources></resources>',
+				template: '<resources></resources>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/contacts', {
-				template      : '<users></users>',
+				template: '<users></users>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/appointments', {
-				template      : '<appointment></appointment>',
+				template: '<appointment></appointment>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/comment', {
 				template: '<comment></comment>'
 			});
 			$routeProvider.when('/callback', {
-				controller : 'AuthCtrl1',
+				controller: 'AuthCtrl1',
 				templateUrl: 'app/welcome/callback.template.html'
 			});
 			$routeProvider.when('/welcome', {
@@ -172,11 +173,11 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				templateUrl: 'assets/app/welcome/welcome.template.html'
 			});
 			$routeProvider.when('/login', {
-				controller : 'login',
+				controller: 'login',
 				templateUrl: 'assets/app/welcome/login.template.html'
 			});
 			$routeProvider.when('/signup', {
-				controller : 'signup',
+				controller: 'signup',
 				templateUrl: 'assets/app/welcome/signup.template.html'
 			});
 			$routeProvider.otherwise({
@@ -185,10 +186,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		}]);
 
 	toastr.options = {
-		closeButton      : true,
-		timeout          : 3000,
+		closeButton: true,
+		timeout: 3000,
 		preventDuplicates: true,
-		positionClass    : "toast-top-full-width"
+		positionClass: "toast-top-full-width"
 	};
 	window.toastr = toastr;
 	window.Enumerable = Enumerable;
@@ -239,20 +240,20 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		headers.antiForgeryToken = sessionStorage.getItem("antiForgeryToken");
 		$("#full-page-loader_unique").show();
 		var options = {
-			url        : url,
-			type       : "post",
-			data       : JSON.stringify(myPostData),
+			url: url,
+			type: "post",
+			data: JSON.stringify(myPostData),
 			contentType: "application/json; charset=UTF-8",
-			dataType   : "text",
-			headers    : {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-			context    : this,
-			success    : function (res) {
+			dataType: "text",
+			headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+			context: this,
+			success: function (res) {
 				process_res(res, success);
 			},
-			error      : function (res) {
+			error: function (res) {
 				process_res(res, error, 1);
 			},
-			complete   : function (res) {
+			complete: function (res) {
 				process_res(res, complete);
 				ajaxRequestCount--;
 				if (ajaxRequestCount == 0)
@@ -285,6 +286,13 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				ajaxRequest({}, '/auth/login_check', function () {
 					if (nonLoginRoutes.indexOf(location.hash) == -1) {
 						$rootScope.showmenu = true;
+						if (!$rootScope.user_preferrence) {
+							$rootScope.user_preferrence = {
+								pagesize: 20,
+								timezone: 'America/New_York',
+								loginpage: '#!/contacts'
+							};
+						}
 					}
 				}, function () {
 					$rootScope.showmenu = false;
@@ -300,9 +308,9 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 			$window.fbAsyncInit = function () {
 				// Executed when the SDK is loaded
 				FB.init({
-					appId  : '123129551645487',
-					cookie : true,
-					xfbml  : true,
+					appId: '123129551645487',
+					cookie: true,
+					xfbml: true,
 					version: 'v2.8'
 				});
 
