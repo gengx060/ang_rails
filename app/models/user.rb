@@ -65,4 +65,28 @@ class User < ActiveRecord::Base
 		hashed = Digest::SHA512.hexdigest("#{password} #{salt}")
 		return salt, hashed
 	end
+
+	def self.match()
+		sql = "select * from (
+  SELECT *
+  FROM users
+  WHERE firstname LIKE ('%all%')
+  limit 5
+
+  UNION
+  SELECT *
+  FROM users
+  WHERE lastname LIKE ('%all%')
+  limit 5
+
+  UNION
+  SELECT *
+  FROM users
+  WHERE email LIKE ('%all%')
+  limit 5
+)as t
+limit 5
+"
+		return
+	end
 end
