@@ -96,6 +96,13 @@ class AccountController < ApplicationController
 													{separator: true},
 													{name: 'New message', route: '/comment?newresource=true', nav: true, title: 'Github Users'}
 											]
+					},
+					{name:      'Setting', dropdown: true, title: 'Github Users',
+					 dropdowns: [
+													{name: 'User setting', route: '/setting', nav: true, title: 'Github Users'},
+													{separator: true},
+													{name: 'New message', route: '/setting?newresource=true', nav: true, title: 'Github Users'}
+											]
 					}
 			];
 			return

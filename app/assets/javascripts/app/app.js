@@ -1,8 +1,8 @@
 define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select2', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
 	'app/menu/menu', 'app/comment/comment', 'app/contact/users', 'app/resource/resources', 'app/appointment/appointment',
-	'app/common/factory/usstates'], function (angular, $, BD, toastr, Enumerable) {
+	'app/common/factory/usstates', 'app/setting/setting'], function (angular, $, BD, toastr, Enumerable) {
 	var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
-		'users', 'resources', 'appointment', 'usstates'])
+		'users', 'resources', 'appointment', 'setting', 'usstates'])
 	.factory("srvAuth", ['$rootScope',
 		function ($rootScope) {
 			var srvAuth = {};
@@ -151,6 +151,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		function ($routeProvider) {
 			$routeProvider.when('/resources', {
 				template: '<resources></resources>',
+				reloadOnSearch: false
+			});
+			$routeProvider.when('/setting', {
+				template: '<setting></setting>',
 				reloadOnSearch: false
 			});
 			$routeProvider.when('/contacts', {
