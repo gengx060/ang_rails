@@ -92,14 +92,14 @@ class AccountController < ApplicationController
 					{name: 'Schedule', route: '/appointments', nav: true, title: 'Github Users'},
 					{name:      'Message', dropdown: true, title: 'Github Users',
 					 dropdowns: [
-													{name: 'Message list', route: '/comment', nav: true, title: 'Github Users'},
+													{name: 'Message list', route: '/comments', nav: true, title: 'Github Users'},
 													{separator: true},
 													{name: 'New message', route: '/comment?newresource=true', nav: true, title: 'Github Users'}
 											]
 					},
 					{name:      'Setting', dropdown: true, title: 'Github Users',
 					 dropdowns: [
-													{name: 'User setting', route: '/setting', nav: true, title: 'Github Users'},
+													{name: 'User setting', route: '/settings', nav: true, title: 'Github Users'},
 													{separator: true},
 													{name: 'New message', route: '/setting?newresource=true', nav: true, title: 'Github Users'}
 											]

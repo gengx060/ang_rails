@@ -14,6 +14,9 @@ define(['angular', 'jquery', 'select2'],
 						$scope.show_preference = !$scope.show_preference;
 					};
 					
+					$scope.$root.$watch('user_preferrence', function (newValue, oldValue) {
+						$scope.user_preferrence = newValue;
+					});
 					angular.element(document).ready( function(){
 						$("#pagesize").select2({
 							data: [20, 50, 100],
@@ -24,15 +27,20 @@ define(['angular', 'jquery', 'select2'],
 							placeholder: "Select a time zone"
 						});
 						$("#loginpage").select2({
-							data: ['Contact', 'Resource', 'Appointment', 'Setting'],
+							data: ['Welcome', 'Contacts', 'Resources', 'Appointments', 'Settings'],
 							placeholder: "Select a login page"
 						});
 					});
-					// {
-					// 	pagesize: 20,
-					// 	timezone: 'America/New_York',
-					// 	loginpage: '#!/contacts'
-					// };
+					
+					$scope.submit = function() {
+						var parms = {preferences:[]};
+						Object.keys($scope.user_preferrence).forEach(function(k){
+							parms['preferences'].push( {name: k,value:$scope.user_preferrence[k]});
+						});
+						ajaxRequest(parms, '/setting/save_preference', function () {
+							toastr.success('Save preference successful.')
+						});
+					}
 				},
 				templateUrl: 'assets/app/setting/setting.template.html',
 				replace    : true

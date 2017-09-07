@@ -14,7 +14,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					}
 				});
 			}
-
+			
 			srvAuth.watchLoginChange = function () {
 				var _self = this;
 				FB.Event.subscribe('auth.authResponseChange', function (res) {
@@ -30,7 +30,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					}
 				});
 			}
-
+			
 			srvAuth.logout = function () {
 				var _self = this;
 				FB.logout(function (response) {
@@ -39,7 +39,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					});
 				});
 			}
-
+			
 			return srvAuth;
 		}
 	])
@@ -72,18 +72,28 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 			$scope.hideAlert = function () {
 				$scope.showAlert = false;
 			}
-
+			
 			$scope.submit = function () {
 				ajaxRequest($scope.user, '/auth/login', function () {
 					$scope.$apply(function () {
 						$scope.$root.showmenu = true;
-						$scope.$root.user_preferrence = {
-							pagesize: 20,
-							timezone: 'America/New_York',
-							loginpage: '#!/contacts'
-						};
 					});
-					location.hash = $scope.$root.user_preferrence.loginpage;
+					ajaxRequest({}, '/setting/get_preference', function (res) {
+						var obj = {
+							pagesize: 20,
+							loginpage: 'Welcome',
+							timezone:'America/New_York'
+						};
+						if (res.length > 0) {
+							res.forEach(function (i) {
+								obj[i.name] = i.value;
+							});
+						}
+						$scope.$root.$apply(function () {
+							$scope.$root.user_preferrence = obj;
+						});
+						location.hash = "#!/" + $scope.$root.user_preferrence.loginpage.toLowerCase();
+					});
 				}, function (res) {
 					if (res.status == 422) {
 						location.reload();
@@ -146,14 +156,14 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				}
 			}
 		}]);
-
+	
 	app.config(['$routeProvider',
 		function ($routeProvider) {
 			$routeProvider.when('/resources', {
 				template: '<resources></resources>',
 				reloadOnSearch: false
 			});
-			$routeProvider.when('/setting', {
+			$routeProvider.when('/settings', {
 				template: '<setting></setting>',
 				reloadOnSearch: false
 			});
@@ -165,7 +175,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				template: '<appointment></appointment>',
 				reloadOnSearch: false
 			});
-			$routeProvider.when('/comment', {
+			$routeProvider.when('/comments', {
 				template: '<comment></comment>'
 			});
 			$routeProvider.when('/callback', {
@@ -188,7 +198,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				redirectTo: '/welcome'
 			});
 		}]);
-
+	
 	toastr.options = {
 		closeButton: true,
 		timeout: 3000,
@@ -290,12 +300,23 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 				ajaxRequest({}, '/auth/login_check', function () {
 					if (nonLoginRoutes.indexOf(location.hash) == -1) {
 						$rootScope.showmenu = true;
-						if (!$rootScope.user_preferrence) {
-							$rootScope.user_preferrence = {
-								pagesize: 20,
-								timezone: 'America/New_York',
-								loginpage: '#!/contacts'
-							};
+						if (typeof $rootScope.user_preferrence === 'undefined') {
+							ajaxRequest({}, '/setting/get_preference', function (res) {
+								var obj = {
+									pagesize: 20,
+									loginpage: 'Welcome',
+									timezone:'America/New_York'
+								};
+								if (res.length > 0) {
+									res.forEach(function (i) {
+										obj[i.name] = i.value;
+									});
+								}
+								// obj.loginpage = loginpage
+								$rootScope.$apply(function () {
+									$rootScope.user_preferrence = obj;
+								});
+							});
 						}
 					}
 				}, function () {
@@ -317,19 +338,19 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					xfbml: true,
 					version: 'v2.8'
 				});
-
+				
 				FB.AppEvents.logPageView();
 				// sAuth.watchAuthenticationStatusChange();
 			}
-
+			
 		}
 	]);
-
-
+	
+	
 	angular.element(function () {
 		angular.bootstrap(document.body, ['app']);
 	});
-
+	
 	(function (d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id)) {
@@ -340,7 +361,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		js.src = "//connect.facebook.net/en_US/sdk.js";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-
+	
 	// return app;
 });
 

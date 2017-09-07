@@ -8,7 +8,7 @@ define(['angular', 'ui-bootstrap'], function (angular) {
 			scope     : {
 				type: '@',
 				src : '=',
-				triggersize:'='
+				triggersize:'@'
 			},
 			controller: function ($scope) {
 				$scope.triggersize = $scope.triggersize ? $scope.triggersize : '36px';
