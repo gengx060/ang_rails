@@ -1,6 +1,6 @@
-define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
+define(['angular', 'moment', 'jquery', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
 		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'],
-	function (angular, moment) {
+	function (angular, moment, $) {
 		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting'])
 			.directive('users', function () {
 
@@ -21,6 +21,40 @@ define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-servic
 						};
 						$scope.sort_email = 'email';
 						$scope.sort_name = 'name';
+						
+						$(document).ready(function () {
+							$("#user_search").select2({jax: {
+								url: "https://api.github.com/search/repositories",
+								dataType: 'json',
+								delay: 250,
+								data: function (params) {
+									return {
+										q: params.term, // search term
+										page: params.page
+									};
+								},
+								processResults: function (data, params) {
+									// parse the results into the format expected by Select2
+									// since we are using custom formatting functions we do not need to
+									// alter the remote JSON data, except to indicate that infinite
+									// scrolling can be used
+									params.page = params.page || 1;
+									
+									return {
+										results: data.items,
+										pagination: {
+											more: (params.page * 30) < data.total_count
+										}
+									};
+								},
+								cache: true
+							},
+								escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+								minimumInputLength: 1,
+								templateResult: formatRepo, // omitted for brevity, see the source of this page
+								templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+							});
+						});
 
 						$scope.refresh_list = 0;
 						$scope.refreshList = function() {

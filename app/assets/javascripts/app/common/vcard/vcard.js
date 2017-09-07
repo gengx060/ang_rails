@@ -11,7 +11,7 @@ define(['angular', 'ui-bootstrap'], function (angular) {
 				triggersize:'@'
 			},
 			controller: function ($scope) {
-				$scope.triggersize = $scope.triggersize ? $scope.triggersize : '36px';
+				$scope.triggersize = $scope.triggersize ? $scope.triggersize : '30px';
 				$scope.conf = {
 					templateUrl: $scope.type == 'profile' ? 'assets/app/common/vcard/vcard.template.html' : '',
 					title      : 'Title'
