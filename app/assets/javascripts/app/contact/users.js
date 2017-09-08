@@ -54,9 +54,9 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						function formatRepoSelection(repo) {
 							return repo.firstname + repo.lastname;
 						}
-						var placeholder = "&#xf002 Select a place";
-						
-						$("#user_search").select2({
+						// var placeholder = "&#xf002 Search..."; // for single select
+						var placeholder = " Search...";
+						$("#user_search1").select2({
 							ajax: {
 								url: "/user/user_search",
 								dataType: 'json',
@@ -84,15 +84,19 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							},
 							placeholder: placeholder,
 							width: null,
+							allowClear:true,
 							escapeMarkup: function (m) {
 								return m;
 							}, // let our custom formatter work
 							minimumInputLength: 2,
-							tags: true,
+							tags:true,
 							templateResult: formatRepo, // omitted for brevity, see the source of this page
 							templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 						});
 					});
+					// setTimeout( function(){
+					// 	$element.find('.questions_view_access').find('.select2-input').trigger('blur');
+					// }, 200 );
 					
 					$scope.refresh_list = 0;
 					$scope.refreshList = function () {

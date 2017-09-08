@@ -10,21 +10,16 @@
 			font-size: 16px !important;
 		}
 		.select2 {
-			font-family: 'FontAwesome' !important;
+			font-family: FontAwesome;
 		}
-		/*select {*/
-			/*font-family: 'FontAwesome'*/
-		/*}*/
-		/*input[type=text] { width: 12px; }*/
-		/*input[type=text]:focus { width: 12px; }*/
+		.select2-search__field{
+			font-family: FontAwesome;
+		}
 	</style>
-	<!--<modal-trigger></modal-trigger>-->
 	<div ng-controller="NewUserController">
 		<div class="form-group">
 			<div class="col-sm-9">
-				<select id="user_search" class="form-control select2" multiple ng-model="user_search">
-					<option></option>
-					<option>a</option>
+				<select id="user_search1" class="form-control select2" multiple ng-model="user_search">
 				</select>
 			</div>
 			<div class="col-sm-3">
