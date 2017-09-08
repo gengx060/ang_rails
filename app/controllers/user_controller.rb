@@ -59,4 +59,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	def user_search
+			render :json => {items: User.user_search().as_json, total: User.user_search().length}
+	end
 end

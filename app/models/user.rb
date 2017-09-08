@@ -66,27 +66,27 @@ class User < ActiveRecord::Base
 		return salt, hashed
 	end
 
-	def self.match()
+	def self.user_search()
 		sql = "select * from (
-  SELECT *
+  SELECT id, firstname, lastname, email
   FROM users
   WHERE firstname LIKE ('%all%')
   limit 5
 
   UNION
-  SELECT *
+  SELECT id, firstname, lastname, email
   FROM users
   WHERE lastname LIKE ('%all%')
   limit 5
 
   UNION
-  SELECT *
+  SELECT id, firstname, lastname, email
   FROM users
   WHERE email LIKE ('%all%')
   limit 5
 )as t
 limit 5
 "
-		return
+		return self.find_by_sql(sql)
 	end
 end

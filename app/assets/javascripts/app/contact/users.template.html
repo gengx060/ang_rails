@@ -9,6 +9,12 @@
 			/*width: 200px !important;*/
 			font-size: 16px !important;
 		}
+		.select2 {
+			font-family: 'FontAwesome' !important;
+		}
+		/*select {*/
+			/*font-family: 'FontAwesome'*/
+		/*}*/
 		/*input[type=text] { width: 12px; }*/
 		/*input[type=text]:focus { width: 12px; }*/
 	</style>
@@ -16,7 +22,10 @@
 	<div ng-controller="NewUserController">
 		<div class="form-group">
 			<div class="col-sm-9">
-				<input id="user_search" class="form-control" ng-model="user_search">
+				<select id="user_search" class="form-control select2" multiple ng-model="user_search">
+					<option></option>
+					<option>a</option>
+				</select>
 			</div>
 			<div class="col-sm-3">
 				<button class='btn btn-primary pull-right' ng-click="show_update_hash()">New contact</button>
