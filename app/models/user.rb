@@ -21,11 +21,11 @@ class User < ActiveRecord::Base
 
 	def self.login_profile(user_id)
 		user = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
-				   .joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
-				   .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at")
-				   .where("users.id = #{user_id} and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)")
-				   .order("ul.created_at DESC")
-				   .first
+							 .joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
+							 .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at")
+							 .where("users.id = #{user_id} and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)")
+							 .order("ul.created_at DESC")
+							 .first
 		return user
 	end
 
@@ -36,24 +36,24 @@ class User < ActiveRecord::Base
 						(select img_loc from `user_profiles` as up where up.user_id = users.id) as img_loc,
 						(select MAX(ul.created_at) from `user_logins` as ul
 							where ul.user_id = users.id and ul.status = 'login') as login_at")
-					.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ")
-					.order(params[:sortby])
-					.offset(params[:offset]).limit(params[:limit])
+								.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ")
+								.order(params[:sortby])
+								.offset(params[:offset]).limit(params[:limit])
 		return total, users
 	end
 
 	def self.get_user(user_id, org_id)
 		user = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
-				   .where("users.id = #{user_id} and users.org_id = #{org_id}")
-				   .select("users.id, firstname, lastname, email, users.group")
-				   .first
+							 .where("users.id = #{user_id} and users.org_id = #{org_id}")
+							 .select("users.id, firstname, lastname, email, users.group")
+							 .first
 		return user
 	end
 
 	def self.get_vcard(user_id)
 		vcard = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
-					.select("users.id, firstname, lastname, email, users.created_at, up.img_loc")
-					.where("users.id = #{user_id}").first
+								.select("users.id, firstname, lastname, email, users.created_at, up.img_loc")
+								.where("users.id = #{user_id}").first
 		return vcard
 	end
 
@@ -66,27 +66,32 @@ class User < ActiveRecord::Base
 		return salt, hashed
 	end
 
-	def self.user_search()
-		sql = "select * from (
-  SELECT id, firstname, lastname, email
-  FROM users
-  WHERE firstname LIKE ('%all%')
-  limit 5
+	def self.user_search(param)
+		if param[:term].length > 1
+			lastname  = param[:term].split(' ', 2)[1]
+			firstname = param[:term].split(' ', 2)[0]
+			searches  = [
+					"(SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
+						FROM users WHERE email LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)"]
+			if lastname
+				searches.push(
+						" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
+								FROM users WHERE firstname LIKE ('%#{firstname}%') and lastname LIKE ('%#{lastname}%')
+ and org_id = #{param[:org_id]} LIMIT 3)")
 
-  UNION
-  SELECT id, firstname, lastname, email
-  FROM users
-  WHERE lastname LIKE ('%all%')
-  limit 5
-
-  UNION
-  SELECT id, firstname, lastname, email
-  FROM users
-  WHERE email LIKE ('%all%')
-  limit 5
-)as t
-limit 5
+			else
+				searches.push(
+						" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
+								FROM users WHERE firstname LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)",
+						" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
+								FROM users WHERE lastname LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)")
+			end
+			sql = "SELECT * FROM (
+#{searches.join(' ')}
+) AS t
+LIMIT 12
 "
-		return self.find_by_sql(sql)
+			return self.find_by_sql(sql)
+		end
 	end
 end

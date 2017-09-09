@@ -31,24 +31,13 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$(document).ready(function () {
 						function formatRepo(repo) {
 							if (repo.loading) return repo.text;
-							
-							var markup = "<div class='select2-result-repository clearfix'>" +
-								"<div class='select2-result-repository__avatar'><img src='' /></div>" +
-								"<div class='select2-result-repository__meta'>" +
-								"<div class='select2-result-repository__title'>" + repo.firstname+' '+ repo.lastname + "</div>";
-							
-							if (repo.description) {
-								markup += "<div class='select2-result-repository__description'>" + repo.email + "</div>";
+							if(typeof repo.text === 'undefined') {
+								var markup = "<div class='select2-result-repository clearfix'>" +
+									"<span><i class='fa fa-user'></i>" + repo.firstname + ' ' + repo.lastname +
+									"</span><span><i class='fa fa-envelope'></i>" + repo.email+
+									"</span></div>";
+								return markup;
 							}
-							
-							markup += "<div class='select2-result-repository__statistics'>" +
-								"<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> " + 1 + " Forks</div>" +
-								"<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> " + 2 + " Stars</div>" +
-								"<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> " + 3 + " Watchers</div>" +
-								"</div>" +
-								"</div></div>";
-							
-							return markup;
 						}
 						
 						function formatRepoSelection(repo) {
@@ -61,15 +50,14 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 								url: "/user/user_search",
 								dataType: 'json',
 								type: "post",
-								delay: 250,
+								delay: 500,
 								headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-								// data: function (params) {
-								// 	debugger
-								// 	return {
-								// 		q: params.term, // search term
-								// 		page: params.page
-								// 	};
-								// },
+								data: function (params) {
+									return {
+										term: params.term, // search term
+										page: params.page
+									};
+								},
 								processResults: function (data, params) {
 									params.page = params.page || 1;
 

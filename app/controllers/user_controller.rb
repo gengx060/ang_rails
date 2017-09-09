@@ -14,9 +14,9 @@ class UserController < ApplicationController
 			render :json => {:message => 'Changing organization type to others is not allowed.'}, :status => 500
 		else
 			params_u = {
-				'firstname': params['firstname'],
-				'lastname':  params['lastname'],
-				'email':     params['email']
+					'firstname': params['firstname'],
+					'lastname':  params['lastname'],
+					'email':     params['email']
 			}
 			if params['type'] == 'o'
 				params['type'] = 'c' # sanity check dont allow convert type to org
@@ -33,16 +33,16 @@ class UserController < ApplicationController
 	end
 
 	def user_list
-		offset = params[:offset] || 0
-		limit  = params[:limit] || PAGING_LIMIT
+		offset   = params[:offset] || 0
+		limit    = params[:limit] || PAGING_LIMIT
 		params_u = {
-			offset: offset < 0 ? 0 : offset,
-			limit:  limit < 0 ? PAGING_LIMIT : limit,
-			org_id: session[:org_id],
-			sortby: ""
+				offset: offset < 0 ? 0 : offset,
+				limit:  limit < 0 ? PAGING_LIMIT : limit,
+				org_id: session[:org_id],
+				sortby: ""
 		}
 		if params[:sortby]
-			params[:sortby].each_with_index {|(key,value),index|
+			params[:sortby].each_with_index {|(key, value), index|
 				params_u[:sortby] += "#{index > 0 ? ',' : ''} #{key} #{value} "
 			}
 		end
@@ -60,6 +60,13 @@ class UserController < ApplicationController
 	end
 
 	def user_search
-			render :json => {items: User.user_search().as_json, total: User.user_search().length}
+		if params[:term]
+			param_u = {
+					term: params[:term],
+					org_id: session[:org_id]
+			}
+			res = User.user_search(param_u)
+			render :json => {items: res.as_json, total: res.length}
+		end
 	end
 end
