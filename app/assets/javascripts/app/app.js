@@ -171,12 +171,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					if (loc_hash.indexOf('?') > -1) {
 						loc_hash = loc_hash.substring(0, loc_hash.indexOf('?'));
 					}
-					if (res.status == 401 && nonLoginRoutes.indexOf(loc_hash) == -1) {
-						// if (BD.singletonCount == 1) {
-						// 	BD.singletonCount--;
+					if (([401, 422].indexOf(res.status) != -1 ) && nonLoginRoutes.indexOf(loc_hash) == -1) {
 						console.log('redirect to login page.');
 						location.href = '#!/login';
-						// }
+						location.reload();
 					}
 				}
 			};

@@ -143,7 +143,7 @@ LIMIT 12
 							email:        user.email,
 							emailSubject: "Reset your password",
 							username:     "#{user.firstname}, #{user.lastname}",
-							link:         "http://localhost:3000/#!/login?changepassword=true&hash=#{hashed}"
+							link:         "https://kevgeng.herokuapp.com/#!/login?changepassword=true&hash=#{hashed}"
 					}
 					Notifier.forget_password(params).deliver_later
 				end
