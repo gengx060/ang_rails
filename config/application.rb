@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module ActiveRecord
   class Base
+    self.inheritance_column = "inheritance_type"
+    self.PAGING_LIMIT = 20
     def self.params_to_model(params, model)
       if model
         params.each { |key, value|

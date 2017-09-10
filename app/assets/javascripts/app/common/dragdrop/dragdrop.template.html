@@ -1,5 +1,8 @@
 <div>
 	<style>
+		input[type=file]{
+		opacity:0;
+	}
 		.box {
 			font-size: 1.25rem; /* 20 */
 			background-color: #c8dadf;
@@ -110,11 +113,15 @@
 	</style>
 
 	<div class='box'  ng-style="{'padding-top': height, 'padding-bottom': height}">
-		<strong> Drag file to here ...</strong>
+		<strong> Drag files to here ...</strong>
+		<input type="file" id="myfileinput" multiple>
+		<label class="btn btn-primary" for="myfileinput">Select files</label>
 	</div>
 	<ul>
 		<li ng-repeat="f in droppedFiles" class="row">
-			<img class="col-sm-2" ng-src="{{f.src}}" height="60">
+			<span class="col-sm-2">
+				<img ng-src="{{f.src}}" ng-style="{'width':'30px', 'height':'30px'}">
+			</span>
 			<span class="col-sm-3">{{f.name}}</span>
 			<div class="progress col-sm-4" style="padding-left: 0;padding-right: 0;">
 				<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{f.percentage}}"
@@ -123,7 +130,7 @@
 				</div>
 			</div>
 			<div class="col-sm-3">
-				<button type="button" ng-click="upload(f)" class="btn btn-default btn-circle"><i class="fa fa-upload"></i></button>
+				<button type="button" ng-show="!f.complete" ng-click="upload(f)" class="btn btn-default btn-circle"><i class="fa fa-upload"></i></button>
 				<button type="button" ng-click="remove(f)" class="btn btn-default btn-circle"><i class="fa fa-times"></i></button>
 			</div>
 		</li>
