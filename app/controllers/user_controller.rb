@@ -6,7 +6,7 @@ class UserController < ApplicationController
 			return
 		end
 
-		exist_user = User.where("email = \'#{params['email']}\'").select('id', 'group').first
+		exist_user = User.where("email = \"#{params['email']}\"").select('id', 'group').first
 
 		if exist_user && exist_user.id != params['id']
 			render :json => {:message => 'Duplicate email found.'}, :status => 500

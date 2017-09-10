@@ -94,4 +94,62 @@ LIMIT 12
 			return self.find_by_sql(sql)
 		end
 	end
+
+	def self.change_password(params)
+		if params[:hash] && params[:password]
+			userhash = UserHash.where("user_hash = \"#{params[:hash]}\" and claimed is null").first
+			if userhash
+				diff = (Time.now - userhash.created_at)/60
+				if diff > 30
+					return false, 'Password link is too old!'
+				end
+				user = self.find(userhash.user_id)
+				if user
+					self.transaction do
+						salt, hashed  = self.create_password_salt(params[:password])
+						user.password = hashed
+						user.salt     = salt
+						user.save!
+						userhash.claimed = "\1"
+						userhash.save!
+						params = {
+								email:        user.email,
+								emailSubject: "Your password is changed",
+								username:     "#{user.firstname}, #{user.lastname}",
+								password:     params[:password]
+						}
+						Notifier.change_password(params).deliver_later
+					end
+					return true
+				end
+			end
+			return false, 'Invalid password link!'
+		end
+	end
+
+	def self.forget_password(params)
+		if params[:email]
+			user = self.where("email = \"#{params[:email]}\"").first
+			if user
+				self.transaction do
+					hashed   = Digest::SHA512.hexdigest("#{params[:email]} #{Time.now}")
+					params_u = {
+							user_id:    user.id,
+							user_hash:  hashed,
+							created_by: user.id
+					}
+					UserHash.create_user_hash(params_u)
+					params = {
+							email:        user.email,
+							emailSubject: "Reset your password",
+							username:     "#{user.firstname}, #{user.lastname}",
+							link:         "http://localhost:3000/#!/login?changepassword=true&hash=#{hashed}"
+					}
+					Notifier.forget_password(params).deliver_later
+				end
+				return true
+			end
+		end
+		return false, 'No record found!'
+	end
 end

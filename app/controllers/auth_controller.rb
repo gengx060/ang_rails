@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
 	# protect_from_forgery with: :null_session
-	before_action :check_auth, :except => ["login", "signup", "logout", "forget_password"]
+	before_action :check_auth, :except => ["login", "signup", "logout", "forget_password", "change_password"]
 
 	def login
 		user = User.find_by(email: params['email'])
@@ -98,27 +98,22 @@ class AuthController < ApplicationController
 	end
 
 	def forget_password
-		if params[:email]
-			user = User.where("email = \"#{params[:email]}\"").first
-			if user
-				hashed   = Digest::SHA512.hexdigest("#{params[:email]} #{Time.now}")
-				params_u = {
-						user_id:    user.id,
-						user_hash:       hashed,
-						created_by: user.id
-				}
-				UserHash.create_user_hash(params_u)
-				params = {
-						email:        user.email,
-						emailSubject: "Reset your password",
-						username:     "#{user.firstname}, #{user.lastname}",
-						link:         "http://localhost:3000/#!/login?changepassword=true&hash=#{hashed}"
-				}
-				Notifier.welcome(params).deliver_later
-				render :json => {}
-			else
-				render :json => {message: 'No record found!'}, :status => 500
-			end
+		status, message = User.forget_password(params)
+		if status
+			render :json => {}
+		else
+			render :json => {message: message}, :status => 500
 		end
 	end
+
+
+	def change_password
+		status, message = User.change_password(params)
+		if status
+			render :json => {message: 'Change password successful, please login back.'}
+		else
+			render :json => {message: message}, :status => 500
+		end
+	end
+
 end

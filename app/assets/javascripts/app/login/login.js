@@ -20,7 +20,8 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 								toastr.success("Please check your email and follow the instructions to reset your password.");
 							});
 						}
-					} else if ($routeParams.signup == 'true') {
+					}
+					else if ($routeParams.signup == 'true') {
 						$scope.templatePath = 'assets/app/login/signup.template.html';
 						$scope.states = usstates;
 						$scope.contact = {
@@ -72,9 +73,42 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 								});
 							}, 200);
 						});
-					} else if ($routeParams.changepassword == 'true') {
+					}
+					else if ($routeParams.changepassword == 'true') {
 						$scope.templatePath = 'assets/app/login/change-password.template.html';
-					} else {
+						$scope.change_password = {
+							password:'',
+							password2:''
+						};
+						if (typeof $routeParams.hash === 'undefined') {
+							location.href = ("#!/login");
+							return
+						} else {
+							$scope.change_password.hash = $routeParams.hash;
+						}
+						$scope.submit = function () {
+							if (typeof $routeParams.hash === 'undefined') {
+								location.href = ("#!/login");
+								return
+							} else {
+								$scope.change_password.hash = $routeParams.hash;
+							}
+							if($scope.change_password.password.length < 8) {
+								toastr.error('Password is too short.');
+								return
+							}
+							if($scope.change_password.password != $scope.change_password.password2) {
+								toastr.error('Passwords do not match.');
+								return
+							}
+							ajaxRequest($scope.change_password, '/auth/change_password', function (res) {
+								toastr.success(res.message);
+								location.href = ("#!/login");
+							});
+							$scope.change_password = {};
+						}
+					}
+					else {
 						$scope.templatePath = 'assets/app/login/login.template.html';
 						$scope.user = {
 							email: 'gaix01@163.com',

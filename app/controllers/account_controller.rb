@@ -11,9 +11,6 @@ class AccountController < ApplicationController
 				u.firstname = params['firstname']
 				u.lastname  = params['lastname']
 				u.email     = params['email']
-				# salt, hashed = create_password_salt('gege1818')
-				# u.salt = salt
-				# u.password = hashed
 				u.org_id = session[:user_id]
 			end
 			user.save!
