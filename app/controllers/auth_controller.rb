@@ -97,4 +97,8 @@ class AuthController < ApplicationController
 		end
 	end
 
+	def forget_password
+
+		render :json => {}
+	end
 end
