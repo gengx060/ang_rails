@@ -1,6 +1,6 @@
 class UserHash < ActiveRecord::Base
 
-	def find_user_hash(params)
+	def self.find_user_hash(params)
 		user_hash = self.where("user_id = #{params['user_id']} and hash = #{params['hash']}").first
 		if user_hash
 			user_hash.claimed = 1
@@ -8,6 +8,13 @@ class UserHash < ActiveRecord::Base
 			return true
 		end
 		return false
+	end
+
+
+	def self.create_user_hash(params)
+		user_hash = self.new
+		self.params_to_model(params, user_hash)
+		user_hash.save!
 	end
 
 end

@@ -9,8 +9,17 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 			controller: function ($scope, $routeParams, usstates) {
 				// $scope.templatePath = 'assets/app/login/change-password.template.html';
 				$scope.query_params = function () {
+					$scope.$root.showmenu = false;
 					if ($routeParams.forgetpassword == 'true') {
 						$scope.templatePath = 'assets/app/login/forget-password.template.html';
+						$scope.forget_password = {
+							email: ''
+						};
+						$scope.submit = function () {
+							ajaxRequest($scope.forget_password, '/auth/forget_password', function () {
+								toastr.success("Please check your email and follow the instructions to reset your password.");
+							});
+						}
 					} else if ($routeParams.signup == 'true') {
 						$scope.templatePath = 'assets/app/login/signup.template.html';
 						$scope.states = usstates;

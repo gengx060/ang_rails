@@ -45,7 +45,7 @@ class AccountController < ApplicationController
 			render :json => {:message => 'Missing hash token.'}, :status => 500
 			return
 		end
-		uh = UserHash.find_by(:hash => params['hash'], :claimed => null)
+		uh = UserHash.find_by(:user_hash => params['hash'], :claimed => null)
 		if uh
 			render :json => {:message => 'Hash verified successfully.'}
 		else
@@ -58,7 +58,7 @@ class AccountController < ApplicationController
 			render :json => {:message => 'Missing hash token.'}, :status => 500
 			return
 		end
-		uh = UserHash.find_by(:hash => params['hash'], :claimed => null)
+		uh = UserHash.find_by(:user_hash => params['hash'], :claimed => null)
 		if uh
 			user = User.find(uh.user_id)
 			if user

@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
 	# protect_from_forgery with: :null_session
-	before_action :check_auth, :except => ["login", "signup", "logout"]
+	before_action :check_auth, :except => ["login", "signup", "logout", "forget_password"]
 
 	def login
 		user = User.find_by(email: params['email'])
@@ -17,15 +17,15 @@ class AuthController < ApplicationController
 						emailSubject: "Welcome to login.",
 						username:     "#{user.firstname}, #{user.lastname}"
 				}
-				Notifier.welcome(params).deliver_later
+				# Notifier.welcome(params).deliver_later
 				last_login = UserLogin.where("user_id = #{session[:user_id]} and status='login'")
 												 .order("created_at DESC").first
 
 				params_u = {
-						user_id: user.id,
-						user_ip: request.remote_ip,
+						user_id:    user.id,
+						user_ip:    request.remote_ip,
 						user_agent: request.user_agent,
-						status: 'Login'
+						status:     'Login'
 				}
 				UserLogin.record(params_u);
 
@@ -49,10 +49,10 @@ class AuthController < ApplicationController
 
 	def logout
 		params_u = {
-				user_id: session[:user_id],
-				user_ip: request.remote_ip,
+				user_id:    session[:user_id],
+				user_ip:    request.remote_ip,
 				user_agent: request.user_agent,
-				status: 'Logout'
+				status:     'Logout'
 		}
 		reset_session
 		UserLogin.record(params_u);
@@ -98,7 +98,27 @@ class AuthController < ApplicationController
 	end
 
 	def forget_password
-
-		render :json => {}
+		if params[:email]
+			user = User.where("email = \"#{params[:email]}\"").first
+			if user
+				hashed   = Digest::SHA512.hexdigest("#{params[:email]} #{Time.now}")
+				params_u = {
+						user_id:    user.id,
+						user_hash:       hashed,
+						created_by: user.id
+				}
+				UserHash.create_user_hash(params_u)
+				params = {
+						email:        user.email,
+						emailSubject: "Reset your password",
+						username:     "#{user.firstname}, #{user.lastname}",
+						link:         "http://localhost:3000/#!/login?changepassword=true&hash=#{hashed}"
+				}
+				Notifier.welcome(params).deliver_later
+				render :json => {}
+			else
+				render :json => {message: 'No record found!'}, :status => 500
+			end
+		end
 	end
 end

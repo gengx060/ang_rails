@@ -24,4 +24,16 @@ class Notifier < ActionMailer::Base
 		end
 	end
 
+
+	def forget_password(params)
+		@username = params[:username]
+		@link = params[:link]
+		mail(to: params[:email],
+				 bcc: ["gengx064@gmail.com"],
+				 content_type: "text/html",
+				 subject: params[:emailSubject]) do |format|
+			format.html
+		end
+	end
+
 end
