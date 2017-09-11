@@ -54,10 +54,10 @@
 			</td>
 			<td>{{c.firstname +' '+c.lastname}}</td>
 			<td>{{c.email}}</td>
-			<td><a class="btn btn-default btn-lg btn-circle" disabled
-				   style="cursor: default;background-color: #e8eaf6">
-				<b style="font-size: 16px"
-				   ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</b></a>
+			<td>
+				<div style="cursor: default;background-color: #e8eaf6" class="avatar-circle"  ng-attr-title="{{src.firstname+ ' ' + src.lastname}}" ng-style="{'width':'30px', 'height':'30px'}">
+					<span class=" initials" style="font-size:18px" ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</span>
+				</div>
 			</td>
 			<td>{{from_now(c.created_at)}}</td>
 			<td>{{from_now(c.login_at)}}</td>

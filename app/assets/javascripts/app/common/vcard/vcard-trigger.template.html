@@ -1,6 +1,9 @@
-<a href='javascript:void(0);' ng-style="triggerStyle"  uib-popover-template="conf.templateUrl" popover-placement="right"
-   popover-trigger="'outsideClick'" ng-click="click_a($event)">
-	<img ng-style="{'width':triggersize, 'height':triggersize}" ng-attr-title="{{src.firstname+ ' ' + src.lastname}}" class="img-circle"
+<div href='javascript:void(0);' ng-style="triggerStyle" uib-popover-template="conf.templateUrl" popover-placement="right"
+   popover-trigger="'outsideClick'" style="cursor: pointer" ng-click="click_a($event)">
+	<img ng-if="src.img_loc" ng-style="{'width':triggersize, 'height':triggersize}" ng-attr-title="{{src.firstname+ ' ' + src.lastname}}"
+		 class="img-circle"
 		 ng-src='{{src.img_loc ? src.img_loc : $root.profile_placeholder}}'>
-	<!--<span class="badge">10</span>-->
-</a>
+	<div ng-if="!src.img_loc"  ng-style="colorStyle" class="avatar-circle"  ng-attr-title="{{src.firstname+ ' ' + src.lastname}}" ng-style="{'width':triggersize, 'height':triggersize}">
+ 		<span class=" initials">{{src.firstname[0] + src.lastname[0]}}</span>
+	</div>
+</div>
