@@ -131,12 +131,20 @@ LIMIT 12
 		if params[:email]
 			user = self.where("email = \"#{params[:email]}\"").first
 			if user
+				userhashcreated_at = UserHash.where("user_ip = \"#{params[:user_ip]}\"").maximum('created_at')
+				if userhashcreated_at
+					diff = (Time.now - userhashcreated_at)/60
+					if diff < 10 # each ip can only forget password once per 10 mins
+						return false, 'Too many attempts, please try again later.'
+					end
+				end
 				self.transaction do
 					hashed   = Digest::SHA512.hexdigest("#{params[:email]} #{Time.now}")
 					params_u = {
 							user_id:    user.id,
 							user_hash:  hashed,
-							created_by: user.id
+							created_by: user.id,
+							user_ip: params[:user_ip]
 					}
 					UserHash.create_user_hash(params_u)
 					params = {

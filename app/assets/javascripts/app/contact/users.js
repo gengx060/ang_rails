@@ -9,7 +9,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 				restrict: 'E',
 				transclude: true,
 				scope: {},
-				controller: function ($scope, $element, $routeParams) {
+				controller: function ($scope, $element, $routeParams, $location) {
 					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 					$scope.contacts = [];
 					$scope.from_now = function (it) {
@@ -21,12 +21,6 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
-					
-					// $scope.$watch('user_search', function (newValue, oldValue) {
-					// 	if (newValue.length > 0) {
-					// 		debugger
-					// 	}
-					// });
 					
 					$(document).ready(function () {
 						function formatRepo(repo) {
@@ -41,6 +35,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						}
 						
 						function formatRepoSelection(repo) {
+							$location.search($scope.sortbyname, 'desc');
 							return repo.firstname + repo.lastname;
 						}
 						// var placeholder = "&#xf002 Search..."; // for single select
@@ -82,9 +77,6 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 						});
 					});
-					// setTimeout( function(){
-					// 	$element.find('.questions_view_access').find('.select2-input').trigger('blur');
-					// }, 200 );
 					
 					$scope.refresh_list = 0;
 					$scope.refreshList = function () {

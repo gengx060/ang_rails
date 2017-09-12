@@ -49,7 +49,6 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 							if ($scope.contact.address.state && $scope.contact.address.state != "")
 								$("#state_select").css('color', '#000');
 						};
-						$scope.$root.showmenu = false;
 						$scope.submit = function () {
 							if ($scope.contact.password != $scope.contact.password1) {
 								$scope.alert_msg = "Password doesn't match.";

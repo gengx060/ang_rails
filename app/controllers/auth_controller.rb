@@ -98,7 +98,8 @@ class AuthController < ApplicationController
 	end
 
 	def forget_password
-		status, message = User.forget_password(params)
+		params[:user_ip] = request.remote_ip
+		status, message  = User.forget_password(params)
 		if status
 			render :json => {}
 		else
