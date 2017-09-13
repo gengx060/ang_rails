@@ -19,8 +19,9 @@
 	<div ng-controller="NewUserController">
 		<div class="form-group">
 			<div class="col-sm-9">
-				<select id="user_search1" class="form-control select2" multiple ng-model="user_search">
-				</select>
+				<!--<select id="user_search1" class="form-control select2" multiple ng-model="user_search">-->
+				<!--</select>-->
+				<searchbar url="/user/user_search"></searchbar>
 			</div>
 			<div class="col-sm-3">
 				<button class='btn btn-primary pull-right' ng-click="show_update_hash()">New contact</button>
@@ -47,7 +48,8 @@
 		<tbody ng-controller="UserController">
 		
 		<tr ng-repeat="c in contacts">
-			<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>
+			<!--<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>-->
+			<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
 			<th scope="row" ng-if="c.group=='o'">{{c.id}}</th>
 			<td>
 				<vcard type='profile' src='c'></vcard>

@@ -1,7 +1,8 @@
 define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/common/vcard/vcard',
-		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'],
+		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'
+		, 'app/common/searchbar/searchbar'],
 	function (angular, moment, $) {
-		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting'])
+		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting', 'searchbar'])
 		.directive('users', function () {
 			
 			return {
@@ -81,6 +82,10 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$scope.refresh_list = 0;
 					$scope.refreshList = function () {
 						$scope.refresh_list++;
+					};
+					$scope.contact_detail = function (id) {
+						$location.search('contact', null);
+						$location.search('contact', id);
 					};
 				},
 				templateUrl: 'assets/app/contact/users.template.html',
