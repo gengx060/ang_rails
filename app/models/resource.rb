@@ -1,7 +1,5 @@
 class Resource < ActiveRecord::Base
 
-	PAGING_LIMIT = 20
-
 	def self.save_file(params)
 		created_at  = Time.now.utc
 		hashed_name = Digest::SHA512.hexdigest "#{params[:filename]}+#{created_at}"

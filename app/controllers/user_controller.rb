@@ -34,10 +34,18 @@ class UserController < ApplicationController
 
 	def user_list
 		offset   = params[:offset] || 0
-		limit    = params[:limit] || PAGING_LIMIT
+		limit    = params[:limit] || 0
+		if limit < 1
+			render :json => {message: 'Limit parameter is invalid.'}, :status => 500
+			return
+		end
+		if offset < 0
+			render :json => {message: 'Offset parameter is invalid.'}, :status => 500
+			return
+		end
 		params_u = {
-				offset: offset < 0 ? 0 : offset,
-				limit:  limit < 0 ? PAGING_LIMIT : limit,
+				offset: offset,
+				limit:  limit,
 				org_id: session[:org_id],
 				sortby: ""
 		}
