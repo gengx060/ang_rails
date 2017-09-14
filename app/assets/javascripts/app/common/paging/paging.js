@@ -19,6 +19,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.goto_page = 1;
 				$scope.default_page_sizes = [20, 50, 100];
 				$scope.params = {};
+				$scope.filterbyids = null;
 				//
 				$scope.$watch('refresh', function (newValue, oldValue) {
 					if (newValue > 0) {
@@ -48,13 +49,22 @@ define(['angular', 'jquery'], function (angular, $) {
 				};
 				
 				$scope.$on('$routeUpdate', function (next, current) {
+					// debugger
 					var oldparam = $scope.params['sortby'];
+					var oldfilterbyids = $routeParams.filterbyids;
 					$scope.route_to_params();
-					if (!oldparam && !$scope.params['sortby'])
+					if (!oldparam && !$scope.params['sortby'] && oldfilterbyids == $scope.filterbyids)
 						return; // no sort by params
 					if (!oldparam || // in case of sort by just apeared
 						!$scope.params['sortby'] || // in case of sort by just disapeared
-						!jsonEqual(oldparam, $scope.params['sortby'])) {
+						!jsonEqual(oldparam, $scope.params['sortby']) ||
+						oldfilterbyids != $scope.filterbyids) {
+						
+						if (oldfilterbyids != $scope.filterbyids) {
+							$scope.current_page = 1;
+							$scope.offset = 0;
+							$scope.filterbyids = oldfilterbyids;
+						}
 						$scope.page();
 					}
 				});
@@ -62,6 +72,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.page = function () {
 					$scope.params.offset = $scope.offset;
 					$scope.params.limit = $scope.limit;
+					$scope.params.filterbyids = $scope.filterbyids;
 					// $scope.route_to_params();
 					ajaxRequest($scope.params, $scope.url, function (res) {
 						$scope.$apply(function () {
@@ -70,6 +81,9 @@ define(['angular', 'jquery'], function (angular, $) {
 							var total_page = res.total / $scope.limit;
 							$scope.total_page = parseInt(total_page) + (total_page > parseInt(total_page) ? 1 : 0);
 							
+							// if($scope.current_page < $scope.total_page) {
+							// 	$scope.current_page = 1;
+							// }
 							$scope.set_current_page($scope.current_page);
 						});
 					}, function (res) {

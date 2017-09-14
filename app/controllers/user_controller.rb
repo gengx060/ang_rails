@@ -47,7 +47,8 @@ class UserController < ApplicationController
 				offset: offset,
 				limit:  limit,
 				org_id: session[:org_id],
-				sortby: ""
+				sortby: "",
+				filterbyids: params[:filterbyids]
 		}
 		if params[:sortby]
 			params[:sortby].each_with_index {|(key, value), index|

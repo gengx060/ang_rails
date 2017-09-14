@@ -12,6 +12,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 				scope: {},
 				controller: function ($scope, $element, $routeParams, $location) {
 					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
+					// $location.search('filterbyids', null);
 					$scope.contacts = [];
 					$scope.from_now = function (it) {
 						var time = moment(it).fromNow();
@@ -22,62 +23,6 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
-					
-					$(document).ready(function () {
-						function formatRepo(repo) {
-							if (repo.loading) return repo.text;
-							if(typeof repo.text === 'undefined') {
-								var markup = "<div class='select2-result-repository clearfix'>" +
-									"<span><i class='fa fa-user'></i>" + repo.firstname + ' ' + repo.lastname +
-									"</span><span><i class='fa fa-envelope'></i>" + repo.email+
-									"</span></div>";
-								return markup;
-							}
-						}
-						
-						function formatRepoSelection(repo) {
-							$location.search($scope.sortbyname, 'desc');
-							return repo.firstname + repo.lastname;
-						}
-						// var placeholder = "&#xf002 Search..."; // for single select
-						var placeholder = " Search...";
-						$("#user_search1").select2({
-							ajax: {
-								url: "/user/user_search",
-								dataType: 'json',
-								type: "post",
-								delay: 500,
-								headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-								data: function (params) {
-									return {
-										term: params.term, // search term
-										page: params.page
-									};
-								},
-								processResults: function (data, params) {
-									params.page = params.page || 1;
-
-									return {
-										results: data.items,
-										pagination: {
-											more: (params.page * 30) < data.total
-										}
-									};
-								},
-								cache: true
-							},
-							placeholder: placeholder,
-							width: null,
-							allowClear:true,
-							escapeMarkup: function (m) {
-								return m;
-							}, // let our custom formatter work
-							minimumInputLength: 2,
-							tags:true,
-							templateResult: formatRepo, // omitted for brevity, see the source of this page
-							templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-						});
-					});
 					
 					$scope.refresh_list = 0;
 					$scope.refreshList = function () {

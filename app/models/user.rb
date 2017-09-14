@@ -30,13 +30,17 @@ class User < ActiveRecord::Base
 	end
 
 	def self.user_list(params)
-		total = self.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ").count
+		where_clause = "users.org_id = #{params[:org_id]} AND is_deleted IS NULL "
+		if params[:filterbyids]
+			where_clause += " AND users.id  in (#{params[:filterbyids]}) "
+		end
+		total = self.where(where_clause).count
 		users = self.select("users.id, firstname, lastname, email, users.is_deleted,
 						users.group,  users.created_at,
 						(select img_loc from `user_profiles` as up where up.user_id = users.id) as img_loc,
 						(select MAX(ul.created_at) from `user_logins` as ul
 							where ul.user_id = users.id and ul.status = 'login') as login_at")
-								.where("users.org_id = #{params[:org_id]} AND is_deleted IS NULL ")
+								.where(where_clause)
 								.order(params[:sortby])
 								.offset(params[:offset]).limit(params[:limit])
 		return total, users

@@ -1,57 +1,64 @@
 <div>
 	<style>
-		.btn:focus{
+		.btn:focus {
 			outline: none;
 		}
 	</style>
 	<div class="row">
 		<div style="min-width: 275px;" class="col-xs-4">
-		<button type="button" ng-click="firstPage()" class="btn btn-default btn-circle"><i class="fa fa-angle-double-left"></i>
-		</button>
-		<button type="button" ng-click="prePage()" class="btn btn-default btn-circle"><i class="fa fa-angle-left"></i>
-		</button>
+			<button type="button" ng-click="firstPage()" class="btn btn-default btn-circle"><i
+					class="fa fa-angle-double-left"></i>
+			</button>
+			<button type="button" ng-click="prePage()" class="btn btn-default btn-circle"><i
+					class="fa fa-angle-left"></i>
+			</button>
 			<!--<span style="margin-left:10px"> page: <input type="text" style='width:20px' ng-model="current_page_bak"> of {{total_page}}</span>-->
 			<span style="margin-left:10px"> page: <input type="text" style='width:20px;border-radius: 4px;'
-				ng-keypress="gotoPage($event)"
+														 ng-keypress="gotoPage($event)"
 														 ng-model="current_page_bak"> of {{total_page}}</span>
-		<button type="button" ng-click="nextPage()" class="btn btn-default btn-circle"><i class="fa fa-angle-right"></i>
-		</button>
-		<button type="button" ng-click="lastPage()" class="btn btn-default btn-circle"><i class="fa fa fa-angle-double-right"></i>
-		</button>
+			<button type="button" ng-click="nextPage()" class="btn btn-default btn-circle"><i
+					class="fa fa-angle-right"></i>
+			</button>
+			<button type="button" ng-click="lastPage()" class="btn btn-default btn-circle"><i
+					class="fa fa-angle-double-right"></i>
+			</button>
+			<button type="button" ng-click="page()" class="btn btn-default btn-circle"><i class="fa fa-refresh"></i>
+			</button>
 		</div>
-
+		
 		<div class="col-xs-3">
-			<select style="max-width: 155px;" class="form-control pull-right" ng-change="firstPage_select()" ng-model="limit">
-			<option ng-repeat="x in default_page_sizes" ng-value="{{x}}">{{x}} items per page</option>
+			<select style="max-width: 155px;" class="form-control pull-right" ng-change="firstPage_select()"
+					ng-model="limit">
+				<option ng-repeat="x in default_page_sizes" ng-value="{{x}}">{{x}} items per page</option>
 			</select>
 		</div>
-
+		
 		<div class="col-5 col-xs-3 pull-right">
 			<div class="pull-right">
-			Displaying {{offset+1}}-{{offset+limit > total ? total : offset+limit}} of {{total}}
+				Displaying {{offset+1}}-{{offset+limit > total ? total : offset+limit}} of {{total}}
 			</div>
 		</div>
-
+	
 	</div>
 	<!--<div class="form-inline row">-->
-		<!--<ul class="pagination pagination-sm">-->
-			<!--&lt;!&ndash;<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>&ndash;&gt;-->
-			<!--<li><a href="#" ng-click="firstPage()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>-->
-			<!--<li><a href="#" ng-click="prePage()"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>-->
-			<!--<li class="active"><a href="#">{{current_page}}</a></li>-->
-			<!--<li><a href="#" ng-click="nextPage()"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>-->
-			<!--<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right"-->
-																	   <!--aria-hidden="true"></i></a></li>-->
-
-			<!--<span style="margin-left:10px"> {{total}} total items</span>-->
-			<!--<span style="margin-left:10px"> Jump to page: <input id="pagesize_input" type="text" style='width:20px'-->
-																 <!--ng-keypress="gotoPage($event)"-->
-																 <!--ng-model="goto_page"></span>-->
-			<!--<span style="margin-left:100px">-->
-				<!--<select class="form-control" ng-change="firstPage_select()" ng-model="limit">-->
-				<!--<option ng-repeat="x in default_page_sizes" ng-value="{{x}}">{{x}} items per page</option>-->
-			  	<!--</select>-->
-			<!--</span>-->
-		<!--</ul>-->
+	<!--<ul class="pagination pagination-sm">-->
+	<!--&lt;!&ndash;<li  class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>&ndash;&gt;-->
+	<!--<li><a href="#" ng-click="firstPage()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>-->
+	<!--<li><a href="#" ng-click="prePage()"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>-->
+	<!--<li class="active"><a href="#">{{current_page}}</a></li>-->
+	<!--<li><a href="#" ng-click="nextPage()"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>-->
+	<!--<li><a href="#" ng-click="lastPage()" aria-label="Next"><i class="fa fa-angle-double-right"-->
+	<!--aria-hidden="true"></i></a></li>-->
+	
+	<!--<span style="margin-left:10px"> {{total}} total items</span>-->
+	<!--<span style="margin-left:10px"> Jump to page: <input id="pagesize_input" type="text" style='width:20px'-->
+	<!--ng-keypress="gotoPage($event)"-->
+	<!--ng-model="goto_page"></span>-->
+	<!--<span style="margin-left:100px">-->
+	<!--<select class="form-control" ng-change="firstPage_select()" ng-model="limit">-->
+	<!--<option ng-repeat="x in default_page_sizes" ng-value="{{x}}">{{x}} items per page</option>-->
+	<!--</select>-->
+	<!--</span>-->
+	<!--</ul>-->
 	<!--</div>-->
 </div>
