@@ -347,6 +347,8 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 			var time_zone = 'America/New_York';
 
 			$scope.submit = function () {
+				debugger
+				return
 				var event = {};
 				event.comment = $scope.event.comment;
 				event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').tz(time_zone).format();

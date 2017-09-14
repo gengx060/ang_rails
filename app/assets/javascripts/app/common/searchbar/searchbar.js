@@ -6,9 +6,11 @@ define(['angular', 'jquery'], function (angular, $) {
 			restrict: 'E',
 			transclude: true,
 			scope: {
-				sortbyname: '=',
+				usersearch: '=',
 				url: '@',
-				minlength: '@'
+				minlength: '@',
+				searchtext: '@',
+				hashupdate: '@'
 			},
 			controller: function ($scope, $element, $routeParams, $location) {
 				$location.search('filterbyids', null);
@@ -17,6 +19,9 @@ define(['angular', 'jquery'], function (angular, $) {
 				}
 				if (typeof $scope.searchtext === 'undefined') {
 					$scope.searchtext = 'Search...';
+				}
+				if (typeof $scope.hashupdate === 'undefined') {
+					$scope.hashupdate = true;
 				}
 				
 				$scope.update_hash = function (id) {
@@ -43,7 +48,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					var placeholder = " " + $scope.searchtext;
 					$element.select2({
 						ajax: {
-							url: $scope.url,//"/user/user_search",
+							url: $scope.url,
 							dataType: 'json',
 							type: "post",
 							delay: 500,
@@ -78,6 +83,8 @@ define(['angular', 'jquery'], function (angular, $) {
 						templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 					});
 					$element.on("select2:selecting", function (e) {
+						if (!$scope.hashupdate)
+							return;
 						var id = e.params.args.data.id;
 						$scope.$apply(function () {
 							var filterbyids = '';
@@ -88,6 +95,8 @@ define(['angular', 'jquery'], function (angular, $) {
 						});
 					});
 					$element.on("select2:unselect", function (e) {
+						if (!$scope.hashupdate)
+							return;
 						var id = e.params.data.id;
 						$scope.$apply(function () {
 							var filterbyids = $routeParams.filterbyids;
