@@ -20,9 +20,11 @@ define(['angular', 'jquery'], function (angular, $) {
 				if (typeof $scope.searchtext === 'undefined') {
 					$scope.searchtext = 'Search...';
 				}
-				if (typeof $scope.hashupdate === 'undefined') {
-					$scope.hashupdate = true;
-				}
+				// debugger
+				// if (typeof $scope.hashupdate === 'undefined') {
+				// 	$scope.hashupdate = true;
+				// }
+				// debugger
 				
 				$scope.update_hash = function (id) {
 					$location.search('filterbyid', id);
@@ -83,7 +85,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 					});
 					$element.on("select2:selecting", function (e) {
-						if (!$scope.hashupdate)
+						if ($scope.hashupdate === 'false')
 							return;
 						var id = e.params.args.data.id;
 						$scope.$apply(function () {
@@ -95,7 +97,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						});
 					});
 					$element.on("select2:unselect", function (e) {
-						if (!$scope.hashupdate)
+						if ($scope.hashupdate === 'false')
 							return;
 						var id = e.params.data.id;
 						$scope.$apply(function () {

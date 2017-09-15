@@ -15,7 +15,6 @@ class Event < ActiveRecord::Base
 				'start':        params['start'],
 				'title':        params['title'],
 				'end':          params['end'],
-				'with_user_id': params['with_user_id'],
 				'comment':      params['comment'],
 				'location':     params['location']
 		}
@@ -36,7 +35,7 @@ class Event < ActiveRecord::Base
 			if params_t[:event] == 'new'
 				self.transaction do
 					event.save!
-					params['with_user_id'].split(",").each {|a|
+					params['with_user_id'].each {|a|
 						params_u = {
 								'event_id': event.id,
 								'user_id':  a,
