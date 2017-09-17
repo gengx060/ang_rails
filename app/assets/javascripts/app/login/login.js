@@ -8,6 +8,7 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 			scope: {},
 			controller: function ($scope, $routeParams, usstates) {
 				// $scope.templatePath = 'assets/app/login/change-password.template.html';
+				
 				$scope.query_params = function () {
 					$scope.$root.showmenu = false;
 					if ($routeParams.forgetpassword == 'true') {
@@ -45,10 +46,10 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 						};
 						$scope.alert_msg = "";
 						$scope.alert_msg_show = false;
-						$scope.state_select = function () {
-							if ($scope.contact.address.state && $scope.contact.address.state != "")
-								$("#state_select").css('color', '#000');
-						};
+						// $scope.state_select = function () {
+						// 	if ($scope.contact.address.state && $scope.contact.address.state != "")
+						// 		$("#state_select").css('color', '#000');
+						// };
 						$scope.submit = function () {
 							if ($scope.contact.password != $scope.contact.password1) {
 								$scope.alert_msg = "Password doesn't match.";
@@ -64,20 +65,20 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 							}
 						}
 						
-						$(document).ready(function () {
-							setTimeout(function () {
-								$("#signup_state").select2({
-									data: usstates,
-									placeholder: "Select a state"
-								});
-							}, 200);
-						});
+						// $(document).ready(function () {
+						// 	setTimeout(function () {
+						// 		$("#state_select").select2({
+						// 			data: usstates,
+						// 			placeholder: "Select a state"
+						// 		});
+						// 	}, 200);
+						// });
 					}
 					else if ($routeParams.changepassword == 'true') {
 						$scope.templatePath = 'assets/app/login/change-password.template.html';
 						$scope.change_password = {
-							password:'',
-							password2:''
+							password: '',
+							password2: ''
 						};
 						if (typeof $routeParams.hash === 'undefined') {
 							location.href = ("#!/login");
@@ -92,11 +93,11 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 							} else {
 								$scope.change_password.hash = $routeParams.hash;
 							}
-							if($scope.change_password.password.length < 8) {
+							if ($scope.change_password.password.length < 8) {
 								toastr.error('Password is too short.');
 								return
 							}
-							if($scope.change_password.password != $scope.change_password.password2) {
+							if ($scope.change_password.password != $scope.change_password.password2) {
 								toastr.error('Passwords do not match.');
 								return
 							}
@@ -160,6 +161,16 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 					$scope.query_params()
 				});
 				$scope.query_params()
+				
+				
+				$scope.$on('$includeContentLoaded', function () {
+					if ($routeParams.signup == 'true') {
+						$("#state_select").select2({
+							data: usstates,
+							placeholder: "Select a state"
+						});
+					}
+				});
 			},
 			templateUrl: '/assets/app/login/container.template.html',
 			replace: true

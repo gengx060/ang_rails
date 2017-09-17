@@ -1,4 +1,4 @@
-class EventController < ActionController::Base
+class EventController < ApplicationController
 
 	def list
 		events = []

@@ -76,7 +76,7 @@ class AccountController < ApplicationController
 					 dropdowns: [
 													{name: 'Contact list', route: '/contacts', nav: true, title: 'Github Users'},
 													{separator: true},
-													{name: 'New contact', route: '/contacts?newuser=true', nav: true, title: 'Github Users'}
+													{name: 'New contact', route: '/contacts?newcontact=true', nav: true, title: 'Github Users'}
 											]
 					},
 					{name:      'Resource', dropdown: true, title: 'Github Users',

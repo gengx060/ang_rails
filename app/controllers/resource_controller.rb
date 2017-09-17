@@ -1,4 +1,4 @@
-class ResourceController < ActionController::Base
+class ResourceController < ApplicationController
 
 	def upload
 		data     = params[:file]

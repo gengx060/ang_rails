@@ -1,5 +1,9 @@
-
 <div class="panel-body">
+	<style>
+		.select2-container--bootstrap .select2-selection--single {
+			height: 34px !important;
+		}
+	</style>
 	
 	<form class="form-horizontal" ng-submit="submit()">
 		<div class="alert alert-danger alert-dismissible" ng-if='alert_msg_show' role="alert">
@@ -44,18 +48,18 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2">Phone:</label>
 			<div class="col-sm-2">
-				<input autocomplete="off" type="text" class="form-control" maxlength="20" value=""
+				<input autocomplete="off" type="text" class="form-control" maxlength="3" value=""
 					   placeholder="Area" ng-model="contact.phone.area" pattern="^[0-9]{3}"
 					   title="3 digits" required>
 			</div>
 			<div class="col-sm-3">
-				<input autocomplete="off" type="text" class="form-control" maxlength="50"
+				<input autocomplete="off" type="text" class="form-control" maxlength="7"
 					   placeholder="Number" ng-model="contact.phone.number" pattern="^[0-9]{7}"
 					   title="7 digits"
 					   required>
 			</div>
 			<div class="col-sm-2">
-				<input autocomplete="off" type="text" class="form-control" maxlength="10" value="102"
+				<input autocomplete="off" type="text" class="form-control" maxlength="5" value="102"
 					   placeholder="Ext" ng-model="contact.phone.ext">
 			</div>
 		</div>
@@ -78,7 +82,7 @@
 					   placeholder="City/Town" ng-model="contact.address.city" required>
 			</div>
 			<div class="col-xs-3">
-				<input type="text" id="signup_state" ng-model="contact.address.state" required>
+				<input type="text" id="state_select" ng-model="contact.address.state" required>
 			</div>
 			<div class="col-xs-4">
 				<input autocomplete="off" class="form-control" type="text" maxlength="50"

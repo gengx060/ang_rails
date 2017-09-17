@@ -3,7 +3,6 @@ if (!String.prototype.startsWith) {
 		return this.substr(position || 0, searchString.length) === searchString;
 	};
 }
-debugger
 if (!Object.entries) {
 	Object.entries = function (obj) {
 		var ownProps = Object.keys(obj),
@@ -66,4 +65,15 @@ window.jsonEqual = function (obj, obj1) {
 		== Enumerable.From(Object.entries(obj1).map(function (i) {
 			return i.join(',')
 		})).OrderBy().ToArray().join(',')
-}
+};
+
+(function (d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) {
+		return;
+	}
+	js = d.createElement(s);
+	js.id = id;
+	js.src = "//connect.facebook.net/en_US/sdk.js";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
