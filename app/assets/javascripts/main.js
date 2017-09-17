@@ -11,6 +11,7 @@ require.config({
 		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
 		'select2'              : 'asset/select2/4.0.3/js/select2.full',
 		'Enumerable'           : 'asset/linq/linq',
+		'preloadscript'        : 'asset/preloadscript/preloadscript',
 		'toastr'               : 'asset/toastr/toastr',
 		'typeahead'            : 'asset/typeahead/typeahead',
 		'moment'               : 'asset/moment/moment.min',
@@ -42,6 +43,9 @@ require.config({
 			deps: ['angular']
 		},
 		'bootstrap'            : {
+			deps: ['jquery']
+		},
+		'preloadscript'        : {
 			deps: ['jquery']
 		},
 		'toastr'               : {
