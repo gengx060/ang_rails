@@ -14,9 +14,9 @@ class UserController < ApplicationController
 			render :json => {:message => 'Changing organization type to others is not allowed.'}, :status => 500
 		else
 			params_u = {
-					'firstname': params['firstname'],
-					'lastname':  params['lastname'],
-					'email':     params['email']
+				'firstname': params['firstname'],
+				'lastname':  params['lastname'],
+				'email':     params['email']
 			}
 			if params['type'] == 'o'
 				params['type'] = 'c' # sanity check dont allow convert type to org
@@ -27,14 +27,21 @@ class UserController < ApplicationController
 			else
 				params_u[:org_id] = session[:org_id]
 			end
-			User.edit(params_u)
+
+			User.transaction do
+				user = User.edit(params_u)
+				params[:phone][:user_id] = user.id
+				params[:address][:user_id] = user.id
+				UserPhone.edit(params[:phone])
+				UserAddress.edit(params[:address])
+			end
 			render :json => {}
 		end
 	end
 
 	def user_list
-		offset   = params[:offset] || 0
-		limit    = params[:limit] || 0
+		offset = params[:offset] || 0
+		limit  = params[:limit] || 0
 		if limit < 1
 			render :json => {message: 'Limit parameter is invalid.'}, :status => 500
 			return
@@ -44,11 +51,11 @@ class UserController < ApplicationController
 			return
 		end
 		params_u = {
-				offset: offset,
-				limit:  limit,
-				org_id: session[:org_id],
-				sortby: "",
-				filterbyids: params[:filterbyids]
+			offset:      offset,
+			limit:       limit,
+			org_id:      session[:org_id],
+			sortby:      "",
+			filterbyids: params[:filterbyids]
 		}
 		if params[:sortby]
 			params[:sortby].each_with_index {|(key, value), index|
@@ -62,7 +69,10 @@ class UserController < ApplicationController
 
 	def get_user
 		if params[:user_id]
-			render :json => User.get_user(params[:user_id], session[:org_id]).as_json
+			user            = User.get_user(params[:user_id], session[:org_id]).as_json
+			user['phone']   = UserPhone.get_phone(params).as_json
+			user['address'] = UserAddress.get_address(params).as_json
+			render :json => {contact: user}
 		else
 			render :json => {message: 'The contact is not from your organization.'}, :status => 500
 		end
@@ -71,17 +81,17 @@ class UserController < ApplicationController
 	def user_search
 		if params[:term]
 			param_u = {
-					term: params[:term],
-					org_id: session[:org_id]
+				term:   params[:term],
+				org_id: session[:org_id]
 			}
-			res = User.user_search(param_u)
+			res     = User.user_search(param_u)
 			render :json => {items: res.as_json, total: res.length}
 		end
 	end
 
 	def create
 		params[:org_id] = session[:org_id]
-		flag, msg = User.create_contact(params)
+		flag, msg       = User.create_contact(params)
 		if flag
 			render :json => {message: 'Contact created.'}
 		else

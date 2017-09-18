@@ -14,4 +14,11 @@ class UserPhone < ActiveRecord::Base
 		end
 
 	end
+
+	def self.get_phone(params)
+		if params[:user_id]
+			phone = self.where("user_id = #{params[:user_id]} AND is_deleted IS NULL").first
+		end
+		return phone.as_json
+	end
 end

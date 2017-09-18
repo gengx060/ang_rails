@@ -13,4 +13,11 @@ class UserAddress < ActiveRecord::Base
 			addr.save!
 		end
 	end
+
+	def self.get_address(params)
+		if params[:user_id]
+			addr = self.where("user_id = #{params[:user_id]} AND is_deleted IS NULL").first
+		end
+		return addr.as_json
+	end
 end

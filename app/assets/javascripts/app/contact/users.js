@@ -25,11 +25,15 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$scope.sort_name = 'name';
 					
 					// $scope.templatePath ='assets/app/common/template/address.template.html';
-					$scope.contact_detail = function () {
+					$scope.contact_detail = function (id) {
 						// $location.search('newuser', null);
 						// $location.search('newuser', 'true');
 						$location.search('newcontact', null);
-						$location.search('newcontact', 'true');
+						if (typeof id === 'undefined') {
+							$location.search('newcontact', 'true');
+						} else {
+							$location.search('newcontact', id);
+						}
 					};
 					
 					$scope.$on('$includeContentLoaded', function () {
@@ -43,7 +47,18 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						// if ($routeParams.newuser == 'true') {
 						// 	$scope.show();
 						// }
-						if ($routeParams.newcontact == 'true') {
+						if (typeof $routeParams.newcontact !== 'undefined') {
+							if($routeParams.newcontact !== 'true') {
+								var params = {user_id: $routeParams.newcontact};
+								ajaxRequest(params, '/user/get_user', function (res) {
+									$scope.$apply(function () {
+										debugger
+										$scope.contact = res.contact;
+									});
+								}, function (res) {
+									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+								});
+							}
 							$scope.templatePath = 'assets/app/common/templates/address.template.html';
 							$scope.contact = {
 								type:'c',
@@ -56,21 +71,25 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 									ext: ''
 								},
 								address: {
-									street: '',
-									apt: '',
+									address1: '',
+									address2: '',
 									city: '',
 									state: '',
-									zipcode: ''
+									zipcode: '',
+									country:'US'
 								}
 							};
 							$scope.submit = function () {
-								ajaxRequest($scope.contact, '/user/create', function (res) {
+								var url = '/user/create';
+								if($routeParams.newcontact !== 'true') {
+									url = '/user/edit';
+								}
+								ajaxRequest($scope.contact, url, function (res) {
 									toastr.success(res.message);
 									$scope.$apply(function () {
 										$location.search('newcontact', null);
 									});
 								}, function (res) {
-									// BD.alert(res.info.error ? res.info.error : res.info.server_msg);
 									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 								});
 							};
