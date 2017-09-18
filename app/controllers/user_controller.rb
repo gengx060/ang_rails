@@ -30,12 +30,12 @@ class UserController < ApplicationController
 
 			User.transaction do
 				user = User.edit(params_u)
-				params[:phone][:user_id] = user.id
-				params[:address][:user_id] = user.id
-				UserPhone.edit(params[:phone])
-				UserAddress.edit(params[:address])
+				params[:phone][:user_id] = user.id if params[:phone]
+				params[:address][:user_id] = user.id if params[:address]
+				UserPhone.edit(params[:phone]) if params[:phone]
+				UserAddress.edit(params[:address]) if params[:address]
 			end
-			render :json => {}
+			render :json => {message: 'User update successful.'}
 		end
 	end
 

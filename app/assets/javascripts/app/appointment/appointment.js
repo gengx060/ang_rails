@@ -158,7 +158,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 								event.attendees.forEach(function (a) {
 									var scope = $scope.$new(true);
 									scope.attendees = a;
-									scope.size = '20px'
+									scope.size = '20px';
 									var el = $compile("<vcard type='profile' triggersize='{{size}}' src='attendees'></vcard>")(scope);
 									element.find(".fc-content").append(el);
 								});

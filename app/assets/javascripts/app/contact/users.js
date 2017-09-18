@@ -41,6 +41,10 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							data: usstates,
 							placeholder: "Select a state"
 						});
+						if($scope.contact.address) {
+							var state = $scope.contact.address.state;
+							$("#state_select").val(state).trigger("change");
+						}
 					});
 					
 					$scope.query_params = function () {
@@ -48,20 +52,20 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						// 	$scope.show();
 						// }
 						if (typeof $routeParams.newcontact !== 'undefined') {
-							if($routeParams.newcontact !== 'true') {
+							if ($routeParams.newcontact !== 'true') {
 								var params = {user_id: $routeParams.newcontact};
 								ajaxRequest(params, '/user/get_user', function (res) {
 									$scope.$apply(function () {
-										debugger
 										$scope.contact = res.contact;
 									});
+									$("#state_select").val(res.contact.address.state).trigger("change");
 								}, function (res) {
 									toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 								});
 							}
 							$scope.templatePath = 'assets/app/common/templates/address.template.html';
 							$scope.contact = {
-								type:'c',
+								type: 'c',
 								firstname: '',
 								lastname: '',
 								email: '',
@@ -76,13 +80,17 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 									city: '',
 									state: '',
 									zipcode: '',
-									country:'US'
+									country: 'US'
 								}
 							};
 							$scope.submit = function () {
 								var url = '/user/create';
-								if($routeParams.newcontact !== 'true') {
+								if ($routeParams.newcontact !== 'true') {
 									url = '/user/edit';
+								}
+								
+								if($scope.contact.address) {
+									$scope.contact.address.country = 'US';
 								}
 								ajaxRequest($scope.contact, url, function (res) {
 									toastr.success(res.message);

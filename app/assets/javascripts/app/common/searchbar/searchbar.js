@@ -115,7 +115,8 @@ define(['angular', 'jquery'], function (angular, $) {
 								}
 							}
 						});
-					})
+					});
+					// $element.val(["red", "green", "blue"]).trigger('change');
 				});
 				/*/ this will only allow one sortby in $routeParams */
 				// $scope.query_params = function () {
