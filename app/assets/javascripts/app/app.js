@@ -175,6 +175,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 			ajaxRequestCount++;
 			$.ajax(options);
 		}
+		$("#full-page-loader_unique2").hide();
 		app.run(['$rootScope', '$window', '$location',
 			function ($rootScope, $window, $location) {
 				//old_path_reserved is the purpose of preventing search upate trigger login check
