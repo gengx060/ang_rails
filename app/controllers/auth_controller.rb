@@ -61,39 +61,12 @@ class AuthController < ApplicationController
 
 	def signup
 		# if User.exists?("email= params['email'] and is_deleted is null")
-		if User.exists?(email: params['email'], is_deleted: nil)
-			render :json => {:message => 'Duplicate email found.'}, :status => 500
+		params[:org_id] = ''
+		flag, msg = User.create_contact(params)
+		if flag
+			render :json => {message: 'Contact created.'}
 		else
-			User.transaction do
-				salt, hashed = User.create_password_salt(params['password'])
-				params_u     = {
-						'firstname': params['firstname'],
-						'lastname':  params['lastname'],
-						'email':     params['email'],
-						'salt':      salt,
-						'password':  hashed,
-						'group':     'o'
-				}
-				user         = User.edit(params_u)
-				params_u     = {
-						'user_id':  user.id,
-						'address2': params['address']['apt'],
-						'address1': params['address']['street'],
-						'city':     params['address']['city'],
-						'state':    params['address']['state'],
-						'country':  params['address']['country'] || 'US',
-						'zipcode':  params['address']['zipcode'],
-				}
-				UserAddress.edit(params_u)
-				params_u = {
-						'user_id': user.id,
-						'area':    params['phone']['area'],
-						'number':  params['phone']['number'],
-						'ext':     params['phone']['ext']
-				}
-				UserPhone.edit(params_u)
-			end
-			render :json => {}
+			render :json => {message: msg}, :status => 500
 		end
 	end
 

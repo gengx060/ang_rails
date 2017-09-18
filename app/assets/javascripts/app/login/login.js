@@ -26,6 +26,7 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 						$scope.templatePath = 'assets/app/login/signup.template.html';
 						$scope.states = usstates;
 						$scope.contact = {
+							type:'o',
 							firstname: 'Dan',
 							lastname: 'Curt',
 							email: 'gaix061@163.com',

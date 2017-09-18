@@ -164,4 +164,44 @@ LIMIT 12
 		end
 		return false, 'No record found!'
 	end
+
+	def self.create_contact(params)
+		if self.exists?(email: params[:email], is_deleted: nil)
+			return false, 'Duplicate email found.'
+		else
+			self.transaction do
+				if params[:password]
+					salt, hashed = User.create_password_salt(params[:password])
+				end
+				params_u = {
+						'firstname': params[:firstname],
+						'lastname':  params[:lastname],
+						'email':     params[:email],
+						'salt':      salt,
+						'password':  hashed,
+						'group':     params[:type],
+						'org_id':    params[:org_id]
+				}
+				user     = self.edit(params_u)
+				params_u = {
+						'user_id':  user.id,
+						'address2': params[:address][:apt],
+						'address1': params[:address][:street],
+						'city':     params[:address][:city],
+						'state':    params[:address][:state],
+						'country':  params[:address][:country] || 'US',
+						'zipcode':  params[:address][:zipcode],
+				}
+				UserAddress.edit(params_u)
+				params_u = {
+						'user_id': user.id,
+						'area':    params[:phone][:area],
+						'number':  params[:phone][:number],
+						'ext':     params[:phone][:ext]
+				}
+				UserPhone.edit(params_u)
+			end
+			return true
+		end
+	end
 end

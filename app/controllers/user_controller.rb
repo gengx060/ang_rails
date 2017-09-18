@@ -78,4 +78,14 @@ class UserController < ApplicationController
 			render :json => {items: res.as_json, total: res.length}
 		end
 	end
+
+	def create
+		params[:org_id] = session[:org_id]
+		flag, msg = User.create_contact(params)
+		if flag
+			render :json => {message: 'Contact created.'}
+		else
+			render :json => {message: msg}, :status => 500
+		end
+	end
 end
