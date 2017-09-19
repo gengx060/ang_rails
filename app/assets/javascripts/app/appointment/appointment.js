@@ -357,7 +357,8 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 				event.id = $scope.event.id;
 				$scope.event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
 				$scope.event.start = moment($scope.event.start_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
-
+debugger
+				return;
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();

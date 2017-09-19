@@ -20,12 +20,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				if (typeof $scope.searchtext === 'undefined') {
 					$scope.searchtext = 'Search...';
 				}
-				// debugger
-				// if (typeof $scope.hashupdate === 'undefined') {
-				// 	$scope.hashupdate = true;
-				// }
-				// debugger
-				
+
 				$scope.update_hash = function (id) {
 					$location.search('filterbyid', id);
 				};
@@ -43,12 +38,16 @@ define(['angular', 'jquery'], function (angular, $) {
 					}
 					
 					function formatRepoSelection(repo) {
+						debugger
 						return repo.firstname + repo.lastname;
 					}
-					
+					function initSelection(element, callback) {
+						var arrs = [{element:element, firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
+						callback(arrs);
+					}
 					// var placeholder = "&#xf002 Search..."; // for single select
 					var placeholder = " " + $scope.searchtext;
-					$element.select2({
+					var search_select = $element.select2({
 						ajax: {
 							url: $scope.url,
 							dataType: 'json',
@@ -82,7 +81,8 @@ define(['angular', 'jquery'], function (angular, $) {
 						minimumInputLength: $scope.minlength,
 						tags: true,
 						templateResult: formatRepo, // omitted for brevity, see the source of this page
-						templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+						templateSelection: formatRepoSelection, // omitted for brevity, see the source of this page
+						initSelection:initSelection
 					});
 					$element.on("select2:selecting", function (e) {
 						if ($scope.hashupdate === 'false')
@@ -116,19 +116,26 @@ define(['angular', 'jquery'], function (angular, $) {
 							}
 						});
 					});
-					// $element.val(["red", "green", "blue"]).trigger('change');
+					// var vals = [{firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
+					// var vals = ["Montgomery"];
+
+					// vals.forEach(function(e){
+					// 	$element.append('<option value="'+e.firstname+' '+e.lastname+'">'+e.id+'</option>');
+					// });
+					// var ids = vals.map(function (e) {
+					// 	return e.id;
+					// });
+					// vals = vals.map(function (e) {
+					// 	return e.firstname+' '+e.lastname;
+					// });
+					//
+					// // $element.val(vals).trigger('change');
+					// $element.val(vals).trigger('change');
+					// $scope.$apply(function(){
+					// 	$scope.usersearch = ids;
+					// });
 				});
-				/*/ this will only allow one sortby in $routeParams */
-				// $scope.query_params = function () {
-				// 	if ($routeParams.user) {
-				// 		$scope.show_user($routeParams.user);
-				// 	}
-				// };
-				// $scope.$on('$routeUpdate', function (next, current) {
-				// 	$scope.query_params();
-				// });
-				// $scope.query_params();
-				
+
 			},
 			templateUrl: 'assets/app/common/searchbar/searchbar.template.html',
 			replace: true
