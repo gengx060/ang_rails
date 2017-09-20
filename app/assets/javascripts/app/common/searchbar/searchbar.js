@@ -82,7 +82,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						tags: true,
 						templateResult: formatRepo, // omitted for brevity, see the source of this page
 						templateSelection: formatRepoSelection, // omitted for brevity, see the source of this page
-						initSelection:initSelection
+						// initSelection:initSelection
 					});
 					$element.on("select2:selecting", function (e) {
 						if ($scope.hashupdate === 'false')
@@ -116,21 +116,31 @@ define(['angular', 'jquery'], function (angular, $) {
 							}
 						});
 					});
-					// var vals = [{firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
+					var vals = [{firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
 					// var vals = ["Montgomery"];
 
-					// vals.forEach(function(e){
-					// 	$element.append('<option value="'+e.firstname+' '+e.lastname+'">'+e.id+'</option>');
-					// });
-					// var ids = vals.map(function (e) {
-					// 	return e.id;
-					// });
+					vals.forEach(function(e){
+						$element.append('<option value="'+e.firstname+' '+e.lastname+'">'+e.id+'</option>');
+					});
+					var ids = vals.map(function (e) {
+						return e.id;
+					});
 					// vals = vals.map(function (e) {
 					// 	return e.firstname+' '+e.lastname;
 					// });
 					//
 					// // $element.val(vals).trigger('change');
 					// $element.val(vals).trigger('change');
+					$element.val(ids).trigger('change');
+					// var data = {email:"rxohqlf.gfrued@btugync.xjsasd.com",
+					// firstname:"Corey",
+					// id:4384,
+					// lastname:"Welch",
+					// selected:true};
+					// search_select.trigger('select', {
+					// 	originalEvent: null,
+					// 	data: data
+					// });
 					// $scope.$apply(function(){
 					// 	$scope.usersearch = ids;
 					// });
