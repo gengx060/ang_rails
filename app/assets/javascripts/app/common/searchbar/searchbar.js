@@ -7,6 +7,7 @@ define(['angular', 'jquery'], function (angular, $) {
 			transclude: true,
 			scope: {
 				usersearch: '=',
+				initvalues: '@',
 				url: '@',
 				minlength: '@',
 				searchtext: '@',
@@ -24,6 +25,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.update_hash = function (id) {
 					$location.search('filterbyid', id);
 				};
+				debugger
 				
 				$(document).ready(function () {
 					function formatRepo(repo) {
@@ -37,14 +39,20 @@ define(['angular', 'jquery'], function (angular, $) {
 						}
 					}
 					
-					function formatRepoSelection(repo) {
-						debugger
-						return repo.firstname + repo.lastname;
+					function formatRepoSelection(repo, container) {
+						try{
+							var repo1 = JSON.parse(repo.text);
+							if(repo1.id) {
+								repo = repo1;
+							}
+						}catch(e){}
+						container.prop('title', 'data.title');
+						return repo.firstname + " " +repo.lastname;
 					}
-					function initSelection(element, callback) {
-						var arrs = [{element:element, firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
-						callback(arrs);
-					}
+					// function initSelection(element, callback) {
+					// 	var arrs = [{element:element, firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
+					// 	callback(arrs);
+					// }
 					// var placeholder = "&#xf002 Search..."; // for single select
 					var placeholder = " " + $scope.searchtext;
 					var search_select = $element.select2({
@@ -116,34 +124,19 @@ define(['angular', 'jquery'], function (angular, $) {
 							}
 						});
 					});
-					var vals = [{firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
-					// var vals = ["Montgomery"];
-
-					vals.forEach(function(e){
-						$element.append('<option value="'+e.firstname+' '+e.lastname+'">'+e.id+'</option>');
-					});
-					var ids = vals.map(function (e) {
-						return e.id;
-					});
-					// vals = vals.map(function (e) {
-					// 	return e.firstname+' '+e.lastname;
-					// });
-					//
-					// // $element.val(vals).trigger('change');
-					// $element.val(vals).trigger('change');
-					$element.val(ids).trigger('change');
-					// var data = {email:"rxohqlf.gfrued@btugync.xjsasd.com",
-					// firstname:"Corey",
-					// id:4384,
-					// lastname:"Welch",
-					// selected:true};
-					// search_select.trigger('select', {
-					// 	originalEvent: null,
-					// 	data: data
-					// });
-					// $scope.$apply(function(){
-					// 	$scope.usersearch = ids;
-					// });
+					try {
+						var vals = JSON.parse($scope.initvalues);
+						vals.forEach(function (it) {
+							$element.append('<option title="' + it.title + '" value="' + it.id + '">' + JSON.stringify(it) + '</option>');
+						});
+						var ids = vals.map(function (it) {
+							return it.id;
+						});
+						$element.val(ids).trigger('change');
+						$scope.$apply(function () {
+							$scope.usersearch = ids;
+						});
+					}catch(e){}
 				});
 
 			},

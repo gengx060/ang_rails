@@ -77,7 +77,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 								$location.search('newevent', null);
 							});
 						});
-					}
+					};
 
 					$scope.fullCalendar_option = {
 						header        : {
@@ -161,6 +161,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 									scope.size = '20px';
 									var el = $compile("<vcard type='profile' triggersize='{{size}}' src='attendees'></vcard>")(scope);
 									element.find(".fc-content").append(el);
+									a.title = a.firstname + ' ' + a.lastname;
 								});
 							}
 							// element.find(".fc-content").on('click', 'a', function(event) {
@@ -357,8 +358,6 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 				event.id = $scope.event.id;
 				$scope.event.end = moment($scope.event.end_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
 				$scope.event.start = moment($scope.event.start_f, 'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD HH:mm');
-debugger
-				return;
 				ajaxRequest(event, '/event/edit', function (res) {
 					$scope.$apply(function () {
 						$scope.close();
