@@ -119,6 +119,9 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 						},
 						eventClick    : function (event, jsEvent, view) {
 							//set the values and open the modal
+							event.attendees.forEach(function (it) {
+								it.title = it.firstname + ' ' + it.lastname;
+							});
 							$scope.event = event;
 							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD hh:mm a");// moment($scope.event.start).tz('America/New_York').format("YYYY-MM-DD H:mm a");
 							$scope.event.end_f = moment($scope.event.end).format("YYYY-MM-DD hh:mm a");//moment($scope.event.end).tz('America/New_York').format("YYYY-MM-DD H:mm a");
@@ -161,7 +164,6 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 									scope.size = '20px';
 									var el = $compile("<vcard type='profile' triggersize='{{size}}' src='attendees'></vcard>")(scope);
 									element.find(".fc-content").append(el);
-									a.title = a.firstname + ' ' + a.lastname;
 								});
 							}
 							// element.find(".fc-content").on('click', 'a', function(event) {

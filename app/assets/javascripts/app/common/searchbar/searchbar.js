@@ -25,8 +25,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.update_hash = function (id) {
 					$location.search('filterbyid', id);
 				};
-				debugger
-				
+
 				$(document).ready(function () {
 					function formatRepo(repo) {
 						if (repo.loading) return repo.text;
@@ -132,6 +131,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						var ids = vals.map(function (it) {
 							return it.id;
 						});
+						debugger;
 						$element.val(ids).trigger('change');
 						$scope.$apply(function () {
 							$scope.usersearch = ids;
