@@ -1,9 +1,24 @@
 class EventAttendee < ActiveRecord::Base
 
 	def self.edit(params)
-		attendee = self.new
+		attendee = self.where("event_id = #{params[:event_id]} AND user_id = #{params[:user_id]}").first
+		if attendee
+			if attendee.is_deleted
+				attendee.is_deleted = nil
+			else
+				return
+			end
+		else
+			attendee = self.new
+		end
 		self.params_to_model(params, attendee)
-		attendee.save!
+
+		self.transaction do
+			attendee.save!
+			params[:event_table] = 'events'
+			params[:event_id]    = params[:event_id]
+			UserNotification.edit(params)
+		end
 	end
 
 	def self.get_attendees(ids)

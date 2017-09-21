@@ -21,11 +21,11 @@ define(['angular', 'jquery'], function (angular, $) {
 				if (typeof $scope.searchtext === 'undefined') {
 					$scope.searchtext = 'Search...';
 				}
-
+				
 				$scope.update_hash = function (id) {
 					$location.search('filterbyid', id);
 				};
-
+				
 				$(document).ready(function () {
 					function formatRepo(repo) {
 						if (repo.loading) return repo.text;
@@ -39,15 +39,17 @@ define(['angular', 'jquery'], function (angular, $) {
 					}
 					
 					function formatRepoSelection(repo, container) {
-						try{
+						try {
 							var repo1 = JSON.parse(repo.text);
-							if(repo1.id) {
+							if (repo1.id) {
 								repo = repo1;
 							}
-						}catch(e){}
+						} catch (e) {
+						}
 						container.prop('title', 'data.title');
-						return repo.firstname + " " +repo.lastname;
+						return repo.firstname + " " + repo.lastname;
 					}
+					
 					// function initSelection(element, callback) {
 					// 	var arrs = [{element:element, firstname:"Valerie", id:"12084", lastname: "Montgomery"}];
 					// 	callback(arrs);
@@ -123,22 +125,25 @@ define(['angular', 'jquery'], function (angular, $) {
 							}
 						});
 					});
+					var vals = [];
 					try {
-						var vals = JSON.parse($scope.initvalues);
-						vals.forEach(function (it) {
-							$element.append('<option title="' + it.title + '" value="' + it.id + '">' + JSON.stringify(it) + '</option>');
-						});
-						var ids = vals.map(function (it) {
-							return it.id;
-						});
-						debugger;
+						vals = JSON.parse($scope.initvalues);
+					} catch (e) {
+					}
+					vals.forEach(function (it) {
+						$element.append('<option title="' + it.title + '" value="' + it.id + '">' + JSON.stringify(it) + '</option>');
+					});
+					var ids = vals.map(function (it) {
+						return it.id;
+					});
+					if (ids.length > 0) {
 						$element.val(ids).trigger('change');
 						$scope.$apply(function () {
 							$scope.usersearch = ids;
 						});
-					}catch(e){}
+					}
 				});
-
+				
 			},
 			templateUrl: 'assets/app/common/searchbar/searchbar.template.html',
 			replace: true

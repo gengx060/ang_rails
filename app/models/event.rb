@@ -12,15 +12,15 @@ class Event < ActiveRecord::Base
 				org_id:  params[:org_id],
 		}
 		params_u = {
-				'start':        params['start'],
-				'title':        params['title'],
-				'end':          params['end'],
-				'comment':      params['comment'],
-				'location':     params['location']
+				'start':    params['start'],
+				'title':    params['title'],
+				'end':      params['end'],
+				'comment':  params['comment'],
+				'location': params['location']
 		}
 		if event
 			params_t[:event]      = 'update'
-			params_u[:created_at] = Time.now.utc
+			params_u[:created_at] = Time.now
 		else
 			params_u[:user_id] = params[:user_id]
 			params_u[:org_id]  = params[:org_id]
@@ -32,17 +32,17 @@ class Event < ActiveRecord::Base
 
 		if event
 			self.params_to_model(params_u, event)
-			if params_t[:event] == 'new'
-				self.transaction do
-					event.save!
-					params['with_user_id'].each {|a|
-						params_u = {
-								'event_id': event.id,
-								'user_id':  a,
-						}
-						EventAttendee.edit(params_u)
+			self.transaction do
+				event.save!
+				EventAttendee.where("event_id=#{event.id} and user_id NOT IN (#{params['with_user_id'].join(',')}) ").update_all(is_deleted: "\1")
+				params['with_user_id'].each {|a|
+					# EventAttendee.find_by_sql
+					params_u = {
+							'event_id': event.id,
+							'user_id':  a,
 					}
-				end
+					EventAttendee.edit(params_u)
+				}
 			end
 		end
 
@@ -53,7 +53,7 @@ class Event < ActiveRecord::Base
 			Log.create(params_t)
 		end
 
-		event = event.as_json
+		event              = event.as_json
 		event['attendees'] = self.get_attendees(event['id']).as_json
 
 		return event
@@ -78,7 +78,7 @@ and start > \"#{params[:start]}\" and end <  \"#{params[:end]}\" ").all.as_json
 	end
 
 	def self.get_attendees(id)
-		attendees = self.joins("LEFT JOIN `event_attendees` ea ON ea.event_id = events.id")
+		attendees = self.joins("LEFT JOIN `event_attendees` ea ON ea.event_id = events.id AND ea.is_deleted IS NULL")
 										.joins("INNER JOIN `users` u ON u.id = ea.user_id")
 										.joins("LEFT JOIN `user_profiles` as up ON up.user_id = u.id")
 										.select("u.id, firstname, lastname, email, u.created_at, up.img_loc")

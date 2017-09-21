@@ -121,6 +121,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 							//set the values and open the modal
 							event.attendees.forEach(function (it) {
 								it.title = it.firstname + ' ' + it.lastname;
+								it.id = it.id+'';
 							});
 							$scope.event = event;
 							$scope.event.start_f = moment($scope.event.start).format("YYYY-MM-DD hh:mm a");// moment($scope.event.start).tz('America/New_York').format("YYYY-MM-DD H:mm a");
@@ -367,6 +368,7 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 							$scope.event.attendees = res.event.attendees;
 							$scope.fullCalendar.fullCalendar('renderEvent', $scope.event);
 						} else {
+							$scope.event.attendees = res.event.attendees;
 							$scope.fullCalendar.fullCalendar('updateEvent', $scope.event);
 						}
 					});
