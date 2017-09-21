@@ -90,7 +90,9 @@ class User < ActiveRecord::Base
 					" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
 								FROM users WHERE firstname LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)",
 					" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
-								FROM users WHERE lastname LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)")
+								FROM users WHERE lastname LIKE ('%#{param[:term]}%') and org_id = #{param[:org_id]} LIMIT 3)",
+					" UNION (SELECT id, firstname, lastname, email -- , 'fa-user' AS type1
+								FROM users WHERE id = \"#{param[:term]}\" and org_id = #{param[:org_id]} LIMIT 3)")
 			end
 			sql = "SELECT * FROM (
 #{searches.join(' ')}

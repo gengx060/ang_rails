@@ -6,17 +6,17 @@ class Event < ActiveRecord::Base
 		end
 
 		params_t = {
-				table:   'event',
-				event:   'new',
-				user_id: params[:user_id],
-				org_id:  params[:org_id],
+			table:   'event',
+			event:   'new',
+			user_id: params[:user_id],
+			org_id:  params[:org_id],
 		}
 		params_u = {
-				'start':    params['start'],
-				'title':    params['title'],
-				'end':      params['end'],
-				'comment':  params['comment'],
-				'location': params['location']
+			'start':    params['start'],
+			'title':    params['title'],
+			'end':      params['end'],
+			'comment':  params['comment'],
+			'location': params['location']
 		}
 		if event
 			params_t[:event]      = 'update'
@@ -34,14 +34,34 @@ class Event < ActiveRecord::Base
 			self.params_to_model(params_u, event)
 			self.transaction do
 				event.save!
-				EventAttendee.where("event_id=#{event.id} and user_id NOT IN (#{params['with_user_id'].join(',')}) ").update_all(is_deleted: "\1")
-				params['with_user_id'].each {|a|
-					# EventAttendee.find_by_sql
+				eas = EventAttendee.where("event_id=#{event.id} AND is_deleted IS NULL AND user_id NOT IN (#{params['with_user_id'].join(',')}) ")
+				eas.update_all(is_deleted: "\1")
+				eas.select('user_id').as_json.each{|ea|
 					params_u = {
-							'event_id': event.id,
-							'user_id':  a,
+						'event_id':    event.id,
+						'user_id':     ea['user_id'],
+						'created_by':  params[:user_id],
+						'event_table': 'events',
+						'event_detail': 'Removed from event'
 					}
-					EventAttendee.edit(params_u)
+					UserNotification.edit(params_u)
+				}
+				params['with_user_id'].each {|a|
+					params_u = {
+						'event_id': event.id,
+						'user_id':  a,
+					}
+					res      = EventAttendee.edit(params_u)
+					if res != 'no notify'
+						params_u = {
+							'event_id':    event.id,
+							'user_id':     a,
+							'created_by':  params[:user_id],
+							'event_table': 'events',
+							'event_detail': 'Added to event'
+						}
+						UserNotification.edit(params_u)
+					end
 				}
 			end
 		end
@@ -79,10 +99,10 @@ and start > \"#{params[:start]}\" and end <  \"#{params[:end]}\" ").all.as_json
 
 	def self.get_attendees(id)
 		attendees = self.joins("LEFT JOIN `event_attendees` ea ON ea.event_id = events.id AND ea.is_deleted IS NULL")
-										.joins("INNER JOIN `users` u ON u.id = ea.user_id")
-										.joins("LEFT JOIN `user_profiles` as up ON up.user_id = u.id")
-										.select("u.id, firstname, lastname, email, u.created_at, up.img_loc")
-										.where("events.id = #{id}").all
+						.joins("INNER JOIN `users` u ON u.id = ea.user_id")
+						.joins("LEFT JOIN `user_profiles` as up ON up.user_id = u.id")
+						.select("u.id, firstname, lastname, email, u.created_at, up.img_loc")
+						.where("events.id = #{id}").all
 		return attendees
 	end
 

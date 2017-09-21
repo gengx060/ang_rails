@@ -7,6 +7,7 @@ class UserNotification < ActiveRecord::Base
 				event_table: params[:event_table],
 				event_id:   params[:event_id],
 				event_detail:   params[:event_detail],
+				created_by:   params[:created_by],
 		}
 		self.params_to_model(params_u, en)
 		en.save!
