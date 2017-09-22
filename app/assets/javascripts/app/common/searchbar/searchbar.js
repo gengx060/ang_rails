@@ -71,7 +71,7 @@ define(['angular', 'jquery'], function (angular, $) {
 							},
 							processResults: function (data, params) {
 								params.page = params.page || 1;
-								
+								params.term = ''; // this is for remove_default_tag
 								return {
 									results: data.items,
 									pagination: {
