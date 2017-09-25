@@ -1,6 +1,6 @@
 define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/common/vcard/vcard',
 		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'
-		, 'app/common/searchbar/searchbar', 'app/common/factory/usstates'],
+		, 'app/common/searchbar/searchbar', 'app/common/factory/usstates', 'app/common/factory/util'],
 	function (angular, moment, $) {
 		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting', 'searchbar', 'usstates'])
 		.directive('users', function () {
@@ -10,17 +10,11 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 				restrict: 'E',
 				transclude: true,
 				scope: {},
-				controller: function ($scope, $element, $routeParams, $location, usstates) {
+				controller: function ($scope, $element, $routeParams, $location, usstates, util) {
 					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 					// $location.search('filterbyids', null);
 					$scope.contacts = [];
-					$scope.from_now = function (it) {
-						var time = moment(it).fromNow();
-						if (time == 'Invalid date') {
-							time = '';
-						}
-						return time;
-					};
+					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
 					
