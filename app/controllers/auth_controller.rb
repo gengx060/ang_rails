@@ -18,7 +18,7 @@ class AuthController < ApplicationController
 						username:     "#{user.firstname}, #{user.lastname}"
 				}
 				# Notifier.welcome(params).deliver_later
-				last_login = UserLogin.where("user_id = #{session[:user_id]} and status='login'")
+				last_login = UserLogin.where("user_id = ? and status='login'", session[:user_id])
 												 .order("created_at DESC").first
 
 				params_u = {

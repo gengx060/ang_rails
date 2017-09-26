@@ -2,7 +2,8 @@ class UserPreference < ActiveRecord::Base
 
 
 	def self.edit(params)
-		preference = self.where("name = \"#{params[:name]}\" and user_id = #{params[:user_id]} and org_id = #{params[:org_id]}").first
+		preference = self.where("name = ? and user_id = ? and org_id = ?",
+								params[:name], params[:user_id], params[:org_id]).first
 		unless preference
 			preference = self.new
 		end

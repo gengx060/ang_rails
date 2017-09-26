@@ -1,63 +1,135 @@
 <!--<script src="app/contcontacts.jst.js"></script>-->
 <div>
-<div ng-if="templatePath == ''">
-	<style>
-		.pagination {
-			position: absolute;
-		}
-	</style>
-	<div><!--<div ng-controller="NewUserController">-->
-		<div class="form-group">
-			<div class="col-sm-9">
-				<!--<select id="user_search1" class="form-control select2" multiple ng-model="user_search">-->
-				<!--</select>-->
-				<searchbar usersearch="usersearch" url="/user/user_search"></searchbar>
+
+	<div ng-if="templatePath == ''">
+
+		<style>
+			.pagination {
+				position: absolute;
+			}
+
+			.left-aside {
+				/*position: absolute;*/
+				border-right: 1px solid rgba(120, 130, 140, 0.13);
+				padding: 20px;
+				width: 250px;
+				height: 100%;
+			}
+		</style>
+		<div class="left-aside">
+			<ul class="list-style-none">
+				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
+				<li class="divider"></li>
+				<li><a href="#">Work <span>103</span></a></li>
+				<li><a href="#">Family <span>19</span></a></li>
+				<li><a href="#">Friends <span>623</span></a></li>
+				<li><a href="#">Private <span>53</span></a></li>
+				<li class="box-label"><a href="#" data-toggle="modal" data-target="#myModal">+
+					Create New Label</a></li>
+				<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+					 aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Add Lable</h4></div>
+							<div class="modal-body">
+								<from class="form-horizontal">
+									<div class="form-group">
+										<label class="col-md-12">Name of Label</label>
+										<div class="col-md-12">
+											<input type="text" class="form-control" placeholder="type name"></div>
+									</div>
+									<div class="form-group">
+										<label>Pick text color</label>
+										<table cellpadding="0" cellspacing="0">
+											<tbody>
+											<tr>
+												<td  ng-repeat="lc in label_colors" ng-style="{'background-color':lc}" ng-click="select_color(lc)"
+													 style="border: 1px solid #666;height: 17px; line-height: 11px; position: relative; width: 17px; cursor: pointer;">
+													<i class="fa fa-check"></i>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</from>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Save
+								</button>
+								<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">
+									Cancel
+								</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+			</ul>
+		</div>
+		<div>
+
+			<div><!--<div ng-controller="NewUserController">-->
+				<div class="form-group">
+					<div class="col-sm-9">
+						<!--<select id="user_search1" class="form-control select2" multiple ng-model="user_search">-->
+						<!--</select>-->
+						<searchbar usersearch="usersearch" url="/user/user_search"></searchbar>
+					</div>
+					<div class="col-sm-3">
+						<button class='btn btn-primary pull-right' ng-click="contact_detail()">New contact</button>
+					</div>
+				</div>
 			</div>
-			<div class="col-sm-3">
-				<button class='btn btn-primary pull-right' ng-click="contact_detail()">New contact</button>
-			</div>
+
+			<table class="table table-striped table-hover table-condensed ">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Image</th>
+					<th>
+						<sorting colname="'Name'" sortbyname="'sortbyfirstname'"></sorting>
+					</th>
+					<th>
+						<sorting colname="'Email'" sortbyname="'sortbyemail'"></sorting>
+					</th>
+					<th>Type</th>
+					<th>
+						<sorting colname="'Created at'" sortbyname="'sortbycreated_at'">
+					</th>
+					<th>Last login</th>
+				</tr>
+				</thead>
+				<!--<tbody ng-controller="UserController">-->
+				<tbody>
+				<tr ng-repeat="c in contacts">
+					<!--<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>-->
+					<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
+					<th scope="row" ng-if="c.group=='o'">{{c.id}}</th>
+					<td>
+						<vcard type='profile' src='c'></vcard>
+					</td>
+					<td>{{c.firstname +' '+c.lastname}}</td>
+					<td>{{c.email}}</td>
+					<td>
+						<div style="cursor: default;background-color: #e8eaf6" class="avatar-circle"
+							 ng-attr-title="{{src.firstname+ ' ' + src.lastname}}"
+							 ng-style="{'width':'30px', 'height':'30px'}">
+							<span class=" initials" style="font-size:18px"
+								  ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</span>
+						</div>
+					</td>
+					<td>{{from_now(c.created_at)}}</td>
+					<td>{{from_now(c.login_at)}}</td>
+				</tr>
+				</tbody>
+			</table>
+			<paging list="contacts" listname="users" refresh="refresh_list" url="/user/user_list"></paging>
 		</div>
 	</div>
-	
-	<table class="table table-striped table-hover table-condensed ">
-		<thead>
-		<tr>
-			<th>#</th>
-			<th>Image</th>
-			<th>
-				<sorting colname="'Name'" sortbyname="'sortbyfirstname'"></sorting>
-			</th>
-			<th>
-				<sorting colname="'Email'" sortbyname="'sortbyemail'"></sorting>
-			</th>
-			<th>Type</th>
-			<th><sorting colname="'Created at'" sortbyname="'sortbycreated_at'"></th>
-			<th>Last login</th>
-		</tr>
-		</thead>
-		<!--<tbody ng-controller="UserController">-->
-		<tbody>
-		<tr ng-repeat="c in contacts">
-			<!--<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>-->
-			<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
-			<th scope="row" ng-if="c.group=='o'">{{c.id}}</th>
-			<td>
-				<vcard type='profile' src='c'></vcard>
-			</td>
-			<td>{{c.firstname +' '+c.lastname}}</td>
-			<td>{{c.email}}</td>
-			<td>
-				<div style="cursor: default;background-color: #e8eaf6" class="avatar-circle"  ng-attr-title="{{src.firstname+ ' ' + src.lastname}}" ng-style="{'width':'30px', 'height':'30px'}">
-					<span class=" initials" style="font-size:18px" ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</span>
-				</div>
-			</td>
-			<td>{{from_now(c.created_at)}}</td>
-			<td>{{from_now(c.login_at)}}</td>
-		</tr>
-		</tbody>
-	</table>
-	<paging list="contacts" listname="users" refresh="refresh_list" url="/user/user_list"></paging>
-</div>
 	<div ng-if="templatePath != ''" class="container">
 		<div>
 			<ng-include src="'assets/app/contact/new-contact.template.html'"></ng-include>

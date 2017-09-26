@@ -40,11 +40,11 @@ class Resource < ActiveRecord::Base
 	end
 
 	def self.resource_list(params)
-		total     = self.where("(user_id = #{params[:user_id]} OR org_id = #{params[:user_id]})").count
-		resources = self.where("(user_id = #{params[:user_id]} OR org_id = #{params[:user_id]}) ")
-										.select("id, name, created_at, length, type, user_id,  IFNULL(is_deleted, 0) AS is_deleted ")
-										.order(params[:sortby])
-										.offset(params[:offset]).limit(params[:limit])
+		total     = self.where("(user_id = ? OR org_id = ?)", params[:user_id], params[:user_id]).count
+		resources = self.where("(user_id = ? OR org_id = ?) ", params[:user_id], params[:user_id])
+						.select("id, name, created_at, length, type, user_id,  IFNULL(is_deleted, 0) AS is_deleted ")
+						.order(params[:sortby])
+						.offset(params[:offset]).limit(params[:limit])
 		resources = resources.as_json.map {|it|
 			it['vcard'] = User.get_vcard(it['user_id']).as_json
 			# it['is_deleted'] = it['is_deleted'] == "\1" ? 1 : 0

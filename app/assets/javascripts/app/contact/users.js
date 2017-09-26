@@ -11,7 +11,11 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 				transclude: true,
 				scope: {},
 				controller: function ($scope, $element, $routeParams, $location, usstates, util) {
-					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
+					// $scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
+					$scope.label_colors = ['#ff4444', '#ffbb33', '#00C851', '#33b5e5'];
+					$scope.select_color = function(lc) {
+						console.log(lc)
+					};
 					// $location.search('filterbyids', null);
 					$scope.contacts = [];
 					$scope.from_now = util.from_now;

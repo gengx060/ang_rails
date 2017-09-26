@@ -6,17 +6,17 @@ class Event < ActiveRecord::Base
 		end
 
 		params_t = {
-				table:   'event',
-				event:   'new',
-				user_id: params[:user_id],
-				org_id:  params[:org_id],
+			table:   'event',
+			event:   'new',
+			user_id: params[:user_id],
+			org_id:  params[:org_id],
 		}
 		params_u = {
-				'start':    params['start'],
-				'title':    params['title'],
-				'end':      params['end'],
-				'comment':  params['comment'],
-				'location': params['location']
+			'start':    params['start'],
+			'title':    params['title'],
+			'end':      params['end'],
+			'comment':  params['comment'],
+			'location': params['location']
 		}
 		if event
 			params_t[:event]      = 'update'
@@ -35,16 +35,17 @@ class Event < ActiveRecord::Base
 			event.save!
 
 			if params['with_user_id']
-				clause = " AND user_id NOT IN (#{params['with_user_id'].join(',')}) "
+				eas = EventAttendee.where("event_id=? AND is_deleted IS NULL AND user_id NOT IN (?) ", event.id, params['with_user_id'])
+			else
+				eas    = EventAttendee.where("event_id=? AND is_deleted IS NULL", event.id)
 			end
-			eas = EventAttendee.where("event_id=#{event.id} AND is_deleted IS NULL #{clause}")
 			eas.select('user_id').as_json.each {|ea|
 				params_u = {
-						'event_id':     event.id,
-						'user_id':      ea['user_id'],
-						'created_by':   params[:user_id],
-						'event_table':  'events',
-						'event_detail': 'Removed from event'
+					'event_id':     event.id,
+					'user_id':      ea['user_id'],
+					'created_by':   params[:user_id],
+					'event_table':  'events',
+					'event_detail': 'Removed from event'
 				}
 				UserNotification.edit(params_u)
 			}
@@ -53,17 +54,17 @@ class Event < ActiveRecord::Base
 			if params['with_user_id']
 				params['with_user_id'].each {|a|
 					params_u = {
-							'event_id': event.id,
-							'user_id':  a,
+						'event_id': event.id,
+						'user_id':  a,
 					}
 					res      = EventAttendee.edit(params_u)
 					if res != 'no notify'
 						params_u = {
-								'event_id':     event.id,
-								'user_id':      a,
-								'created_by':   params[:user_id],
-								'event_table':  'events',
-								'event_detail': 'Added to event'
+							'event_id':     event.id,
+							'user_id':      a,
+							'created_by':   params[:user_id],
+							'event_table':  'events',
+							'event_detail': 'Added to event'
 						}
 						UserNotification.edit(params_u)
 					end
@@ -82,7 +83,7 @@ class Event < ActiveRecord::Base
 	end
 
 	def self.delete(params)
-		event = Event.where("id = #{params[:id]} and user_id = #{params[:user_id]}").first
+		event = Event.where("id = ? and user_id = ?", params[:id], params[:user_id]).first
 		if event
 			event.is_deleted = 1
 			event.save!
@@ -90,8 +91,8 @@ class Event < ActiveRecord::Base
 	end
 
 	def self.list(params)
-		events = self.where("user_id = #{params[:user_id]} and org_id = #{params[:org_id]}
-and start > \"#{params[:start]}\" and end <  \"#{params[:end]}\" ").all.as_json
+		events = self.where("user_id = ? and org_id = ? and start > ? and end <  ? ",
+							params[:user_id], params[:org_id], params[:start], params[:end]).all.as_json
 		events = events.map {|e|
 			e['attendees'] = self.get_attendees(e['id']).as_json
 			e
@@ -101,10 +102,10 @@ and start > \"#{params[:start]}\" and end <  \"#{params[:end]}\" ").all.as_json
 
 	def self.get_attendees(id)
 		attendees = self.joins("LEFT JOIN `event_attendees` ea ON ea.event_id = events.id AND ea.is_deleted IS NULL")
-										.joins("INNER JOIN `users` u ON u.id = ea.user_id")
-										.joins("LEFT JOIN `user_profiles` as up ON up.user_id = u.id")
-										.select("u.id, firstname, lastname, email, u.created_at, up.img_loc")
-										.where("events.id = #{id}").all
+						.joins("INNER JOIN `users` u ON u.id = ea.user_id")
+						.joins("LEFT JOIN `user_profiles` as up ON up.user_id = u.id")
+						.select("u.id, firstname, lastname, email, u.created_at, up.img_loc")
+						.where("events.id = ?", id).all
 		return attendees
 	end
 

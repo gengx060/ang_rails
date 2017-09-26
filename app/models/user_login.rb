@@ -11,7 +11,7 @@ class UserLogin < ActiveRecord::Base
 	end
 
 	def self.latest_login(user_id)
-		return self.where("user_id = #{user_id} and status = 'login'")
+		return self.where("user_id = ? and status = 'login'", user_id)
 			.maximum('created_at')
 	end
 end

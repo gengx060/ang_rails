@@ -1,7 +1,7 @@
 class UserHash < ActiveRecord::Base
 
 	def self.find_user_hash(params)
-		user_hash = self.where("user_id = #{params['user_id']} and hash = #{params['hash']}").first
+		user_hash = self.where("user_id = ? and hash = ?", params['user_id'], params['hash']).first
 		if user_hash
 			user_hash.claimed = 1
 			user_hash.save!

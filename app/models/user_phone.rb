@@ -2,7 +2,7 @@ class UserPhone < ActiveRecord::Base
 
 	def self.edit(params)
 		if params[:id]
-			phone = self.where("id = #{params[:id]}").first
+			phone = self.where("id = ?", params[:id]).first
 		end
 
 		unless phone
@@ -17,7 +17,7 @@ class UserPhone < ActiveRecord::Base
 
 	def self.get_phone(params)
 		if params[:user_id]
-			phone = self.where("user_id = #{params[:user_id]} AND is_deleted IS NULL").first
+			phone = self.where("user_id = ? AND is_deleted IS NULL", params[:user_id]).first
 		end
 		return phone.as_json
 	end

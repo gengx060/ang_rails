@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
 	def self.edit(params)
 		if params[:id]
-			user = self.where("id = #{params[:id]}").first
+			user = self.where("id = ?", params[:id]).first
 		end
 
 		unless user
@@ -106,7 +106,7 @@ LIMIT 12
 
 	def self.change_password(params)
 		if params[:hash] && params[:password]
-			userhash = UserHash.where("user_hash = \"#{params[:hash]}\" and claimed is null").first
+			userhash = UserHash.where("user_hash = ? and claimed is null", params[:hash]).first
 			if userhash
 				diff = (Time.now - userhash.created_at)/60
 				if diff > 30
@@ -137,7 +137,7 @@ LIMIT 12
 	end
 
 	def self.forget_password(params)
-		userhashcreated_at = UserHash.where("user_ip = \"#{params[:user_ip]}\"").maximum('created_at')
+		userhashcreated_at = UserHash.where("user_ip = ?", params[:user_ip]).maximum('created_at')
 		if userhashcreated_at
 			diff = (Time.now - userhashcreated_at)/60
 			if diff < 10 # each ip can only forget password once per 10 mins
@@ -145,7 +145,7 @@ LIMIT 12
 			end
 		end
 		if params[:email]
-			user = self.where("email = \"#{params[:email]}\"").first
+			user = self.where("email = ?", params[:email]).first
 			if user
 				self.transaction do
 					hashed   = Digest::SHA512.hexdigest("#{params[:email]} #{Time.now}")
