@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">User preference
+			<i ng-class="show_preference? 'fa-chevron-down' : 'fa-chevron-left'" class="fa fa-chevron-down pull-right" ng-click="switch_preference()" aria-hidden="true"></i></h3>
+	</div>
+	<div class="panel-body">
+		<form ng-show="show_preference" class="form-horizontal" ng-submit="submit()">
+			<div class="form-group">
+				<label class="control-label col-sm-4">Default login page:</label>
+				<div class="col-sm-6">
+					<input id="loginpage" ng-model="user_preferrence.loginpage" required>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-4">Default time zone:</label>
+				<div class="col-sm-6">
+					<input id="timezone" ng-model="user_preferrence.timezone" required>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-4">Default page size:</label>
+				<div class="col-sm-6">
+					<input id="pagesize" ng-model="user_preferrence.pagesize" required>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-4">
+					<button type="submit" class="btn btn-primary btn-register btn-block">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

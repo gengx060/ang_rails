@@ -22,7 +22,8 @@ class User < ActiveRecord::Base
 	def self.login_profile(user_id)
 		user = User.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 				   .joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
-				   .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at")
+				   .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at,
+					(select count(*) from user_notifications where user_id = 8 and is_read IS NULL) as msgCount")
 				   .where("users.id = #{user_id} and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)")
 				   .order("ul.created_at DESC")
 				   .first
