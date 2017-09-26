@@ -14,6 +14,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.total = 0;
 				$scope.offset = 0;
 				// $scope.limit = parseInt($scope.$root.user_preferrence.pagesize);
+				// $scope.limit = 20;
 				$scope.current_page = 1;
 				$scope.current_page_bak = 1;
 				$scope.goto_page = 1;

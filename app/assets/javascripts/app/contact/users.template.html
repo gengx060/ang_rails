@@ -107,8 +107,8 @@
 				<tbody>
 				<tr ng-repeat="c in contacts">
 					<!--<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>-->
-					<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
-					<th scope="row" ng-if="c.group=='o'">{{c.id}}</th>
+					<th scope="row" ng-if="c.type!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
+					<th scope="row" ng-if="c.type=='o'">{{c.id}}</th>
 					<td>
 						<vcard type='profile' src='c'></vcard>
 					</td>
@@ -119,7 +119,7 @@
 							 ng-attr-title="{{src.firstname+ ' ' + src.lastname}}"
 							 ng-style="{'width':'30px', 'height':'30px'}">
 							<span class=" initials" style="font-size:18px"
-								  ng-style="{'color':c.group=='o' ? '#d9534f' :(c.group=='e'?'#ffbb33' :'#5cb85c')}">{{c.group}}</span>
+								  ng-style="{'color':c.type=='o' ? '#d9534f' :(c.type=='e'?'#ffbb33' :'#5cb85c')}">{{c.type}}</span>
 						</div>
 					</td>
 					<td>{{from_now(c.created_at)}}</td>

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 		if user
 			self.params_to_model(params, user)
 			user.save!
-			if params[:group] == 'o'
+			if params[:type] == 'o'
 				user.org_id = user.id
 				user.save!
 			end
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 				   .joins("LEFT JOIN `user_logins` as ul ON ul.user_id = users.id")
 				   .select("users.id, firstname, lastname, email, up.img_loc, ul.created_at,
 					(select count(*) from user_notifications where user_id = 8 and is_read IS NULL) as msgCount")
-				   .where("users.id = #{user_id} and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)")
+				   .where("users.id = ? and ul.status='login' and (users.is_deleted is NULL or users.is_deleted=0)", user_id)
 				   .order("ul.created_at DESC")
 				   .first
 		return user
@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
 		end
 		total = self.where(where_clause).count
 		users = self.select("users.id, firstname, lastname, email, users.is_deleted,
-						users.group,  users.created_at,
+						users.type,  users.created_at,
 						(select img_loc from `user_profiles` as up where up.user_id = users.id) as img_loc,
 						(select MAX(ul.created_at) from `user_logins` as ul
 							where ul.user_id = users.id and ul.status = 'login') as login_at")
@@ -51,8 +51,8 @@ class User < ActiveRecord::Base
 		# .joins("LEFT JOIN `user_addresses` as ua ON ua.user_id = users.id")
 		# .joins("LEFT JOIN `user_phones` as up ON up.user_id = users.id")
 		user = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
-				   .where("users.id = #{user_id} and users.org_id = #{org_id}")
-				   .select("users.id, firstname, lastname, email, users.group")
+				   .where("users.id = ? and users.org_id = ?", user_id, org_id)
+				   .select("users.id, firstname, lastname, email, users.type")
 				   .first
 		return user
 	end
@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 	def self.get_vcard(user_id)
 		vcard = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
 					.select("users.id, firstname, lastname, email, users.created_at, up.img_loc")
-					.where("users.id = #{user_id}").first
+					.where("users.id = ?", user_id).first
 		return vcard
 	end
 
@@ -184,7 +184,7 @@ LIMIT 12
 					'email':     params[:email],
 					'salt':      salt,
 					'password':  hashed,
-					'group':     params[:type],
+					'type':     params[:type],
 					'org_id':    params[:org_id]
 				}
 				user     = self.edit(params_u)
