@@ -31,7 +31,7 @@
 				   aria-haspopup="true" aria-expanded="false"><img ng-style="{'width':'36px', 'height':'36px'}"
 																   class="img-circle"
 																   ng-src='{{user.img_loc || $root.profile_placeholder}}'>
-					<span class="badge badge-pill badge-alert"
+					<span class="badge badge-pill badge-danger"
 						  style="position: absolute; right: 0; top: 0;">{{user.msgCount}}</span>
 				</a>
 				<ul class="dropdown-menu">
@@ -56,7 +56,46 @@
 						<div style="clear:both"></div>
 						<div style="margin-top: 10px;"><span>Hello welcome {{user.firstname+' '+user.lastname}}!</span>
 						</div>
-						<div class="form-group"><span>Last login: {{user.created_at}}</span></div>
+						<div class="form-group"><span>Last login: {{from_now(user.created_at)}}</span></div>
+						<ul class="list-unstyled">
+							<li class="divider"></li>
+							<li>
+								<a href="mailbox.html">
+									<div>
+										<i class="fa fa-envelope fa-fw"></i> You have 16 messages
+										<span class="pull-right text-muted small">4 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="profile.html">
+									<div>
+										<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+										<span class="pull-right text-muted small">12 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="grid_options.html">
+									<div>
+										<i class="fa fa-upload fa-fw"></i> Server Rebooted
+										<span class="pull-right text-muted small">4 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<div class="text-center link-block">
+									<a href="notifications.html">
+										<strong>See All Alerts</strong>
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</div>
+							</li>
+							<li class="divider"></li>
+						</ul>
 
 						<div class="form-inline">
 							<div class="col-sm-2">

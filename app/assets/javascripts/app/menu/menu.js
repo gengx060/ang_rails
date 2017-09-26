@@ -1,12 +1,13 @@
-define(['angular', 'bootstrap', 'app/common/vcard/vcard'], function (angular) {
-	angular.module('menu', ['vcard'])
+define(['angular', 'bootstrap', 'app/common/vcard/vcard', 'app/common/factory/util'], function (angular) {
+	angular.module('menu', ['vcard', 'util'])
 		.directive('menu', function () {
 			return {
 				require    : '^tabs',
 				restrict   : 'E',
 				transclude : true,
 				scope      : {},
-				controller : function ($scope, $element) {
+				controller : function ($scope, $element, util) {
+					$scope.from_now = util.from_now;
 					ajaxRequest({}, '/account/get_menu', function (res) {
 						$scope.$apply(function () {
 							$scope.menus = res;

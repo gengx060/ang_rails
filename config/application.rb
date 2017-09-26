@@ -7,45 +7,60 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module ActiveRecord
-  class Base
-    self.inheritance_column = "inheritance_type"
-    def self.params_to_model(params, model)
-      if model
-        params.each { |key, value|
-          next if key == 'id'
-          value && (model["#{key}"] = value)
-        }
-      end
-    end
-  end
+	class Base
+		self.inheritance_column = "inheritance_type"
+
+		def self.params_to_model(params, model)
+			if model
+				params.each {|key, value|
+					next if key == 'id'
+					value && (model["#{key}"] = value)
+				}
+			end
+		end
+
+		def self.edit(params, record = nil)
+			unless record
+				if param[:id]
+					record = self.where("id = #{params[:id]}").first
+				else
+					record = self.new
+				end
+			end
+			if record # in case of id was not found
+				self.params_to_model(params, record)
+				record.save!
+			end
+		end
+	end
 end
 
 module Kgeng
-  class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+	class Application < Rails::Application
+		# Settings in config/environments/* take precedence over those specified here.
+		# Application configuration should go into files in config/initializers
+		# -- all .rb files in that directory are automatically loaded.
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
+		# Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+		# Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+		# config.time_zone = 'Central Time (US & Canada)'
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+		# The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+		# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+		# config.i18n.default_locale = :de
 
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
-    # config.assets.initialize_on_precompile = false
-    # config.assets.enabled = true
-    # config.assets.compress = false
-    # config.assets.debug = true
-    # config.assets.js_compressor = Uglifier.new(mangle: false)
-    # # config.assets.paths << Rails.root.join("app", "assets", "javascripts", "asset")
-    # config.assets.paths << "#{Rails.root}/app/assets/javascripts/"
-    # config.assets.paths += Dir["#{Rails.root}/app/assets/javascripts/*"].sort_by { |dir| -dir.size }
-    # # config.asset =  config.assets
-    # config.eager_load_paths << "#{config.root}/app"
-    # # config.autoload_paths << Dir["#{config.root}/assets/**/"]
-  end
+		# Do not swallow errors in after_commit/after_rollback callbacks.
+		config.active_record.raise_in_transactional_callbacks = true
+		# config.assets.initialize_on_precompile = false
+		# config.assets.enabled = true
+		# config.assets.compress = false
+		# config.assets.debug = true
+		# config.assets.js_compressor = Uglifier.new(mangle: false)
+		# # config.assets.paths << Rails.root.join("app", "assets", "javascripts", "asset")
+		# config.assets.paths << "#{Rails.root}/app/assets/javascripts/"
+		# config.assets.paths += Dir["#{Rails.root}/app/assets/javascripts/*"].sort_by { |dir| -dir.size }
+		# # config.asset =  config.assets
+		# config.eager_load_paths << "#{config.root}/app"
+		# # config.autoload_paths << Dir["#{config.root}/assets/**/"]
+	end
 end
