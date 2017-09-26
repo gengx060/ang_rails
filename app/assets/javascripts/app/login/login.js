@@ -121,6 +121,11 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 						$scope.hideAlert = function () {
 							$scope.showAlert = false;
 						}
+						$scope.error_content = 'Incorrect username or password.';
+						if($routeParams.error) {
+							$scope.error_content = $routeParams.error;
+							$scope.showAlert = true;
+						}
 						
 						$scope.submit = function () {
 							ajaxRequest($scope.user, '/auth/login', function () {

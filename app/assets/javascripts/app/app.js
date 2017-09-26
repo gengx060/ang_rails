@@ -167,7 +167,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 					}
 					if (([401, 422].indexOf(res.status) != -1 ) && nonLoginRoutes.indexOf(loc_hash) == -1) {
 						console.log('redirect to login page.');
-						location.href = '#!/login';
+						location.href = '#!/login?error=Your session is expired, please login back.';
 						location.reload();
 					}
 				}
