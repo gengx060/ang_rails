@@ -29,8 +29,10 @@ define(['angular', 'jquery'], function (angular, $) {
 					}
 				});
 				$scope.$root.$watch('user_preferrence', function (newValue, oldValue) {
-					if (typeof newValue !== 'undefined')
+					if (typeof newValue !== 'undefined') {
 						$scope.limit = parseInt(newValue.pagesize);
+						$scope.page();
+					}
 				});
 				
 				$scope.set_current_page = function (p) {
@@ -71,6 +73,9 @@ define(['angular', 'jquery'], function (angular, $) {
 				});
 				
 				$scope.page = function () {
+					if(typeof $scope.limit === 'undefined') {
+						return;
+					}
 					$scope.params.offset = $scope.offset;
 					$scope.params.limit = $scope.limit;
 					$scope.params.filterbyids = $scope.filterbyids;
