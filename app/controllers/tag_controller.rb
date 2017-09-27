@@ -2,7 +2,7 @@ class TagController < ApplicationController
 
 	def edit
 		if params[:id]
-			tag = Tag.where("id = ? AND (user_id = ? AND org_id = ?)", params[:id], session[:user_id],session[:user_id])
+			tag = Tag.where("id = ? AND (user_id = ? OR org_id = ?)", params[:id], session[:user_id],session[:user_id])
 			if tag
 				params_u = {is_deleted: params[:is_deleted] ? '\1' : nil}
 				Tag.edit(params_u,tag)
@@ -20,11 +20,10 @@ class TagController < ApplicationController
 
 	def user_tag_edit
 		if params[:id]
-			tag = Tag.where("id = ? AND (user_id = ? AND org_id = ?)", params[:id], session[:user_id],session[:user_id])
-			# tag = UserTag.where("id = #{params[:id]} AND (user_id = #{session[:user_id]} AND org_id = #{session[:user_id]})")
-			if tag
+			usertag = UserTag.where("id = ? AND (user_id = ? OR org_id = ?)", params[:id], session[:user_id],session[:user_id])
+			if usertag
 				params_u = {is_deleted: params[:is_deleted] ? '\1' : nil}
-				UserTag.edit(params_u,tag)
+				UserTag.edit(params_u,usertag)
 			end
 		else
 			params_u = {user_id: session[:user_id],

@@ -39,7 +39,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							data: usstates,
 							placeholder: "Select a state"
 						});
-						if($scope.contact.address) {
+						if($scope.contact && $scope.contact.address) {
 							var state = $scope.contact.address.state;
 							$("#state_select").val(state).trigger("change");
 						}

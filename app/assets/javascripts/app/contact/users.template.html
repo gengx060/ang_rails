@@ -10,13 +10,70 @@
 
 			.left-aside {
 				/*position: absolute;*/
+				/*position: fixed;*/
 				border-right: 1px solid rgba(120, 130, 140, 0.13);
 				padding: 20px;
+				left: 0;
 				width: 250px;
 				height: 100%;
 			}
+
+			.col-width-1 {
+				width: 8.33%;
+			}
+
+			.col-width-2 {
+				width: 16.66%;
+			}
+
+			.col-width-3 {
+				width: 25%;
+			}
+
+			.col-width-4 {
+				width: 33.33%;
+			}
+
+			.col-width-5 {
+				width: 41.66%;
+			}
+
+			.col-width-6 {
+				width: 50%;
+			}
+
+			.col-width-7 {
+				width: 58.33%;
+			}
+
+			.col-width-8 {
+				width: 66.66%;
+			}
+
+			.col-width-9 {
+				width: 75%;
+			}
+
+			.col-width-10 {
+				width: 83.33%;
+			}
+
+			.col-width-11 {
+				width: 91.66%;
+			}
+
+			.col-width-12 {
+				width: 100%;
+			}
+
+			@media only screen and (max-width: 768px) {
+				/* For mobile phones: */
+				[class*="col-"] {
+					width: 100%;
+				}
+			}
 		</style>
-		<div class="left-aside">
+		<div class="left-aside" style="display:inline">
 			<ul class="list-style-none">
 				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
 				<li class="divider"></li>
@@ -46,8 +103,9 @@
 										<table cellpadding="0" cellspacing="0">
 											<tbody>
 											<tr>
-												<td  ng-repeat="lc in label_colors" ng-style="{'background-color':lc}" ng-click="select_color(lc)"
-													 style="border: 1px solid #666;height: 17px; line-height: 11px; position: relative; width: 17px; cursor: pointer;">
+												<td ng-repeat="lc in label_colors" ng-style="{'background-color':lc}"
+													ng-click="select_color(lc)"
+													style="border: 1px solid #666;height: 17px; line-height: 11px; position: relative; width: 17px; cursor: pointer;">
 													<i class="fa fa-check"></i>
 												</td>
 											</tr>
@@ -70,8 +128,7 @@
 				</div>
 			</ul>
 		</div>
-		<div>
-
+		<div style="display:inline; width: 750px;">
 			<div><!--<div ng-controller="NewUserController">-->
 				<div class="form-group">
 					<div class="col-sm-9">
