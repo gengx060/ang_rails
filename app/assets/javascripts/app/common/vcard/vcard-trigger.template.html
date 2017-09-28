@@ -1,5 +1,5 @@
 <div href='javascript:void(0);' ng-style="triggerStyle" uib-popover-template="conf.templateUrl" popover-placement="right"
-   popover-trigger="'outsideClick'" style="cursor: pointer" ng-click="click_a($event)">
+   popover-trigger="'outsideClick'" popover-append-to-body="true" style="cursor: pointer" ng-click="click_a($event)">
 	<img ng-if="src.img_loc" ng-style="{'width':triggersize, 'height':triggersize}" ng-attr-title="{{src.firstname+ ' ' + src.lastname}}"
 		 class="img-circle"
 		 ng-src='{{src.img_loc ? src.img_loc : $root.profile_placeholder}}'>

@@ -1,0 +1,243 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+
+      <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">    
+      <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>  
+
+  <style type="text/css">
+    .preview-div {
+    	position:absolute;
+    	bottom:2px;
+    	top:2px;
+    	left:2px;
+    	right:2px;
+    	background-color:#f8f8f8;
+    }
+    .preview-div-header {
+    	top:1px;
+    	left:1px;
+    	right:1px;
+    	/*background-color:#eee;*/
+    }
+    .initials {
+			position: relative;
+			top: 6px; /* 25% of parent */
+			font-size: 15px; /* 50% of parent */
+			line-height: 15px; /* 50% of parent */
+			color: #fff;
+			font-family: "Courier New", monospace;
+			/*font-family: 'HelveticaNeue-Light,Helvetica Neue Light,Helvetica Neue,Helvetica, Arial,Lucida Grande, sans-serif';*/
+			font-weight: bold;
+		}
+		.avatar-circle {
+			 width: 30px;
+			 height: 30px;
+			 background-color: #eee;
+			 text-align: center;
+			 border-radius: 50%;
+			 -webkit-border-radius: 50%;
+			 -moz-border-radius: 50%;
+			 cursor: pointer;
+		 }
+		.avatar-circle:hover {
+			 background-color: #c8c8c8;
+		}
+		.vcard {
+		    position: absolute;
+		    /*top: 120px;
+		    left: 120px;*/
+		    z-index: 1010;
+		    max-width: 276px;
+		    width: 250px;
+		    height: 250px;
+		    padding: 1px;
+		    text-align: left;
+		    background-color:  #eee;/* #ffffff;*/
+		    -webkit-background-clip: padding-box;
+		    -moz-background-clip: padding;
+		    background-clip: padding-box;
+		    border: 1px solid #ccc;
+		    border: 1px solid rgba(0, 0, 0, 0.2);
+		    -webkit-border-radius: 6px;
+		    -moz-border-radius: 6px;
+		    border-radius: 6px;
+		    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    white-space: normal;
+		}
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+
+<script type="text/javascript">//<![CDATA[
+$(window).load(function(){
+/* 
+Related StackOverflow answer
+http://stackoverflow.com/a/19638199/275333 
+*/
+
+/***** Create the popover **************/
+
+// var options = {
+//  content: '<h1>aaaaaaaaaaaaa</h1>',
+//  html: true,
+//  placement: 'bottom'
+// };
+
+// $('a').popover(options);
+
+/***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
+
+
+
+// $('a').on('click', function(e) {
+//     $('[data-original-title]').popover('hide');
+//     $(e.target).popover('show');
+// });
+
+$('html').on('click', function(e) {
+  if (typeof $(e.target).data('original-title') == 'undefined' &&
+     !$(e.target).parents().is('.popover.in')) {
+    $('[data-original-title]').popover('hide');
+  }
+});
+});//]]> 
+var app = angular.module('myApp', []);
+app.directive('vcard', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $timeout) {
+				$scope.top = "120px";
+				$scope.left = "120px";
+			    $scope.clear_timer = function() {
+			    	if ($scope.blur_timer) {
+			    		$timeout.cancel($scope.blur_timer); 
+			    		$scope.blur_timer = null;
+			    	}
+			    };
+			    $scope.create_timer = function() {
+			        $scope.blur_timer = $timeout( function(){
+			        	if ($scope.vcard_show) {
+			            	$scope.hide_card();
+		            		console.log('close new');
+			        	}
+			        }, 500);
+			    };
+			    $scope.hide_card = function($event) {
+		            $scope.vcard_show = false;
+			    };
+			    $scope.show_card = function($event) {
+			    	$scope.clear_timer();
+			    	if($scope.$root.old_vcard) {
+			    		if ($scope.$root.old_vcard != $scope) {
+			            	console.log('close old');
+				    		$scope.$root.old_vcard.hide_card();
+				    		$scope.$root.old_vcard = $scope;
+			    		}
+			    	} else {
+			    		$scope.$root.old_vcard =  $scope;
+			    	}
+			    	$scope.vcard_show = true;
+			    	$scope.top = $event.target.offsetTop - 45 + 'px';
+			    	$scope.left = $event.target.offsetLeft + $event.target.offsetWidth + 10 + 'px';
+			    };
+
+			    $scope.enter_vcard = function($event) {
+			    	$scope.clear_timer();
+			    };
+
+			    $scope.leave_vcard = function($event) {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+
+			    $scope.blur = function($event) {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+			},
+			template  : '<a href="#" ng-mouseover="show_card($event)" ng-mouseleave="blur($event)">123</a>\
+	<div ng-if="vcard_show" ng-mouseover="enter_vcard($event)"   ng-mouseleave="leave_vcard($event)"  class="vcard" ng-style="{\'top\':top, \'left\':left}"">\
+		<div ng-if="vcard_spin_show" style="position: relative;left: 45%; top: 40%;">\
+			<i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>\
+		</div>\
+	</div>'
+		};
+	});
+
+app.directive('preview', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $timeout) {
+			    $scope.preview_div_show = true;
+			    $scope.preview_div_switch = function(val) {
+			    	if(val) {
+						$scope.preview_div_show = val;
+			    	} else {
+			        	$scope.preview_div_show = !$scope.preview_div_show;
+			    	}
+			    };
+			},
+			template  : '	<div ng-if="preview_div_show" class="preview-div">\
+		<div class="preview-div-header">\
+			<div class="avatar-circle pull-right" ng-click="preview_div_switch(false)"><i class="fa fa-times fa-2x" aria-hidden="true"></i>\
+			</div>\
+		</div>\
+	</div>\
+	<a href="#" ng-click="preview_div_switch(true)">123</a>'
+		};
+	});
+app.controller('myCtrl', function($scope, $timeout) {
+    
+});
+</script>
+
+  
+</head>
+
+<body ng-app="myApp">
+
+<div ng-controller="myCtrl">
+<!--   <p>Name : <input type="text" ng-model="name"></p>
+  <h1>Hello {{name}}</h1> -->
+	<preview></preview>
+
+	<br> <br> <br> <br> <br> <br> <br> <br>
+	<vcard></vcard>
+	<vcard></vcard>
+	<vcard></vcard>
+	<vcard></vcard>
+
+
+<!--   <a href="#" data-original-title="" title="">Open Popover</a> <br>
+<a style="margin-left:500px" href="#" data-original-title="" title="">Open Popover</a><div class="popover fade bottom" style="top: 38px; left: -2.5e-05px; display: block;"><div class="arrow" style="left: 16.3553%;"></div><h3 class="popover-title" style="display: none;"></h3><div class="popover-content"><h1>Pop Over Content</h1></div></div>
+</div> -->
+</div>
+
+
+
+
+
+</body></html>
