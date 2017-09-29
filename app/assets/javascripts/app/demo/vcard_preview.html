@@ -187,11 +187,23 @@ app.directive('preview', function () {
 			transclude: true,
 			scope     : {
 				type: '@',
-				src : '=',
+				// src : '=',
 				triggersize:'@'
 			},
-			controller: function ($scope, $timeout) {
+			controller: function ($scope, $sce) {
 			    $scope.preview_div_show = true;
+			    $scope.src = {
+			    	type: 'pdf',
+			    	path: ("ID_POA_EFO00104.pdf")
+			    }
+			    $scope.src = {
+			    	type: 'pdf',
+			    	path: "text.txt"
+			    }
+			    $scope.src = {
+			    	type: 'img',
+			    	path: ("img.jpg")
+			    }
 			    $scope.preview_div_switch = function(val) {
 			    	if(val) {
 						$scope.preview_div_show = val;
@@ -200,9 +212,12 @@ app.directive('preview', function () {
 			    	}
 			    };
 			},
-			template  : '	<div ng-if="preview_div_show" class="preview-div">\
-		<div class="preview-div-header">\
+			template  : '<div ng-if="preview_div_show" class="preview-div">\
+		<div class="preview-div-header"><span ng-bind="src.path"></span>\
 			<div class="avatar-circle pull-right" ng-click="preview_div_switch(false)"><i class="fa fa-times fa-2x" aria-hidden="true"></i>\
+			</div>\
+			<div>\
+			<iframe ng-if="[\'img\', \'pdf\', \'pdf\'].indexOf(src.type) > -1" ng-src="{{src.path}}" width="100%" height="100%"></iframe>\
 			</div>\
 		</div>\
 	</div>\

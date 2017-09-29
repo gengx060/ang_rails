@@ -1,0 +1,185 @@
+{
+"IsSupplier":"false",
+"Phones":{"Phone":[{"PhoneType":"DDI"},{"PhoneAreaCode":"102","PhoneType":"DEFAULT","PhoneNumber":"5554561"},{"PhoneType":"FAX"},{"PhoneType":"MOBILE"}]},
+"HasAttachments":"false",
+"IsCustomer":"true",
+"LastName":"McKenzie",
+"EmailAddress":"mm@pmwla.co",
+
+"Addresses":{"Address":[
+{"City":"New York","PostalCode":"10016","AddressLine1":"79 Madison Ave, Fl 2","AddressType":"STREET","Region":"NY","Country":"USA"},
+{"City":"Coppertown","PostalCode":"34567","AddressLine1":"9 BranyardTerrace","AddressType":"POBOX","Region":"FL"}]},
+
+"Name":"Petrie McLoud Watson & Associates",
+"ContactID":"f477ad8d-44f2-4bb7-a99b-04f28681e849",
+"FirstName":"Morris",
+"ContactStatus":"ACTIVE",
+"UpdatedDateUTC":"2017-06-09T18:03:42.39"
+}
+
+
+
+
+
+{
+"SalesDetails":{"AccountCode":"400","TaxType":"AVALARA","UnitPrice":"19.9500"},
+"IsSold":"true",
+"PurchaseDescription":"Fish out of Water: Finding Your Brand",
+"Description":"Fish out of Water: Finding Your Brand",
+"Name":"Fish out of Water: Finding Your Brand",
+"ItemID":"4194d81d-3f6c-4768-8256-36130714637d",
+"IsPurchased":"true",
+"IsTrackedAsInventory":"false",
+"PurchaseDetails":{"AccountCode":"500","TaxType":"NONE","UnitPrice":"15.9500"},
+"Code":"BOOK",
+"UpdatedDateUTC":"2017-06-09T17:19:35.423"
+},
+
+{"SalesDetails":{"AccountCode":"400","TaxType":"AVALARA","UnitPrice":"5.6000"},
+"IsSold":"true",
+"PurchaseDescription":"Golf balls - white single. Wholesale catalog item #020812-1",
+"Description":"Golf balls - white single. Please reorder with code GB1-White",
+"Name":"Golf balls - white single",
+"ItemID":"ca5ae32d-4fe0-4db2-afae-a46a2c922447",
+"IsPurchased":"true","IsTrackedAsInventory":"false",
+"PurchaseDetails":{"AccountCode":"500","TaxType":"NONE","UnitPrice":"4.2000"},
+"Code":"GB1-White",
+"UpdatedDateUTC":"2017-06-09T17:19:35.423"},
+
+
+{"SalesDetails":{"AccountCode":"400","TaxType":"AVALARA","UnitPrice":"15.0000"},"IsSold":"true","PurchaseDescription":"Golf balls - white 3 pack. Wholesale catalog item #020812-3","Description":"Golf balls - white 3 pack. Please reorder with code GB3-White","Name":"Golf balls - white 3-pack","ItemID":"3c8ea74d-950e-4ff1-b5bb-4e53045e9ac4","IsPurchased":"true","IsTrackedAsInventory":"false","PurchaseDetails":{"AccountCode":"500","TaxType":"NONE","UnitPrice":"12.0000"},"Code":"GB3-White","UpdatedDateUTC":"2017-06-09T17:19:35.423"}
+
+
+{
+	"Reference":"RPT400-1",
+	"HasAttachments":"false",
+	"InvoiceNumber":"INV-0006",
+	"Type":"ACCREC",
+	"AmountCredited":"0.00",
+	"SubTotal":"457.67",
+	"Status":"PAID",
+	"BrandingThemeID":"324587a9-7eed-46c0-ad64-fa941a1b5b3e",
+	"CurrencyCode":"USD",
+	"AmountPaid":"500.00",
+	"Payments":{"Payment":{"Date":"2016-10-23T00:00:00","CurrencyRate":"1.000000","Amount":"500.00","PaymentID":"f5d36ea0-42f2-4cf8-ae2b-502e7c182206"}},
+	"Date":"2016-10-13T00:00:00",
+	"CurrencyRate":"1.000000",
+	"Contact":{"ContactID":"181edd84-d098-4468-95cd-e3ac74bc22c5","Name":"Ridgeway University"},
+	"UpdatedDateUTC":"2011-09-20T20:49:34.043",
+	"AmountDue":"0.00",
+	"TotalTax":"42.33",
+	"InvoiceID":"9a0ead44-24d1-4490-8e22-d72e15d5fff1",
+	"FullyPaidOnDate":"2016-10-23T00:00:00",
+	"LineAmountTypes":"Inclusive",
+	"Total":"500.00",
+	"DueDate":"2016-10-23T00:00:00"
+}
+
+
+{
+"PeriodLockDate":"2010-07-31T00:00:00",
+"SalesTaxBasis":"ACCRUALS",
+"BaseCurrency":"USD",
+"FinancialYearEndDay":"31",
+"LegalName":"Demo Company (US)",
+"Phones":{"Phone":{"PhoneNumber":"800 1234 5678","PhoneType":"OFFICE"}},
+"Version":"US",
+"FinancialYearEndMonth":"12",
+"IsDemoCompany":"true",
+"OrganisationStatus":"ACTIVE",
+"Timezone":"PACIFICSTANDARDTIME",
+"Name":"Demo Company (US)",
+"PaymentTerms":{"Bills":{"Type":"DAYSAFTERBILLDATE","Day":"14"},"Sales":{"Type":"DAYSAFTERBILLDATE","Day":"14"}},
+"OrganisationID":"4c1ad465-7998-40ad-a064-457bf52b3d37",
+"SalesTaxPeriod":"1MONTHLY",
+"CountryCode":"US",
+"ShortCode":"!w0krl",
+"OrganisationEntityType":"COMPANY",
+"CreatedDateUTC":"2017-06-09T17:19:34.46Z",
+"DefaultSalesTax":"Tax Exclusive",
+"PaysTax":"true",
+"Addresses":{
+	"Address":[
+		{"Region":"NY","PostalCode":"10016","Country":"USA","City":"New York","AddressType":"STREET","AddressLine1":"79 Madison Ave, Fl 2"},
+		{"Region":"NY","PostalCode":"12123","Country":"USA","City":"Oaktown","AddressType":"POBOX","AddressLine2":"Central City","AddressLine1":"23 Main Street"}]},
+"DefaultPurchasesTax":"No Tax","TaxNumber":"123456789","OrganisationType":"COMPANY"}
+
+salesTaxBasis user_address1 user_address2 user_state user_zipcode user_country
+
+
+{
+"Reference":"RPT400-1",
+"LineItems":{
+	"LineItem":{"TaxType":"OUTPUT","LineItemID":"9f3e0403-3a0b-44fe-9347-1cfe317ce7fc","AccountCode":"400","TaxAmount":"42.33","UnitAmount":"500.00","LineAmount":"500.00","Quantity":"1.0000","Description":"Retainer for consulting work"}},
+"HasAttachments":"false",
+"InvoiceNumber":"INV-0001",
+"Type":"ACCREC",
+"SubTotal":"457.67",
+"Status":"PAID",
+"BrandingThemeID":"324587a9-7eed-46c0-ad64-fa941a1b5b3e",
+"CurrencyCode":"USD",
+"AmountPaid":"500.00",
+
+"Payments":{"Payment":{"Date":"2016-05-23T00:00:00","CurrencyRate":"1.000000","Amount":"500.00","PaymentID":"413b6734-ab24-4f55-87c5-444726076384"}},"Date":"2016-05-13T00:00:00","CurrencyRate":"1.000000","Contact":{"Phones":{"Phone":[{"PhoneType":"FAX"},{"PhoneType":"DDI"},{"PhoneNumber":"5555001","PhoneType":"MOBILE","PhoneAreaCode":"201"},{"PhoneNumber":"5555001","PhoneType":"DEFAULT","PhoneAreaCode":"201"}]},
+
+"ContactGroups":{"ContactGroup":{"Status":"ACTIVE","Name":"Training","ContactGroupID":"1b979d15-4ad9-42d7-8111-85b990477df0"}},
+"ContactID":"181edd84-d098-4468-95cd-e3ac74bc22c5",
+"UpdatedDateUTC":"2017-06-09T18:03:42.39",
+"Name":"Ridgeway University",
+"ContactStatus":"ACTIVE",
+"IsCustomer":"true",
+"IsSupplier":"false",
+"Addresses":{"Address":[{"Region":"CO","PostalCode":"80111","Country":"USA","City":"Englewood","AddressType":"STREET","AddressLine1":"7100 E Belleview Ave, Ste 204"},{"Region":"FL","PostalCode":"45678","AttentionTo":"Accounts Dept","City":"Coppertown","AddressType":"POBOX","AddressLine1":"9-123 Lambda Ave"}]}},
+"UpdatedDateUTC":"2011-09-20T19:53:31.75",
+"SentToContact":"false",
+"AmountDue":"0.00",
+"TotalTax":"42.33",
+"InvoiceID":"3047f972-b6d9-485d-adbc-adcb3a8ebeb4",
+"FullyPaidOnDate":"2016-05-23T00:00:00",
+"LineAmountTypes":"Inclusive",
+"Total":"500.00",
+"DueDate":"2016-05-23T00:00:00"}
+
+
+
+
+
+
+{
+	"po_number":"",
+	"invoice_number":"",
+	"exemption_id":"",
+	"sale_date":"07/17/2017",
+	"commit_date":"07/17/2017",
+	"tax_class":"Sale",
+	"ship_from_fullname":"ucp ucp",
+	"location_code":"",
+	"ship_from_address1":"TEST",
+	"ship_from_address2":"",
+	"ship_from_city":"ALEXANDRIA",
+	"ship_from_county":"",
+	"ship_from_state":"Virginia",
+	"ship_from_zipcode":"22312",
+	"ship_from_country":"United States",
+	"ship_to_fullname":"ucp ucp",
+	"ship_to_address1":"TEST",
+	"ship_to_address2":"",
+	"ship_to_city":"ALEXANDRIA",
+	"ship_to_county":"",
+	"ship_to_state":"Virginia",
+	"ship_to_zipcode":"22312",
+	"ship_to_country":"United States",
+	"bill_to_fullname":"ucp ucp",
+	"bill_to_address1":"TEST",
+	"bill_to_address2":"",
+	"bill_to_city":"ALEXANDRIA",
+	"bill_to_state":"Virginia",
+	"bill_to_zipcode":"22312",
+	"bill_to_country":"USA",
+	"currency_code":"USD",
+	"ext-comp-1003":"1",
+	"ext-comp-1004":"22.11",
+	"s_0":"GB1-WHITE","d_0":"Golf balls - white single","q_0":"1","g_0":"22.11","f_0":"","t_0":"","b_0":"","s_1":"","d_1":"","q_1":"","g_1":"","f_1":"","t_1":"","b_1":"","s_2":"","d_2":"","q_2":"","g_2":"","f_2":"","t_2":"","b_2":"","s_3":"","d_3":"","q_3":"","g_3":"","f_3":"","t_3":"","b_3":"","s_4":"","d_4":"","q_4":"","g_4":"","f_4":"","t_4":"","b_4":"","s_5":"","d_5":"","q_5":"","g_5":"","f_5":"","t_5":"","b_5":"","s_6":"","d_6":"","q_6":"","g_6":"","f_6":"","t_6":"","b_6":""
+}
+
+
