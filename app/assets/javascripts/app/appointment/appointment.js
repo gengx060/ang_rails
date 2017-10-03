@@ -163,7 +163,8 @@ define(['angular', 'Enumerable', 'moment', 'moment-timezone', 'fullcalendar', 't
 									var scope = $scope.$new(true);
 									scope.attendees = a;
 									scope.size = '20px';
-									var el = $compile("<vcard type='profile' triggersize='{{size}}' src='attendees'></vcard>")(scope);
+									var el = $compile("<vcardtrigger type='profile' level='{{3}}' triggersize='{{size}}' src='attendees'></vcardtrigger>")(scope);
+									// var el = $compile("<vcard type='profile' level='{{3}}' triggersize='{{size}}' src='attendees'></vcard>")(scope);
 									element.find(".fc-content").append(el);
 								});
 							}

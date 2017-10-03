@@ -1,0 +1,11 @@
+<!--<a href="#" ng-mouseenter="vcardbox_show_switch(true, $event)" ng-mouseleave="vcardbox_show_switch(false, $event)">123</a>-->
+<div ng-style="triggerStyle" style="cursor: pointer" >
+	<img ng-if="src.img_loc" ng-style="{'width':triggersize, 'height':triggersize}" ng-attr-title="{{src.firstname+ ' ' + src.lastname}}"
+		 class="img-circle" ng-mouseenter="vcardbox_show_switch(true, $event)" ng-mouseleave="vcardbox_show_switch(false, $event)"
+		 ng-src='{{src.img_loc ? src.img_loc : $root.profile_placeholder}}'>
+	<div ng-if="!src.img_loc"  ng-style="colorStyle" class="avatar-circle" ng-mouseenter="vcardbox_show_switch(true, $event)" ng-mouseleave="vcardbox_show_switch(false, $event)"
+		 ng-attr-title="{{src.firstname+ ' ' + src.lastname}}" ng-style="{'width':triggersize, 'height':triggersize}">
+		<span class=" initials">{{src.firstname[0] + src.lastname[0]}}</span>
+	</div>
+</div>
+		

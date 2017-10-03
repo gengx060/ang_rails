@@ -1,8 +1,8 @@
-define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/common/vcard/vcard',
+define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/common/vcard/vcardtrigger',
 		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'
 		, 'app/common/searchbar/searchbar', 'app/common/factory/usstates', 'app/common/factory/util'],
 	function (angular, moment, $) {
-		angular.module('users', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting', 'searchbar', 'usstates'])
+		angular.module('users', ['angularModalService', 'vcardtrigger', 'dragdrop', 'paging', 'sorting', 'searchbar', 'usstates'])
 		.directive('users', function () {
 			
 			return {

@@ -1,0 +1,38 @@
+<!--<div ng-if="vcard_show" ng-mouseover="enter_vcard()"   ng-mouseleave="leave_vcard()"  class="vcard" ng-style="{'top':top, 'left':left}"><span ng-bind="vcard_box.type"></span>-->
+	<!--<div ng-if="vcard_spin_show" style="position: relative;left: 45%; top: 40%;">-->
+		<!--<i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>-->
+	<!--</div>-->
+<!--</div>-->
+
+<div ng-if="vcard_show" ng-mouseover="enter_vcard()" ng-mouseleave="leave_vcard()" class="vcard"
+	 ng-style="{'top':top, 'left':left}">
+	<div style="width:380px;">
+		<!--<div style='position: relative;left: 45%; top: 40%;color:black;opacity: 0.5'>-->
+		<!--<i class="fa fa-spinner fa-spin fa-5x"></i>-->
+		<!--</div>-->
+		<div style=" float:left;width:80px">
+			<img ng-style="{'width':'80px', 'height':'80px'}"
+				 class="img-rounded" ng-src='{{src.img_loc ? src.img_loc : $root.profile_placeholder}}'/>
+		</div>
+		<div style="float:right;width:290px;">
+			<div>
+				<a href='#'><b>{{src.firstname +' '+src.lastname}}</b></a>
+			</div>
+			<div style=" margin-top: 20px;">
+				<span class="label label-default">Default Label</span>
+				<span class="label label-primary">Primary Label</span>
+				<span class="label label-success">Success Label</span>
+				<span class="label label-info">Info Label</span>
+				<span class="label label-warning">Warning Label</span>
+				<span class="label label-danger">Danger Label</span>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+		<div style="margin-top: 10px;"><span>Crated at {{src.created_at}}</span></div>
+		<div style="margin-top: 10px;"><span>Last login at {{src.login_at}}</span></div>
+	
+	</div>
+	<div ng-if="vcard_spin_show" style="position: relative;left: 45%; top: 40%;">
+		<i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>
+	</div>
+</div>
