@@ -1,0 +1,751 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <title>Exactor - Master EDI Transmission Summary</title>
+  <link rel="icon" href="favicon.ico">
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+
+      <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">    
+      <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>  
+
+  <style type="text/css">
+  body.modal-open {
+    overflow: hidden;
+}
+    .preview-div {
+    	position:absolute;
+    	bottom:2px;
+    	top:2px;
+    	left:2px;
+    	right:2px;
+    	background-color:#f8f8f8;
+	    /*overflow: auto;
+    	overflow-y: scroll;*/
+    }
+    .preview-div-header {
+    	top:1px;
+    	left:1px;
+    	right:1px;
+    	/*background-color:#eee;*/
+    }
+    .initials {
+			position: relative;
+			top: 6px; /* 25% of parent */
+			font-size: 15px; /* 50% of parent */
+			line-height: 15px; /* 50% of parent */
+			color: #fff;
+			font-family: "Courier New", monospace;
+			/*font-family: 'HelveticaNeue-Light,Helvetica Neue Light,Helvetica Neue,Helvetica, Arial,Lucida Grande, sans-serif';*/
+			font-weight: bold;
+		}
+		.avatar-circle {
+			 width: 30px;
+			 height: 30px;
+			 background-color: #eee;
+			 text-align: center;
+			 border-radius: 50%;
+			 -webkit-border-radius: 50%;
+			 -moz-border-radius: 50%;
+			 cursor: pointer;
+		 }
+		.avatar-circle:hover {
+			 background-color: #c8c8c8;
+		}
+		.vcard {
+		    position: absolute;
+		    /*top: 120px;
+		    left: 120px;*/
+		    z-index: 1010;
+		    max-width: 276px;
+		    width: 250px;
+		    height: 250px;
+		    padding: 1px;
+		    text-align: left;
+		    background-color:  #eee;/* #ffffff;*/
+		    -webkit-background-clip: padding-box;
+		    -moz-background-clip: padding;
+		    background-clip: padding-box;
+		    border: 1px solid #ccc;
+		    border: 1px solid rgba(0, 0, 0, 0.2);
+		    -webkit-border-radius: 6px;
+		    -moz-border-radius: 6px;
+		    border-radius: 6px;
+		    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		    white-space: normal;
+		}
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+<script type="text/javascript">//<![CDATA[
+$(window).load(function(){
+/* 
+Related StackOverflow answer
+http://stackoverflow.com/a/19638199/275333 
+*/
+
+/***** Create the popover **************/
+
+// var options = {
+//  content: '<h1>aaaaaaaaaaaaa</h1>',
+//  html: true,
+//  placement: 'bottom'
+// };
+
+// $('a').popover(options);
+
+/***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
+
+
+
+// $('a').on('click', function(e) {
+//     $('[data-original-title]').popover('hide');
+//     $(e.target).popover('show');
+// });
+
+$('html').on('click', function(e) {
+  if (typeof $(e.target).data('original-title') == 'undefined' &&
+     !$(e.target).parents().is('.popover.in')) {
+    $('[data-original-title]').popover('hide');
+  }
+});
+});//]]> 
+var app = angular.module('myApp', []);
+app.directive('vcard', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $timeout) {
+				$scope.top = "120px";
+				$scope.left = "120px";
+			    $scope.clear_timer = function() {
+			    	if ($scope.blur_timer) {
+			    		$timeout.cancel($scope.blur_timer); 
+			    		$scope.blur_timer = null;
+			    	}
+			    };
+			    $scope.create_timer = function() {
+			        $scope.blur_timer = $timeout( function(){
+			        	if ($scope.vcard_show) {
+			            	$scope.hide_card();
+		            		console.log('close new');
+			        	}
+			        }, 500);
+			    };
+			    $scope.hide_card = function($event) {
+		            $scope.vcard_show = false;
+			    };
+			    $scope.show_card = function($event) {
+			    	$scope.clear_timer();
+			    	if($scope.$root.old_vcard) {
+			    		if ($scope.$root.old_vcard != $scope) {
+			            	console.log('close old');
+				    		$scope.$root.old_vcard.hide_card();
+				    		$scope.$root.old_vcard = $scope;
+			    		}
+			    	} else {
+			    		$scope.$root.old_vcard =  $scope;
+			    	}
+			    	$scope.vcard_show = true;
+			    	$scope.top = $event.target.offsetTop - 45 + 'px';
+			    	$scope.left = $event.target.offsetLeft + $event.target.offsetWidth + 10 + 'px';
+			    };
+
+			    $scope.enter_vcard = function($event) {
+			    	$scope.clear_timer();
+			    };
+
+			    $scope.leave_vcard = function($event) {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+
+			    $scope.blur = function($event) {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+			},
+			template  : '<a href="#" ng-mouseover="show_card($event)" ng-mouseleave="blur($event)">123</a>\
+	<div ng-if="vcard_show" ng-mouseover="enter_vcard($event)"   ng-mouseleave="leave_vcard($event)"  class="vcard" ng-style="{\'top\':top, \'left\':left}"">\
+		<div ng-if="vcard_spin_show" style="position: relative;left: 45%; top: 40%;">\
+			<i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>\
+		</div>\
+	</div>'
+		};
+	});
+
+app.directive('vcardbox', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				// type: '@',
+				// src : '=',
+				// triggersize:'@'
+			},
+			controller: function ($scope, $timeout) {
+				$scope.top = "120px";
+				$scope.left = "120px";
+				$scope.timer  = 500;
+
+				$scope.$root.$watch('vcard_box_show', function (newValue, oldValue) {
+					if (typeof newValue !== 'undefined') {
+						if(newValue) {
+							$scope.show_card();
+						} else {
+							$scope.blur();
+						}
+					}
+				});
+
+			    $scope.clear_timer = function() {
+			    	if ($scope.blur_timer) {
+			    		$timeout.cancel($scope.blur_timer); 
+			    		$scope.blur_timer = null;
+			    	}
+			    };
+			    $scope.create_timer = function() {
+			        $scope.blur_timer = $timeout( function(){
+			        	if ($scope.vcard_show) {
+			            	$scope.hide_card();
+		            		console.log('close new');
+			        	}
+			        }, $scope.timer);
+			    };
+			    $scope.hide_card = function($event) {
+		            $scope.vcard_show = false;
+			    };
+			    $scope.show_card = function() {
+			    	$scope.clear_timer();
+			    	$scope.vcard_box = $scope.$root.vcard_box;
+			    	$scope.vcard_show = true;
+			    	$scope.top = $scope.$root.vcard_box.event.target.offsetTop - 45 + 'px';
+			    	$scope.left = $scope.$root.vcard_box.event.target.offsetLeft +  $scope.$root.vcard_box.event.target.offsetWidth + 10 + 'px';
+			    };
+
+			    $scope.enter_vcard = function() {
+			    	$scope.clear_timer();
+			    };
+
+			    $scope.leave_vcard = function() {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+
+			    $scope.blur = function() {
+			    	$scope.clear_timer();
+			    	$scope.create_timer();
+			    };
+			},
+			template  : '<div ng-if="vcard_show" ng-mouseover="enter_vcard()"   ng-mouseleave="leave_vcard()"  class="vcard" ng-style="{\'top\':top, \'left\':left}"><span ng-bind="vcard_box.type"></span>\
+		<div ng-if="vcard_spin_show" style="position: relative;left: 45%; top: 40%;">\
+			<i class="fa fa-refresh fa-spin fa-2x" aria-hidden="true"></i>\
+		</div>\
+	</div>'
+		};
+	});
+
+app.directive('vcardtrigger', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $timeout) {
+
+				$scope.vcardbox_show_switch = function(val, event) { 
+			    	if (!$scope.$root.vcard_box) {
+			    		$scope.$root.vcard_box = {};
+			    	}
+			    	$scope.$root.vcard_box.event = event;
+					$scope.$root.vcard_box_show = val;
+					$scope.$root.vcard_box.type = $scope.type;
+				}
+			},
+			template  : '<a href="#" ng-mouseenter="vcardbox_show_switch(true, $event)" ng-mouseleave="vcardbox_show_switch(false, $event)">123</a>'
+		};
+	});
+
+app.directive('preview', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				// src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $sce) {
+			    $scope.preview_div_show = false;
+			    $scope.src = {
+			    	type: 'pdf',
+			    	path: ("ID_POA_EFO00104.pdf")
+			    }
+			    $scope.src = {
+			    	type: 'pdf',
+			    	path: "text.txt"
+			    }
+			    $scope.src = {
+			    	type: 'img',
+			    	path: ("img.jpg")
+			    }
+			    $scope.preview_div_switch = function(val) {
+			    	if(val) {
+						$scope.preview_div_show = val;
+			    	} else {
+			        	$scope.preview_div_show = !$scope.preview_div_show;
+			    	}
+			    };
+			},
+			template  : '<div ng-if="preview_div_show" class="preview-div">\
+		<div class="preview-div-header"><span ng-bind="src.path"></span>\
+			<div class="avatar-circle pull-right" ng-click="preview_div_switch(false)"><i class="fa fa-times fa-2x" aria-hidden="true"></i>\
+			</div>\
+			<div>\
+			<iframe ng-if="[\'img\', \'pdf\', \'pdf\'].indexOf(src.type) > -1" ng-src="{{src.path}}" width="100%" height="100%"></iframe>\
+			</div>\
+		</div>\
+	</div>\
+	<a href="#" ng-click="preview_div_switch(true)">123</a>'
+		};
+	});
+
+
+app.directive('previewbox', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				// src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $sce) {
+			    $scope.$root.preview_box_show = false;
+			    $scope.$root.src = {
+			    	type: 'pdf',
+			    	path: ("ID_POA_EFO00104.pdf")
+			    }
+			    $scope.$root.src = {
+			    	type: 'pdf',
+			    	path: "text.txt"
+			    }
+			    $scope.$root.src = {
+			    	type: 'img',
+			    	path: ("img.jpg")
+			    }
+
+			    $scope.$root.preview_div_switch = function(val) {
+			    	if(val) {
+						$scope.$root.preview_box_show = val;
+  						$("body").addClass("modal-open");
+			    	} else {
+			        	$scope.$root.preview_box_show = !$scope.$root.preview_box_show;
+ 						$("body").removeClass("modal-open")
+			    	}
+			    };
+			},
+			template  : '<div ng-if="$root.preview_box_show" class="preview-div">\
+		<div class="preview-div-header"><span ng-bind="$root.src.path"></span>\
+			<div class="avatar-circle pull-right" ng-click="$root.preview_div_switch(false)"><i class="fa fa-times fa-2x" aria-hidden="true"></i>\
+			</div>\
+			<div>\
+			<iframe ng-if="[\'img\', \'pdf\', \'pdf\'].indexOf($root.src.type) > -1" ng-src="{{$root.src.path}}" width="100%" height="100%"></iframe>\
+			</div>\
+		</div>\
+	</div>'
+		};
+	});
+
+
+app.directive('previewtrigger', function () {
+		return {
+			require   : '^tabs',
+			restrict  : 'E',
+			transclude: true,
+			scope     : {
+				type: '@',
+				// src : '=',
+				triggersize:'@'
+			},
+			controller: function ($scope, $sce) {
+			},
+			template  : '<a href="#" ng-click="$root.preview_div_switch(true)">567</a>'
+		};
+	});
+</script>
+
+<body ng-app="myApp">
+<div>
+		<div style="position: relative;float: left; width:200px;background-color: #c8c8c8">
+			<ul class="list-unstyled">
+				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
+				<li class="divider"></li>
+				<li><a href="#">Work <span>103</span></a></li>
+				<li><a href="#">Family <span>19</span></a></li>
+				<li><a href="#">Friends <span>623</span></a></li>
+				<li><a href="#">Private <span>53</span></a></li>
+				<li class="box-label"><a href="#" data-toggle="modal" data-target="#myModal">+
+					Create New Label</a></li>
+				<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" 
+					 aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Add Lable</h4></div>
+							<div class="modal-body">
+								<from class="form-horizontal">
+									<div class="form-group">
+										<label class="col-md-12">Name of Label</label>
+										<div class="col-md-12">
+											<input type="text" class="form-control" placeholder="type name"></div>
+									</div>
+									<div class="form-group">
+										<label>Pick text color</label>
+										<table cellpadding="0" cellspacing="0">
+											<tbody>
+											<tr>
+												<td ng-repeat="lc in label_colors" ng-style="{'background-color':lc}"
+													ng-click="select_color(lc)"
+													style="border: 1px solid #666;height: 17px; line-height: 11px; position: relative; width: 17px; cursor: pointer;">
+													<i class="fa fa-check"></i>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</from>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Save
+								</button>
+								<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">
+									Cancel
+								</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+			</ul>
+		</div>
+		<div style="position: relative;float: left; width: 750px;"> 
+		<table class="table table-striped table-hover table-condensed ">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Image</th>
+					<th>
+						
+					</th>
+					<th>Type</th>
+					<th>
+						</th>
+					<th>Last login</th>
+				</tr>
+				</thead>
+				<!--<tbody ng-controller="UserController">-->
+				<tbody>
+				 <tr  class="ng-scope"> 
+				 <th scope="row" class="ng-binding ng-scope">8</th>
+					<td>
+					</td>
+					<td class="ng-binding">Alek </td>
+					<td class="ng-binding">gaix01@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2</td>
+					<td class="ng-binding">a</td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope">
+						<preview></preview>
+					</th> 
+					
+					<td>
+					</td>
+					<td class="ng-binding">Sem Loir</td>
+					<td class="ng-binding">em@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope">
+					<previewtrigger></previewtrigger></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Kimis Zeng</td>
+					<td class="ng-binding">em2@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">13</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Clark Tigera</td>
+					<td class="ng-binding">cl@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">14</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Gregi Lee</td>
+					<td class="ng-binding">cl1@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">15</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Kevin Geng</td>
+					<td class="ng-binding">gengx061@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">16</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Davi Groom</td>
+					<td class="ng-binding">gaix04@163.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding">2  ago</td>
+					<td class="ng-binding">a ago</td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4010</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Glenn Branch</td>
+					<td class="ng-binding">aahqefrk.zctjeqilex@nbquutl.wavhbk.org</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4011</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Charlene Marquez</td>
+					<td class="ng-binding">jdvtrh.qeyihdjz@qcvnvtlte.qduofo.org</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4012</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Pedro Foley</td>
+					<td class="ng-binding">grskzjie.bzldqf@kgqzcisz.r-yehu.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4013</a></th> 
+					
+					<td>
+					</td>
+					<td class="ng-binding">Eva Sims</td>
+					<td class="ng-binding">gtqfwea.pjmbeyx@uyouhizj.gztecx.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4014</a></th> 
+					
+					<td>
+					</td>
+					<td class="ng-binding">Kent Norton</td>
+					<td class="ng-binding">lezssdmm.hcmseyh@zqowuep.yvifky.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4015</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Gwendolyn Reed</td>
+					<td class="ng-binding">ggpkevvn.wrfedjkyyq@dlhuiohz.orghph.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4016</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Garry Best</td>
+					<td class="ng-binding">spvnxrc.vjudwealuy@naufqqxvu.aelgpe.net</td>
+					<td>
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4017</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Lorie Knox</td>
+					<td class="ng-binding">qeyurfl.jqjalpfwdw@bvknilcw.pdygub.org</td>
+					<td>
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4018</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Alfonso Walton</td>
+					<td class="ng-binding">mlynfev.hwkwxmdxsy@rebjhjql.zayboq.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4019</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Peggy Hunter</td>
+					<td class="ng-binding">knfeytji.vfowjmjiz@zrsdukfog.imkdgg.com</td>
+					<td>
+						
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4020</a></th> 
+					
+					<td>
+					</td>
+					<td class="ng-binding">Peter Mullins</td>
+					<td class="ng-binding">moiqunnp.yocfppjakq@dkqwxb.rtkamx.org</td>
+					<td>
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4021</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Terrell Navarro</td>
+					<td class="ng-binding">dscetjn.bhixup@omziylgs.xnrcew.org</td>
+					<td>
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr><tr  class="ng-scope">
+					
+					<th scope="row" ng-if="c.type!='o'" class="ng-scope"><a href="#" ng-click="contact_detail(c.id)" class="ng-binding">4022</a></th> 
+					
+					<td>
+						
+					</td>
+					<td class="ng-binding">Julius Nunez</td>
+					<td class="ng-binding">sbrrpgcw.sdiozbz@tbbwcfenh.fkpllx.org</td>
+					<td>
+					</td>
+					<td class="ng-binding"></td>
+					<td class="ng-binding"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+</div>
+<previewbox></previewbox>
+</body>
+</html>
