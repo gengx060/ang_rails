@@ -2,10 +2,10 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 		'preloadscript', 'angular-route', 'angular-sanitize', 'ui-bootstrap',
 		'app/menu/menu', 'app/comment/comment', 'app/contact/users', 'app/resource/resources', 'app/appointment/appointment',
 		'app/common/factory/usstates', 'app/setting/setting', 'app/login/login',
-		'app/common/vcard/vcardbox'],
+		'app/common/vcard/vcardbox', 'app/common/preview/previewbox'],
 	function (angular, $, BD, toastr, Enumerable) {
 		var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'menu', 'comment',
-			'users', 'resources', 'appointment', 'setting', 'login', 'usstates', 'vcardbox'])
+			'users', 'resources', 'appointment', 'setting', 'login', 'usstates', 'vcardbox', 'previewbox'])
 		.factory("srvAuth", ['$rootScope',
 			function ($rootScope) {
 				var srvAuth = {};

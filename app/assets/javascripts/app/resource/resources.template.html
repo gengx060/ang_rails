@@ -43,7 +43,7 @@
 				</td>
 				<td>{{from_now(r.created_at)}}</td>
 				<td>{{r.is_deleted == 1 ? 'Yes' : 'No'}}</td>
-				<td align="center"><i class="fa fa-eye"></i></td>
+				<td align="center"><previewtrigger sid="{{r.id}}"></previewtrigger></td>
 			</tr>
 			</tbody>
 		</table>

@@ -1,7 +1,7 @@
 define(['angular', 'moment', 'toastr', 'bootstrap-dialog', 'angular-modal-service', 'app/common/vcard/vcard',
-		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'],
+		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting', 'app/common/preview/previewtrigger'],
 	function (angular, moment) {
-		angular.module('resources', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting'])
+		angular.module('resources', ['angularModalService', 'vcard', 'dragdrop', 'paging', 'sorting', 'previewtrigger'])
 		.directive('resources', function () {
 
 			return {

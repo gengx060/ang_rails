@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
   get '/welcome/ajax' => 'welcome#ajax'
+  get '/resource/preview'
   post '/welcome/ajax' => 'welcome#ajax'
   post '/auth/login' => 'auth#login'
 

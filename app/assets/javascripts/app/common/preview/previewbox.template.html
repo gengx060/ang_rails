@@ -1,0 +1,7 @@
+<div ng-if="$root.preview_box_show" class="preview-div">
+	<div class="preview-div-header"><span ng-bind="$root.src.path"></span>
+		<div class="avatar-circle pull-right" ng-click="$root.preview_div_switch(false)"><i class="fa fa-times fa-2x" aria-hidden="true"></i>
+		</div>
+	</div>
+	<iframe ng-if="['img', 'pdf', 'pdf'].indexOf($root.src.type) > -1" ng-src="{{$root.src.path}}" width="100%" height="100%"></iframe>
+</div>

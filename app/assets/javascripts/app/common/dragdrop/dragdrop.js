@@ -60,6 +60,7 @@ define(['angular', 'jquery', 'jquery-uploadfile'], function (angular, $) {
 						type: "POST",
 						data: JSON.stringify(item),
 						contentType: "application/json",
+						headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
 						dataType: "json",
 						success: function (res) {
 							var id = res.id;

@@ -15,14 +15,39 @@ class ResourceController < ApplicationController
 		else
 			render :json => {message: "file doesn't exist."}, :status => 500
 		end
+	end
 
+	def preview
+		file = Resource.find_by(" id = ? AND (user_id = ? OR org_id = ?) ", params[:id], session[:user_id], session[:user_id])
+		if file
+			# if [ "image", "b", "c" ].any? {|it| file.type.start_with?(it)}
+			if file.type.start_with?("image", "application")
+				hashed_name = file.hashed_name
+				file_loc    = Rails.root.join('app', 'assets', 'resources', "#{hashed_name}")
+				send_file(file_loc,
+						  :filename => file.name,
+						  :type => 'application/pdf',
+						  :disposition => 'inline')
+			end
+		end
+	end
+
+	def download
+		file = Resource.find_by(" id = ? AND (user_id = ? OR org_id = ?) ", params[:id], session[:user_id], session[:user_id])
+		if file
+			hashed_name = file.hashed_name
+			file_loc    = Rails.root.join('app', 'assets', 'resources', "#{hashed_name}")
+			send_file(file_loc,
+					  :filename => file.name,
+					:disposition => 'attachment')
+		end
 	end
 
 	def delete
 		params_u= {
-				id:      params[:id],
-				user_id: session[:user_id],
-				org_id:  session[:org_id],
+			id:      params[:id],
+			user_id: session[:user_id],
+			org_id:  session[:org_id],
 		}
 		Resource.delete(params_u)
 		render :json => {}

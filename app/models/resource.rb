@@ -2,15 +2,15 @@ class Resource < ActiveRecord::Base
 
 	def self.save_file(params)
 		created_at  = Time.now.utc
-		hashed_name = Digest::SHA512.hexdigest "#{params[:filename]}+#{created_at}"
+		hashed_name = Digest::SHA512.hexdigest "#{params[:name]}+#{created_at}"
 		file_loc    = Rails.root.join('app', 'assets', 'resources', "#{hashed_name}")
 		data        = params[:data]
 		start_pos   = data.index(';base64,')
 		type        = data[(data.index('data:') > -1 ? 5 : 0)...start_pos]
-		data        = data[start_pos+';base64,'.length..-1]
-		while File.exist?(file_loc) do
+		# data        = data[start_pos+';base64,'.length..-1]
+		while File.exist?(file_loc)
 			created_at  = Time.now.utc
-			hashed_name = Digest::SHA256.digest "#{params[:filename]}+#{created_at}"
+			hashed_name = Digest::SHA256.hexdigest "#{params[:name]}+#{created_at}"
 			file_loc    = Rails.root.join('app', 'assets', 'resources', "#{hashed_name}")
 		end
 		File.open(file_loc, 'wb') do |file|
