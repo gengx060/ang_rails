@@ -2,77 +2,6 @@
 <div>
 
 	<div ng-if="templatePath == ''">
-
-		<style>
-			.pagination {
-				position: absolute;
-			}
-
-			.left-aside {
-				/*position: absolute;*/
-				/*position: fixed;*/
-				border-right: 1px solid rgba(120, 130, 140, 0.13);
-				padding: 20px;
-				left: 0;
-				width: 250px;
-				height: 100%;
-			}
-
-			.col-width-1 {
-				width: 8.33%;
-			}
-
-			.col-width-2 {
-				width: 16.66%;
-			}
-
-			.col-width-3 {
-				width: 25%;
-			}
-
-			.col-width-4 {
-				width: 33.33%;
-			}
-
-			.col-width-5 {
-				width: 41.66%;
-			}
-
-			.col-width-6 {
-				width: 50%;
-			}
-
-			.col-width-7 {
-				width: 58.33%;
-			}
-
-			.col-width-8 {
-				width: 66.66%;
-			}
-
-			.col-width-9 {
-				width: 75%;
-			}
-
-			.col-width-10 {
-				width: 83.33%;
-			}
-
-			.col-width-11 {
-				width: 91.66%;
-			}
-
-			.col-width-12 {
-				width: 100%;
-			}
-
-			@media only screen and (max-width: 768px) {
-				/* For mobile phones: */
-				[class*="col-"] {
-					width: 100%;
-				}
-			}
-		</style>
 		<div style="position: relative;float: left; width:200px;background-color: #c8c8c8">
 			<ul class="list-unstyled">
 				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
@@ -81,6 +10,7 @@
 				<li><a href="#">Family <span>19</span></a></li>
 				<li><a href="#">Friends <span>623</span></a></li>
 				<li><a href="#">Private <span>53</span></a></li>
+				<li class="divider"></li>
 				<li class="box-label"><a href="#" data-toggle="modal" data-target="#myModal">+
 					Create New Label</a></li>
 				<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -126,6 +56,8 @@
 					</div>
 					<!-- /.modal-dialog -->
 				</div>
+				<li class="divider"></li>
+				<li><a href="#">Apply label</a></li>
 			</ul>
 		</div>
 		<div style="position: relative;float: left; width:900px;">
