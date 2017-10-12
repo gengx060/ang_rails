@@ -26,7 +26,7 @@
 					<!--<sorting colname="'Created at'" sortbyname="'sortbycreated_at'">-->
 				</th>
 				<th>Created at</th>
-				<th>deleted</th>
+				<!--<th>deleted</th>-->
 				<th>preview</th>
 			</tr>
 			</thead>
@@ -39,11 +39,12 @@
 				<td>{{r.length}}</td>
 				<td>{{r.type}}</td>
 				<td>
-					<vcard type='profile' src='r.vcard'></vcard>
+					<!--<vcard type='profile' src='r.vcard'></vcard>-->
+					<vcardtrigger type='profile' src='r.vcard'></vcardtrigger>
 				</td>
 				<td>{{from_now(r.created_at)}}</td>
-				<td>{{r.is_deleted == 1 ? 'Yes' : 'No'}}</td>
-				<td align="center"><previewtrigger sid="{{r.id}}"></previewtrigger></td>
+				<!--<td>{{r.is_deleted == 1 ? 'Yes' : 'No'}}</td>-->
+				<td align="center"><previewtrigger sid="{{r.id}}" sname="{{r.name}}"></previewtrigger></td>
 			</tr>
 			</tbody>
 		</table>

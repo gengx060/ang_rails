@@ -1,0 +1,17 @@
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (28, 123, null, '2017-09-04 20:34:19');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (28, 125, null, '2017-09-04 20:34:19');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (29, 123, null, '2017-09-04 20:59:19');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (29, 125, null, '2017-09-04 20:59:19');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (29, 126, null, '2017-09-04 20:59:19');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (30, 8, null, '2017-09-06 12:54:39');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (30, 9999, null, '2017-09-06 12:54:39');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (31, 8, null, '2017-09-06 12:57:10');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (31, 6666, null, '2017-09-06 12:57:10');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (32, 8, null, '2017-09-06 12:59:42');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (32, 66666, null, '2017-09-06 12:59:42');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (33, 8, null, '2017-09-06 13:02:32');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (33, 8985, null, '2017-09-06 13:02:32');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (33, 19281, null, '2017-09-06 13:02:32');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (34, 8, null, '2017-09-06 13:06:12');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (34, 6321, null, '2017-09-06 13:06:12');
+INSERT INTO geng.event_attendees (event_id, user_id, is_deleted, updated_at) VALUES (34, 2356, null, '2017-09-06 13:06:12');

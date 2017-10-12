@@ -7,7 +7,8 @@ class Resource < ActiveRecord::Base
 		data        = params[:data]
 		start_pos   = data.index(';base64,')
 		type        = data[(data.index('data:') > -1 ? 5 : 0)...start_pos]
-		# data        = data[start_pos+';base64,'.length..-1]
+		data        = Base64.decode64( data[start_pos+';base64,'.length..-1] )
+
 		while File.exist?(file_loc)
 			created_at  = Time.now.utc
 			hashed_name = Digest::SHA256.hexdigest "#{params[:name]}+#{created_at}"
@@ -40,8 +41,8 @@ class Resource < ActiveRecord::Base
 	end
 
 	def self.resource_list(params)
-		total     = self.where("(user_id = ? OR org_id = ?)", params[:user_id], params[:user_id]).count
-		resources = self.where("(user_id = ? OR org_id = ?) ", params[:user_id], params[:user_id])
+		total     = self.where("(user_id = ? OR org_id = ?) AND is_deleted IS NULL", params[:user_id], params[:user_id]).count
+		resources = self.where("(user_id = ? OR org_id = ?) AND is_deleted IS NULL", params[:user_id], params[:user_id])
 						.select("id, name, created_at, length, type, user_id,  IFNULL(is_deleted, 0) AS is_deleted ")
 						.order(params[:sortby])
 						.offset(params[:offset]).limit(params[:limit])

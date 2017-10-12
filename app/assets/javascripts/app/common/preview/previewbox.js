@@ -29,6 +29,7 @@ define(['angular'], function (angular) {
 				$scope.$root.preview_div_switch = function(val) {
 					if(val) {
 						$scope.$root.preview_box_show = val;
+						$(window).scrollTop(0);
 						$("body").addClass("modal-open");
 					} else {
 						$scope.$root.preview_box_show = !$scope.$root.preview_box_show;
