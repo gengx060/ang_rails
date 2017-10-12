@@ -4,7 +4,7 @@ require.config({
 
 	// alias libraries paths
 	paths: {
-		'angular'              : 'asset/angularjs/1.6.1/angular',
+		'angular'              : 'asset/angularjs/1.6.1/angular.min',
 		'angular-route'        : 'asset/angularjs/1.6.1/angular-route',
 		'angular-sanitize'     : 'asset/angularjs/1.6.1/angular-sanitize',
 		'bootstrap'            : 'asset/bootstrap/3.3.7/bootstrap.min',

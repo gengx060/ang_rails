@@ -74,7 +74,7 @@ define(['angular', 'ui-bootstrap'], function (angular) {
 						}
 					}, $scope.timer);
 				};
-				$scope.hide_card = function($event) {
+				$scope.hide_card = function() {
 					$scope.vcard_show = false;
 				};
 				$scope.show_card = function() {

@@ -2,8 +2,8 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 		'app/common/dragdrop/dragdrop', 'app/common/paging/paging', 'app/common/sorting/sorting'
 		, 'app/common/searchbar/searchbar', 'app/common/factory/usstates', 'app/common/factory/util'],
 	function (angular, moment, $) {
-		angular.module('users', ['angularModalService', 'vcardtrigger', 'dragdrop', 'paging', 'sorting', 'searchbar', 'usstates'])
-		.directive('users', function () {
+		angular.module('contacts', ['angularModalService', 'vcardtrigger', 'dragdrop', 'paging', 'sorting', 'searchbar', 'usstates'])
+		.directive('contacts', function () {
 			
 			return {
 				require: '^tabs',
@@ -18,6 +18,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 					// $location.search('filterbyids', null);
 					$scope.contacts = [];
+					$scope.selected_all = false;
 					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
@@ -44,6 +45,13 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							$("#state_select").val(state).trigger("change");
 						}
 					});
+					$scope.select_all = function(cs) {
+						$scope.selected_all = !$scope.selected_all;
+						var flag = $scope.selected_all;
+						cs.forEach(function(c) {
+							c.selected = flag;
+						})
+					}
 					
 					$scope.query_params = function () {
 						// if ($routeParams.newuser == 'true') {
@@ -114,7 +122,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 					
 				},
-				templateUrl: 'assets/app/contact/users.template.html',
+				templateUrl: 'assets/app/contact/contacts.template.html',
 				replace: true
 			};
 		})
