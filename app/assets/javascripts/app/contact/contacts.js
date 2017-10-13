@@ -22,6 +22,14 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
+
+					$scope.update_label = function () {
+						console.log('update_label');
+					};
+
+					$scope.apply_label = function () {
+						console.log('apply_label');
+					};
 					
 					// $scope.templatePath ='assets/app/common/template/address.template.html';
 					$scope.contact_detail = function (id) {
