@@ -11,35 +11,84 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 				transclude: true,
 				scope: {},
 				controller: function ($scope, $element, $routeParams, $location, usstates, util) {
-					// $scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
-					$scope.label_colors = ['#ff4444', '#ffbb33', '#00C851', '#33b5e5'];
+					$scope.label_selected = {color:'#00C851', name:''};
+					$scope.labels = [
+						{color:'#00C851', selected:true},
+						{color:'#ff4444', selected:false},
+						{color:'#ffbb33', selected:false},
+						{color:'#33b5e5', selected:false}];
 					$scope.select_color = function(lc) {
-						console.log(lc)
+						$scope.labels.forEach(function(it) {
+							it.selected = false;
+						});
+						lc.selected = true;
+						$scope.label_selected.color = lc.color;
 					};
+
 					// $location.search('filterbyids', null);
 					$scope.contacts = [];
+					$scope.tags = [];
+					$scope.contacts_bak = [];
 					$scope.selected_all = false;
 					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
 
-					$scope.update_label = function () {
+					$scope.create_label = function () {
+						if ($scope.label_selected.name.trim() == '') {
+							toastr.error("Label name is empty.");
+							return;
+						}
+						var params = $scope.label_selected;
+						ajaxRequest(params, '/tag/edit', function (res) {
+							$scope.$apply(function () {
+								$scope.tags = res.tags;
+							});
+						}, function (res) {
+							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+						});
 						console.log('update_label');
 					};
 
+					$scope.update_label = function () {
+						var params = {};
+						ajaxRequest(params, '/tag/list', function (res) {
+							$scope.$apply(function () {
+								$scope.tags = res.tags;
+							});
+						}, function (res) {
+							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+						});
+						console.log('update_label');
+					};
+					// $scope.$watch('contacts', function (newValue, oldValue) {
+					// 	debugger
+					// });
+
 					$scope.apply_label = function () {
 						console.log('apply_label');
+						var select_ids = $scope.contacts_bak.map(function(it) {
+							if(it.selected)
+								return it.id;
+						}).filter(function(it){ return it != undefined });
 					};
 					
 					// $scope.templatePath ='assets/app/common/template/address.template.html';
 					$scope.contact_detail = function (id) {
-						// $location.search('newuser', null);
-						// $location.search('newuser', 'true');
 						$location.search('newcontact', null);
 						if (typeof id === 'undefined') {
 							$location.search('newcontact', 'true');
 						} else {
 							$location.search('newcontact', id);
+						}
+					};
+
+					// $scope.templatePath ='assets/app/common/template/address.template.html';
+					$scope.tags_clik = function (id) {
+						if (typeof id === 'undefined') {
+							$location.search('tag', null);
+						} else {
+							$location.search('tag', id);
 						}
 					};
 					
@@ -54,6 +103,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						}
 					});
 					$scope.select_all = function(cs) {
+						$scope.contacts_bak = cs;
 						$scope.selected_all = !$scope.selected_all;
 						var flag = $scope.selected_all;
 						cs.forEach(function(c) {
@@ -117,6 +167,15 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							};
 						} else {
 							$scope.templatePath = '';
+
+							var params = {};
+							ajaxRequest(params, '/tag/list', function (res) {
+								$scope.$apply(function () {
+									$scope.tags = res.tags;
+								});
+							}, function (res) {
+								toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+							});
 						}
 					};
 					$scope.$on('$routeUpdate', function () {
