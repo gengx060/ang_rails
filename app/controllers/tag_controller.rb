@@ -66,7 +66,8 @@ class TagController < ApplicationController
 	end
 
 	def delete
-		tag = Tag.find(["name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]])
+		# tag = Tag.find(["name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]])
+		tag = Tag.where(["id = ? AND user_id = ? AND is_deleted IS NULL", params[:id], session[:user_id]]).first
 		unless tag
 			render :json => {message: "No such label is found."}, :status => 500
 			return

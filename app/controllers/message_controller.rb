@@ -10,7 +10,7 @@ class MessageController < ApplicationController
 		else
 			params_u = {user_id:   session[:user_id],
 						org_id:    session[:org_id],
-						content:   params[:tag_name],
+						content:   params[:name],
 						parent_id: params[:parent_id],
 						level:     params[:level], }
 			Messages.edit(params_u)

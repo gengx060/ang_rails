@@ -55,11 +55,12 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 
 					$scope.open_label = function () {
-						$scope.label_selected = {title:"Create label", color:'#00C851', name:''};
+						$scope.label_selected = {title:"Create label", color:'#00C851', name:'',delete_show:false};
 					};
 
 					$scope.update_label = function (tag) {
 						$scope.label_selected.title = "Update label";
+						$scope.label_selected.delete_show = true;
 						$scope.select_color(tag);
 						$scope.label_selected.name = tag.name;
 					};
