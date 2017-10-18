@@ -40,11 +40,50 @@ class TagController < ApplicationController
 		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
 	end
 
-	def edit
-		if Tag.exists("name = ? AND user_id = ?", params[:name], session[:user_id])
-			render :json => {message: "Duplicated label name found."}, :status => 50
+	def create
+		tag = Tag.where("name = ? AND user_id = ?", params[:name], session[:user_id]).first
+		if tag
+			unless tag.is_deleted
+				render :json => {message: "Duplicated label name found."}, :status => 500
+			else
+				tag.edit({is_deleted: nil}, tag)
+				render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+			end
 			return
 		end
+		Tag.edit({name: params[:name], color: params[:color], user_id: session[:user_id], org_id: session[:org_id]})
+		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+	end
+
+	def edit
+		tag = Tag.where("name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]).first
+		unless tag
+			render :json => {message: "No such label is found."}, :status => 500
+			return
+		end
+		Tag.edit({name: params[:name], color: params[:color]}, tag)
+		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+	end
+
+	def delete
+		tag = Tag.find(["name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]])
+		unless tag
+			render :json => {message: "No such label is found."}, :status => 500
+			return
+		end
+		tag.is_delete = "\1"
+		tag.save!
+		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+	end
+
+	def apply
+		tag = Tag.find(["name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]])
+		unless tag
+			render :json => {message: "No such label is found."}, :status => 500
+			return
+		end
+		tag.is_delete = "\1"
+		tag.save!
 		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
 	end
 

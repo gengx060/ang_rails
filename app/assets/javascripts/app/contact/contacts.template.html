@@ -1,18 +1,23 @@
 <!--<script src="app/contcontacts.jst.js"></script>-->
 <div>
-
+	<style>
+		a:hover {
+			text-decoration:none;
+			cursor:pointer;
+		}
+	</style>
 	<div ng-if="templatePath == ''">
 		<div style="position: relative;float: left; width:200px;background-color: #c8c8c8">
 			<ul class="list-unstyled">
 				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
 				<li class="divider"></li>
 				<li ng-repeat="t in tags">
-					<a href="#" ng-click="tags_clik(t.id)">{{t.name}} <span>{{t.count}}</span></a>
-					<i style="cursor:pointer" ng-click="update_label()" class="fa fa-cog pull-right" disabled title='Update label' aria-hidden="true"></i>
-					<i style="cursor:pointer" ng-click="apply_label()" disabled title='Apply label to selected contacts' class="fa fa-plus-circle  pull-right" aria-hidden="true"></i>
+					<a ng-click="tags_clik(t.id)"> <span class="label label-default" ng-style="{'background-color':t.color}">{{t.name}}</span> <span>{{t.count}}</span></a>
+					<a href="#" data-toggle="modal" data-target="#myModal"  ng-click="update_label(t)"><i class="fa fa-cog pull-right" disabled title='Update label' aria-hidden="true"></i></a>
+					<a href="#" ng-click="apply_label(t)"><i disabled title='Apply label to selected contacts' class="fa fa-hand-o-right  pull-right" aria-hidden="true"></i></a>
 				</li>
 				<li class="divider"></li>
-				<li class="box-label"><a href="#" data-toggle="modal" data-target="#myModal">+
+				<li class="box-label"><a href="#" data-toggle="modal" ng-click="open_label()" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i>
 					Create New Label</a></li>
 				<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 					 aria-hidden="true">
@@ -21,7 +26,7 @@
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
 								</button>
-								<h4 class="modal-title" id="myModalLabel">Add Lable</h4></div>
+								<h4 class="modal-title" id="myModalLabel">{{label_selected.title}}</h4></div>
 							<div class="modal-body">
 								<from class="form-horizontal">
 									<div class="form-group">
@@ -46,10 +51,12 @@
 								</from>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-info waves-effect" ng-click="creat_label(lc)" data-dismiss="modal">Save
+								<button type="button" class="btn btn-info" ng-click="create_label()" data-dismiss="modal">Save
 								</button>
-								<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">
+								<button type="button" class="btn btn-default" data-dismiss="modal">
 									Cancel
+								</button>
+								<button type="button" class="btn btn-danger pull_left" ng-click="delete_label()" data-dismiss="modal">Delete
 								</button>
 							</div>
 						</div>
@@ -100,7 +107,7 @@
 					<th scope="row" ng-if="c.type!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
 					<th scope="row" ng-if="c.type=='o'">{{c.id}}</th>
 					<td>
-						<vcardtrigger type='profile' src='c'></vcardtrigger>
+						<!--<vcardtrigger type='profile' src='c'></vcardtrigger>-->
 					</td>
 					<td>{{c.firstname +' '+c.lastname}}</td>
 					<td>{{c.email}}</td>

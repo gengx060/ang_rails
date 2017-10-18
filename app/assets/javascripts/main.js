@@ -1,7 +1,7 @@
 require.config({
 
 	baseUrl: "assets/",
-
+	waitSeconds : 30,
 	// alias libraries paths
 	paths: {
 		'angular'              : 'asset/angularjs/1.6.1/angular.min',

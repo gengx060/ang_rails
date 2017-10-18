@@ -19,9 +19,13 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						{color:'#33b5e5', selected:false}];
 					$scope.select_color = function(lc) {
 						$scope.labels.forEach(function(it) {
-							it.selected = false;
+							if(it.color == lc.color) {
+								it.selected = true;
+							} else {
+								it.selected = false;
+							}
 						});
-						lc.selected = true;
+						// lc.selected = true;
 						$scope.label_selected.color = lc.color;
 					};
 
@@ -40,37 +44,56 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 							return;
 						}
 						var params = $scope.label_selected;
-						ajaxRequest(params, '/tag/edit', function (res) {
+						ajaxRequest(params, '/tag/create', function (res) {
 							$scope.$apply(function () {
+								$scope.label_selected.name = "";
 								$scope.tags = res.tags;
 							});
 						}, function (res) {
 							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 						});
-						console.log('update_label');
 					};
 
-					$scope.update_label = function () {
-						var params = {};
-						ajaxRequest(params, '/tag/list', function (res) {
+					$scope.open_label = function () {
+						$scope.label_selected = {title:"Create label", color:'#00C851', name:''};
+					};
+
+					$scope.update_label = function (tag) {
+						$scope.label_selected.title = "Update label";
+						$scope.select_color(tag);
+						$scope.label_selected.name = tag.name;
+					};
+
+					$scope.delete_label = function (tag) {
+						var params = {id:tag.id};
+						ajaxRequest(params, '/tag/delete', function (res) {
 							$scope.$apply(function () {
+								$scope.label_selected.name = "";
 								$scope.tags = res.tags;
 							});
 						}, function (res) {
 							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
 						});
-						console.log('update_label');
 					};
-					// $scope.$watch('contacts', function (newValue, oldValue) {
-					// 	debugger
-					// });
 
-					$scope.apply_label = function () {
-						console.log('apply_label');
+					$scope.apply_label = function (tag) {
 						var select_ids = $scope.contacts_bak.map(function(it) {
 							if(it.selected)
 								return it.id;
 						}).filter(function(it){ return it != undefined });
+						if (select_ids.length == 0) {
+							toastr.error("No selected items.");
+						} else {
+							var params = {users:select_ids, tag:tag.id};
+							ajaxRequest(params, '/tag/apply', function (res) {
+								$scope.$apply(function () {
+									// $scope.label_selected.name = "";
+									// $scope.tags = res.tags;
+								});
+							}, function (res) {
+								toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+							});
+						}
 					};
 					
 					// $scope.templatePath ='assets/app/common/template/address.template.html';

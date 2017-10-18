@@ -17,15 +17,15 @@ class Tag < ActiveRecord::Base
 		return tags
 	end
 
-	def self.edit(params)
-		if params[:id]
-			tag = self.where("id = ?", params[:id]).first
-		end
-
-		unless tag
-			tag = self.new
-		end
-		self.params_to_model(params, user)
-		tag.save!
-	end
+	# def self.edit(params)
+	# 	if params[:id]
+	# 		tag = self.where("id = ?", params[:id]).first
+	# 	end
+	#
+	# 	unless tag
+	# 		tag = self.new
+	# 	end
+	# 	self.params_to_model(params, tag)
+	# 	tag.save!
+	# end
 end

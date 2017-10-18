@@ -21,7 +21,7 @@ module ActiveRecord
 
 		def self.edit(params, record = nil)
 			unless record
-				if param[:id]
+				if params[:id]
 					record = self.where("id = #{params[:id]}").first
 				else
 					record = self.new
