@@ -37,7 +37,7 @@ class TagController < ApplicationController
 
 
 	def list
-		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+		render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 	end
 
 	def create
@@ -47,12 +47,13 @@ class TagController < ApplicationController
 				render :json => {message: "Duplicated label name found."}, :status => 500
 			else
 				tag.edit({is_deleted: nil}, tag)
-				render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+				list
+				# render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 			end
 			return
 		end
 		Tag.edit({name: params[:name], color: params[:color], user_id: session[:user_id], org_id: session[:org_id]})
-		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+		list # render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 	end
 
 	def edit
@@ -62,7 +63,7 @@ class TagController < ApplicationController
 			return
 		end
 		Tag.edit({name: params[:name], color: params[:color]}, tag)
-		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+		list #render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 	end
 
 	def delete
@@ -74,18 +75,14 @@ class TagController < ApplicationController
 		end
 		tag.is_delete = "\1"
 		tag.save!
-		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+		list
+		# render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
 	end
 
 	def apply
-		tag = Tag.find(["name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]])
-		unless tag
-			render :json => {message: "No such label is found."}, :status => 500
-			return
-		end
-		tag.is_delete = "\1"
-		tag.save!
-		render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}
+		UserTag.create({users:params[:users], org_id:session[:org_id], tag_id:params[:tag_id]})
+		list
+		# render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 	end
 
 end

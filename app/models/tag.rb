@@ -14,7 +14,7 @@ class Tag < ActiveRecord::Base
 			t['count'] = self.count_by_sql("SELECT COUNT(*) FROM user_tags
  WHERE tag_id = #{t['id']} AND is_deleted IS NULL");
 		}
-		return tags
+		return [{name:'All Contacts', count:User.org_seat_count({org_id:params[:org_id]})}] + tags
 	end
 
 	# def self.edit(params)

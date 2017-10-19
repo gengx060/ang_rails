@@ -9,9 +9,9 @@
 	<div ng-if="templatePath == ''">
 		<div style="position: relative;float: left; width:200px;background-color: #c8c8c8">
 			<ul class="list-unstyled">
-				<li class="box-label"><a href="javascript:void(0)">All Contacts <span>123</span></a></li>
+				<li class="box-label"><a href="/#!/contacts">All Contacts <span>{{tags[0].count}}</span></a></li>
 				<li class="divider"></li>
-				<li ng-repeat="t in tags">
+				<li ng-repeat="t in tags"  ng-if="$index > 0">
 					<a ng-click="tags_clik(t.id)"> <span class="label label-default" ng-style="{'background-color':t.color}">{{t.name}}</span> <span>{{t.count}}</span></a>
 					<a href="#" data-toggle="modal" data-target="#myModal"  ng-click="update_label(t)"><i class="fa fa-cog pull-right" disabled title='Update label' aria-hidden="true"></i></a>
 					<a href="#" ng-click="apply_label(t)"><i disabled title='Apply label to selected contacts' class="fa fa-hand-o-right  pull-right" aria-hidden="true"></i></a>
@@ -124,7 +124,7 @@
 				</tr>
 				</tbody>
 			</table>
-			<paging list="contacts" listname="users" refresh="refresh_list" url="/user/user_list"></paging>
+			<paging list="contacts" listname="users" urlparams='["tag"]' refresh="refresh_list" url="/user/user_list"></paging>
 		</div>
 	</div>
 	<div ng-if="templatePath != ''" class="container">

@@ -31,13 +31,13 @@ class User < ActiveRecord::Base
 	end
 
 	def self.user_list(params)
-		where_clause = "users.org_id = #{params[:org_id]} AND is_deleted IS NULL "
+		where_clause = "users.org_id = #{params[:org_id]} AND users.is_deleted IS NULL "
 		if params[:filterbyids]
 			where_clause += " AND users.id  in (#{params[:filterbyids]}) "
 		end
-		if params[:tag_id]
-			total = UserTag.where("org_id = #{params[:org_id]} AND id = #{params[:tag_id]} AND is_deleted IS NULL").count
-			tag_clause = "INNER JOIN usert_tags ut ON users.id = ut.user_id AND ut.id = #{params[:tag_id]} AND ut.is_deleted IS NULL"
+		if params[:tag]
+			total = UserTag.where("org_id = #{params[:org_id]} AND tag_id = #{params[:tag]} AND is_deleted IS NULL").count
+			tag_clause = "INNER JOIN user_tags ut ON users.id = ut.user_id AND ut.tag_id = #{params[:tag]} AND ut.is_deleted IS NULL"
 		else
 			total = self.where(where_clause).count
 		end
@@ -46,7 +46,8 @@ class User < ActiveRecord::Base
 						(select img_loc from `user_profiles` as up where up.user_id = users.id) as img_loc,
 						(select MAX(ul.created_at) from `user_logins` as ul
 							where ul.user_id = users.id and ul.status = 'login') as login_at
-						#{tag_clause}")
+						")
+					.joins(tag_clause)
 					.where(where_clause)
 					.order(params[:sortby])
 					.offset(params[:offset]).limit(params[:limit])
@@ -214,5 +215,9 @@ LIMIT 12
 			end
 			return true
 		end
+	end
+
+	def self.org_seat_count(params)
+		self.count(:all, :conditions => "org_id= #{params[:org_id]} AND is_deleted IS NULL")
 	end
 end

@@ -7,6 +7,7 @@ define(['angular', 'jquery'], function (angular, $) {
 			scope: {
 				list: '=',
 				listname: '@',
+				urlparams: '@',
 				url: '@',
 				refresh: '='
 			},
@@ -52,16 +53,25 @@ define(['angular', 'jquery'], function (angular, $) {
 				};
 				
 				$scope.$on('$routeUpdate', function (next, current) {
-					// debugger
+					var urlparms_found = false;
+					if ($scope.urlparams) {
+						try {
+							var param = JSON.parse($scope.urlparams);
+							$scope.params[param] = $routeParams[param];
+							urlparms_found = true;
+						}catch(e){}
+					}
+
 					var oldparam = $scope.params['sortby'];
 					var oldfilterbyids = $routeParams.filterbyids;
 					$scope.route_to_params();
-					if (!oldparam && !$scope.params['sortby'] && oldfilterbyids == $scope.filterbyids)
+					if (!oldparam && !$scope.params['sortby'] && oldfilterbyids == $scope.filterbyids && !urlparms_found)
 						return; // no sort by params
 					if (!oldparam || // in case of sort by just apeared
 						!$scope.params['sortby'] || // in case of sort by just disapeared
 						!jsonEqual(oldparam, $scope.params['sortby']) ||
-						oldfilterbyids != $scope.filterbyids) {
+						oldfilterbyids != $scope.filterbyids ||
+						urlparms_found) {
 						
 						if (oldfilterbyids != $scope.filterbyids) {
 							$scope.current_page = 1;

@@ -56,7 +56,7 @@ class UserController < ApplicationController
 			org_id:      session[:org_id],
 			sortby:      "",
 			filterbyids: params[:filterbyids],
-			tag_id: params[:tag]
+			tag: params[:tag]
 		}
 		if params[:sortby]
 			params[:sortby].each_with_index {|(key, value), index|

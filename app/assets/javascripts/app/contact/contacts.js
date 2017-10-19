@@ -37,6 +37,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
+					$scope.urlparams = ['tag'];
 
 					$scope.create_label = function () {
 						if ($scope.label_selected.name.trim() == '') {
@@ -85,11 +86,11 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						if (select_ids.length == 0) {
 							toastr.error("No selected items.");
 						} else {
-							var params = {users:select_ids, tag:tag.id};
+							var params = {users:select_ids, tag_id:tag.id};
 							ajaxRequest(params, '/tag/apply', function (res) {
 								$scope.$apply(function () {
 									// $scope.label_selected.name = "";
-									// $scope.tags = res.tags;
+									$scope.tags = res.tags;
 								});
 							}, function (res) {
 								toastr.error(res.info.message ? res.info.message : res.info.server_msg);
