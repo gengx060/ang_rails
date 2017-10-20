@@ -41,12 +41,16 @@ class TagController < ApplicationController
 	end
 
 	def create
+		if params[:id]
+			edit
+			return
+		end
 		tag = Tag.where("name = ? AND user_id = ?", params[:name], session[:user_id]).first
 		if tag
 			unless tag.is_deleted
 				render :json => {message: "Duplicated label name found."}, :status => 500
 			else
-				tag.edit({is_deleted: nil}, tag)
+				Tag.edit({is_deleted: nil, color: params[:color]}, tag)
 				list
 				# render :json => {tags: Tag.list({'user_id': session[:user_id], 'org_id': session[:org_id]}).as_json}
 			end
@@ -57,7 +61,7 @@ class TagController < ApplicationController
 	end
 
 	def edit
-		tag = Tag.where("name = ? AND user_id = ? AND is_deleted IS NULL", params[:name], session[:user_id]).first
+		tag = Tag.where("id = ? AND user_id = ? AND is_deleted IS NULL", params[:id], session[:user_id]).first
 		unless tag
 			render :json => {message: "No such label is found."}, :status => 500
 			return
@@ -73,7 +77,7 @@ class TagController < ApplicationController
 			render :json => {message: "No such label is found."}, :status => 500
 			return
 		end
-		tag.is_delete = "\1"
+		tag.is_deleted = "\1"
 		tag.save!
 		list
 		# render :json => {tags: Tag.list({'user_id': session[:user_id]}).as_json}

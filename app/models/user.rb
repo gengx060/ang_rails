@@ -35,9 +35,9 @@ class User < ActiveRecord::Base
 		if params[:filterbyids]
 			where_clause += " AND users.id  in (#{params[:filterbyids]}) "
 		end
-		if params[:tag]
-			total = UserTag.where("org_id = #{params[:org_id]} AND tag_id = #{params[:tag]} AND is_deleted IS NULL").count
-			tag_clause = "INNER JOIN user_tags ut ON users.id = ut.user_id AND ut.tag_id = #{params[:tag]} AND ut.is_deleted IS NULL"
+		if !params[:tag].blank?
+			total = UserTag.where("org_id = #{params[:org_id]} AND tag_id IN (#{params[:tag]}) AND is_deleted IS NULL").count
+			tag_clause = "INNER JOIN user_tags ut ON users.id = ut.user_id AND ut.tag_id IN (#{params[:tag]}) AND ut.is_deleted IS NULL"
 		else
 			total = self.where(where_clause).count
 		end
@@ -218,6 +218,6 @@ LIMIT 12
 	end
 
 	def self.org_seat_count(params)
-		self.count(:all, :conditions => "org_id= #{params[:org_id]} AND is_deleted IS NULL")
+		self.where("org_id= #{params[:org_id]} AND is_deleted IS NULL").count
 	end
 end

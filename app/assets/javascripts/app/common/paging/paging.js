@@ -51,8 +51,8 @@ define(['angular', 'jquery'], function (angular, $) {
 						}
 					});
 				};
-				
-				$scope.$on('$routeUpdate', function (next, current) {
+
+				$scope.routeUpdate = function() {
 					var urlparms_found = false;
 					if ($scope.urlparams) {
 						try {
@@ -72,7 +72,7 @@ define(['angular', 'jquery'], function (angular, $) {
 						!jsonEqual(oldparam, $scope.params['sortby']) ||
 						oldfilterbyids != $scope.filterbyids ||
 						urlparms_found) {
-						
+
 						if (oldfilterbyids != $scope.filterbyids) {
 							$scope.current_page = 1;
 							$scope.offset = 0;
@@ -80,6 +80,10 @@ define(['angular', 'jquery'], function (angular, $) {
 						}
 						$scope.page();
 					}
+				};
+
+				$scope.$on('$routeUpdate', function (next, current) {
+					$scope.routeUpdate()
 				});
 				
 				$scope.page = function () {
@@ -184,7 +188,9 @@ define(['angular', 'jquery'], function (angular, $) {
 					}
 					$scope.offset = ($scope.current_page - 1) * $scope.limit;
 					$scope.page()
-				}
+				};
+
+				$scope.routeUpdate();
 			},
 			templateUrl: 'assets/app/common/paging/paging.template.html',
 			replace: true

@@ -14,7 +14,8 @@ module ActiveRecord
 			if model
 				params.each {|key, value|
 					next if key == 'id'
-					value && (model["#{key}"] = value)
+					# value && (model["#{key}"] = value)
+					model["#{key}"] = value
 				}
 			end
 		end
