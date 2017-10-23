@@ -1,4 +1,5 @@
 class UserTag < ActiveRecord::Base
+	has_many :tags, -> { where is_deleted: nil }
 
 	def self.read(params)
 		en = self.find(params[:id])

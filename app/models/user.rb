@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+	has_many :user_tags, -> { where is_deleted: nil }
+	has_many :tags, :through => :user_tags
+	has_many :user_profiles
 
 	def self.edit(params)
 		if params[:id]
@@ -66,8 +69,13 @@ class User < ActiveRecord::Base
 
 	def self.get_vcard(user_id)
 		vcard = self.joins("LEFT JOIN `user_profiles` as up ON up.user_id = users.id")
+					.joins("LEFT JOIN `user_tags` as ut ON ut.user_id = users.id AND ut.is_deleted IS NULL")
 					.select("users.id, firstname, lastname, email, users.created_at, up.img_loc")
 					.where("users.id = ?", user_id).first
+		# user =  self.where("id = ?",user_id).select("id, firstname, lastname, email, created_at").first.as_json
+		# user['img_loc'] =  self.find(user_id).user_profiles.select("img_loc").as_json
+		# user['tags'] = self.find(11).tags.select("name").as_json.join(',')
+		# return user
 		return vcard
 	end
 
