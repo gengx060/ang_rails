@@ -39,8 +39,30 @@ class User < ActiveRecord::Base
 			where_clause += " AND users.id  in (#{params[:filterbyids]}) "
 		end
 		if !params[:tag].blank?
-			total = UserTag.where("org_id = #{params[:org_id]} AND tag_id IN (#{params[:tag]}) AND is_deleted IS NULL").count
-			tag_clause = "INNER JOIN user_tags ut ON users.id = ut.user_id AND ut.tag_id IN (#{params[:tag]}) AND ut.is_deleted IS NULL"
+			tags = params[:tag].to_s.split(',')
+			if tags.length == 1
+				tag_clause = "INNER JOIN user_tags ON user_tags.user_id = users.id AND user_tags.org_id = 8 and user_tags.tag_id = #{tags[0]} AND user_tags.is_deleted IS NULL"
+				total = UserTag.where("org_id = #{params[:org_id]} AND tag_id  = #{params[:tag]} AND is_deleted IS NULL").count
+				# where_clause = "users.id in (#{select_sql})"
+			else
+				select_sql = "SELECT user_tags.user_id FROM `user_tags` "
+				join_sql = " "
+				tags[1..-1].each_with_index{|v,i|
+					join_sql += "INNER JOIN `user_tags` ut#{i} ON ut#{i}.user_id = user_tags.user_id
+					AND ut#{i}.org_id = 8 AND ut#{i}.tag_id = #{v} AND ut#{i}.is_deleted IS NULL "
+				}
+				join_sql += " AND user_tags.org_id = 8 and user_tags.tag_id = 2 AND user_tags.is_deleted IS NULL"
+				total = UserTag.joins(join_sql).count
+				where_clause = "users.id in (#{select_sql+join_sql})"
+			end
+
+			# join_sql =   "INNER JOIN `user_tags` ut#{i} ON ut#{i}.user_id = user_tags.user_id
+			# AND ut#{i}.org_id = 8 AND ut#{i}.tag_id = 1 AND ut#{i}.is_deleted IS NULL AND "
+			# UserTag.joins("INNER JOIN user_tags as ut1 ON ut1.user_id = user_tags.user_id")
+			#
+			# UserTag.joins("INNER JOIN user_tags as ut1 ON ut1.user_id = user_tags.user_id")
+			# total = UserTag.where("org_id = #{params[:org_id]} AND tag_id IN (#{params[:tag]}) AND is_deleted IS NULL").count
+			# tag_clause = "INNER JOIN user_tags ut ON users.id = ut.user_id AND ut.tag_id IN (#{params[:tag]}) AND ut.is_deleted IS NULL"
 		else
 			total = self.where(where_clause).count
 		end

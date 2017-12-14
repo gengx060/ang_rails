@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 				return false
 			end
 		else
-			render :json => {:error => 'Unauthorized contact, please login back in.'}, :status => 401
+			render :json => {:error => 'Unauthorized user, please login back in.'}, :status => 401
 			return false
 		end
 	end
