@@ -30,7 +30,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 
 					// $location.search('filterbyids', null);
-					$scope.contacts = [];
+					$scope.contact_arr = [];
 					$scope.tags = [];
 					$scope.tags_selected = [];
 					$scope.contacts_bak = [];
@@ -39,6 +39,11 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
 					$scope.urlparams = ['tag'];
+
+					$scope.$watch('contact_arr', function (newValue, oldValue) {
+						console.log(oldValue + " new " + newValue)
+						// debugger
+					});
 
 					$scope.create_label = function () {
 						if ($scope.label_selected.name.trim() == '') {
@@ -181,7 +186,9 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 
 					$scope.query_params = function () {
 						if (typeof $routeParams.newcontact !== 'undefined') {
+							$scope.contact_title = "New contact";
 							if ($routeParams.newcontact !== 'true') {
+								$scope.contact_title = "Update contact";
 								var params = {user_id: $routeParams.newcontact};
 								ajaxRequest(params, '/user/get_user', function (res) {
 									$scope.$apply(function () {

@@ -10,12 +10,16 @@
 				<a href='/#!/contacts?newcontact={{src.id}}' ng-click="hide_card()"><b>{{src.firstname +' '+src.lastname}}</b></a>
 			</div>
 			<div style=" margin-top: 20px;">
-				<span class="label label-default">Default Label</span>
-				<span class="label label-primary">Primary Label</span>
-				<span class="label label-success">Success Label</span>
-				<span class="label label-info">Info Label</span>
-				<span class="label label-warning">Warning Label</span>
-				<span class="label label-danger">Danger Label</span>
+				<span ng-repeat="t in JSON.parse(src.tag)" class="label label-default"
+					  ng-style="{'background-color':t.color}">{{t}}</span>
+				<span  class="label label-default"
+					  ng-style="{'background-color':t.color}">{{src.tag}}</span>
+				<!--<span class="label label-default">Default Label</span>-->
+				<!--<span class="label label-primary">Primary Label</span>-->
+				<!--<span class="label label-success">Success Label</span>-->
+				<!--<span class="label label-info">Info Label</span>-->
+				<!--<span class="label label-warning">Warning Label</span>-->
+				<!--<span class="label label-danger">Danger Label</span>-->
 			</div>
 		</div>
 		<div style="clear:both"></div>

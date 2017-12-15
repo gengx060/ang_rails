@@ -68,9 +68,13 @@ class User < ActiveRecord::Base
 		end
 		users = self.select("users.id, firstname, lastname, email, users.is_deleted,
 						users.type,  users.created_at,
-						(select img_loc from `user_profiles` as up where up.user_id = users.id) as img_loc,
-						(select MAX(ul.created_at) from `user_logins` as ul
-							where ul.user_id = users.id and ul.status = 'login') as login_at
+						(SELECT img_loc from `user_profiles` as up where up.user_id = users.id) AS img_loc,
+						(SELECT MAX(ul.created_at) from `user_logins` as ul
+							where ul.user_id = users.id AND ul.status = 'login') AS login_at,
+						CONCAT('[', (SELECT GROUP_CONCAT(CONCAT('{\"name\":\"', t.name, '\",\"color\":\"', t.color,'\"}')  SEPARATOR ',')  FROM user_tags ut
+					   		INNER JOIN tags t ON ut.tag_id = t.id AND t.is_deleted IS NULL
+							WHERE ut.user_id = users.id AND ut.is_deleted IS NULL),']') AS tag
+
 						")
 					.joins(tag_clause)
 					.where(where_clause)

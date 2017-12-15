@@ -1,0 +1,73 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="robots" content="noindex, nofollow">
+	<meta name="googlebot" content="noindex, nofollow">
+	<title>Exactor - Master EDI Transmission Summary</title>
+	<link rel="icon" href="favicon.ico">
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+<script type="text/javascript">
+
+var app = angular.module('myApp', ['dir1']);
+
+angular.module('dir1', ['dir2']).directive('dir1', function () {
+	return {
+		require   : '^tabs',
+		restrict  : 'E',
+		transclude: true,
+		scope: {},
+		controller: function ($scope) {
+			$scope.array=[];
+			$scope.$watch('array', function (newValue, oldValue) {
+				console.log(oldValue + " new " + newValue)
+				// debugger
+			});
+		},
+		template  : '<input ng-repeat="t in array" ng-model="t"> <dir2 list="array" ></dir2>'
+	};
+});
+
+angular.module('dir2', []).directive('dir2', function () {
+	return {
+		require   : '^tabs',
+		restrict  : 'E',
+		replace: true,
+		scope     : {
+			type: '@',
+			list : '=',
+		},
+		controller: function ($scope) {
+			$.ajax({
+				url: "http://jsfiddle.net/echo/jsonp/",
+				method: "GET",
+				dataType: 'jsonp',
+			}).done(function() {
+				$scope.$apply( function() {
+					$scope.list = [1,2];
+				});
+			});
+			// setTimeout(function(){
+			// 	$scope.$apply( function() {
+			// 	$scope.src = [1,2];
+			// })
+			// }, 3000);
+
+		}
+	};
+});
+</script>
+
+<body ng-app="myApp">
+	<dir1></dir1>
+</body>
+</html>
