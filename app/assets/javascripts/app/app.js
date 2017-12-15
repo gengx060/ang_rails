@@ -68,7 +68,7 @@ define(['angular', 'jquery', 'bootstrap-dialog', 'toastr', 'Enumerable', 'select
 			function ($routeProvider) {
 				$routeProvider.when('/resources', {
 					template: '<resources></resources>',
-					// reloadOnSearch: false
+					reloadOnSearch: false
 				});
 				$routeProvider.when('/settings', {
 					template: '<setting></setting>',

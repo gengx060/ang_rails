@@ -35,12 +35,12 @@ define(['angular', 'jquery'], function (angular, $) {
 						$scope.page();
 					}
 				});
-				
+
 				$scope.set_current_page = function (p) {
 					$scope.current_page = p;
 					$scope.current_page_bak = p;
 				};
-				
+
 				$scope.route_to_params = function () {
 					$scope.params['sortby'] = {};
 					Object.entries($routeParams).forEach(function (it) {
@@ -85,7 +85,7 @@ define(['angular', 'jquery'], function (angular, $) {
 				$scope.$on('$routeUpdate', function (next, current) {
 					$scope.routeUpdate()
 				});
-				
+
 				$scope.page = function () {
 					if(typeof $scope.limit === 'undefined') {
 						return;
@@ -100,7 +100,7 @@ define(['angular', 'jquery'], function (angular, $) {
 							$scope.total = res.total;
 							var total_page = res.total / $scope.limit;
 							$scope.total_page = parseInt(total_page) + (total_page > parseInt(total_page) ? 1 : 0);
-							
+
 							// if($scope.current_page < $scope.total_page) {
 							// 	$scope.current_page = 1;
 							// }
@@ -111,18 +111,18 @@ define(['angular', 'jquery'], function (angular, $) {
 					});
 					// $scope.params = {}; // reset params
 				};
-				
-				$(document).ready(function () {
-					$scope.route_to_params();
-					$scope.page();
-				});
-				
+
+				// $(document).ready(function () {
+				// 	// $scope.route_to_params();
+				// 	// $scope.page();
+				// });
+
 				$scope.firstPage_select = function () {
 					$scope.offset = 0;
 					$scope.set_current_page(1);
 					$scope.page()
 				};
-				
+
 				$scope.firstPage = function () {
 					if ($scope.offset == 0 && $scope.current_page == 1)
 						return;
@@ -130,7 +130,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.set_current_page(1);
 					$scope.page();
 				};
-				
+
 				$scope.prePage = function () {
 					if ($scope.offset < 0 || $scope.current_page == 1)
 						return;
@@ -139,11 +139,11 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.set_current_page($scope.current_page - 1);
 					$scope.page();
 				};
-				
+
 				$scope.gotoPage = function (keyEvent) {
 					if (keyEvent.which != 13)
 						return;
-					
+
 					if (isNaN(parseInt($scope.current_page_bak))) {
 						$scope.set_current_page($scope.current_page)
 					}
@@ -168,7 +168,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.offset = ($scope.current_page - 1) * $scope.limit;
 					$scope.page();
 				};
-				
+
 				$scope.nextPage = function () {
 					if ($scope.offset + $scope.limit >= $scope.total)
 						return;
@@ -176,7 +176,7 @@ define(['angular', 'jquery'], function (angular, $) {
 					$scope.set_current_page($scope.current_page + 1)
 					$scope.page()
 				};
-				
+
 				$scope.lastPage = function () {
 					if ($scope.offset + $scope.limit >= $scope.total)
 						return;

@@ -30,19 +30,18 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					};
 
 					// $location.search('filterbyids', null);
-					$scope.contact_arr = [];
+					$scope.contacts = [];
 					$scope.tags = [];
 					$scope.tags_selected = [];
-					$scope.contacts_bak = [];
+					// $scope.contacts_bak = [];
 					$scope.selected_all = false;
 					$scope.from_now = util.from_now;
 					$scope.sort_email = 'email';
 					$scope.sort_name = 'name';
 					$scope.urlparams = ['tag'];
 
-					$scope.$watch('contact_arr', function (newValue, oldValue) {
-						console.log(oldValue + " new " + newValue)
-						// debugger
+					$scope.$watch('contacts', function (newValue, oldValue) {
+						console.log( " new " )
 					});
 
 					$scope.create_label = function () {
@@ -99,7 +98,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 					}
 
 					$scope.apply_label = function (tag) {
-						var select_ids = $scope.contacts_bak.map(function (it) {
+						var select_ids = $scope.contacts.map(function (it) {
 							if (it.selected)
 								return it.id;
 						}).filter(function (it) {
@@ -176,7 +175,7 @@ define(['angular', 'moment', 'jquery', 'select2', 'angular-modal-service', 'app/
 						}
 					});
 					$scope.select_all = function (cs) {
-						$scope.contacts_bak = cs;
+						// $scope.contacts_bak = cs;
 						$scope.selected_all = !$scope.selected_all;
 						var flag = $scope.selected_all;
 						cs.forEach(function (c) {

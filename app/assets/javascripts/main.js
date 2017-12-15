@@ -4,9 +4,9 @@ require.config({
 	waitSeconds : 30,
 	// alias libraries paths
 	paths: {
-		'angular'              : 'asset/angularjs/1.6.1/angular.min',
-		'angular-route'        : 'asset/angularjs/1.6.1/angular-route',
-		'angular-sanitize'     : 'asset/angularjs/1.6.1/angular-sanitize',
+		'angular'              : 'asset/angularjs/1.6.4/angular.min',
+		'angular-route'        : 'asset/angularjs/1.6.4/angular-route.min',
+		'angular-sanitize'     : 'asset/angularjs/1.6.4/angular-sanitize.min',
 		'bootstrap'            : 'asset/bootstrap/3.3.7/bootstrap.min',
 		'jquery'               : 'asset/jquery/3.2.1/jquery.min',
 		'select2'              : 'asset/select2/4.0.3/js/select2.full',

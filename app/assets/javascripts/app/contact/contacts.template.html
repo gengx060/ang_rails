@@ -6,7 +6,7 @@
 			cursor: pointer;
 		}
 	</style>
-	<div ng-if="templatePath == ''">
+	<div ng-show="!templatePath">
 		<div style="position: relative;float: left; width:200px;background-color: #c8c8c8">
 			<ul class="list-unstyled">
 				<li class="box-label"><a href="/#!/contacts">All Contacts <span>{{tags[0].count}}</span></a></li>
@@ -98,7 +98,7 @@
 
 			<table class="table table-striped table-hover table-condensed ">
 				<thead>
-				<th><input type="checkbox" ng-change="select_all(contact_arr)" ng-model="selected_all"></th>
+				<th><input type="checkbox" ng-change="select_all(contacts)" ng-model="selected_all"></th>
 				<th>#</th>
 				<th>Image</th>
 				<th>
@@ -116,7 +116,7 @@
 				</thead>
 				<!--<tbody ng-controller="UserController">-->
 				<tbody>
-				<tr ng-repeat="c in contact_arr">
+				<tr ng-repeat="c in contacts">
 					<th><input type="checkbox" ng-model="c.selected"></th>
 					<!--<th scope="row" ng-if="c.group!='o'"><a href="#" ng-click="show_update_hash(c.id)">{{c.id}}</a></th>-->
 					<th scope="row" ng-if="c.type!='o'"><a href="#" ng-click="contact_detail(c.id)">{{c.id}}</a></th>
@@ -139,11 +139,15 @@
 				</tr>
 				</tbody>
 			</table>
-			<paging list="contact_arr" listname="users" urlparams='["tag"]' refresh="refresh_list"
+			<paging list="contacts" listname="users" urlparams='["tag"]' refresh="refresh_list"
 					url="/user/user_list"></paging>
 		</div>
 	</div>
-	<div ng-if="templatePath != ''" class="container">
+	<!--<div ng-if="templatePath == ''">-->
+	<!--<paging list="contacts" listname="users" urlparams='["tag"]' refresh="refresh_list"-->
+	<!--url="/user/user_list"></paging>-->
+	<!--</div>-->
+	<div ng-if="templatePath" class="container">
 		<div>
 			<ng-include src="'assets/app/contact/new-contact.template.html'"></ng-include>
 		</div>
