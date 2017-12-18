@@ -80,6 +80,12 @@ class User < ActiveRecord::Base
 					.where(where_clause)
 					.order(params[:sortby])
 					.offset(params[:offset]).limit(params[:limit])
+		users = users.as_json
+		users.each{|it|
+			if it['tag']
+				it['tag'] = JSON.parse(it['tag'])
+			end
+		}
 		return total, users
 	end
 

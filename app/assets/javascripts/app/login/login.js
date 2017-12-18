@@ -112,7 +112,7 @@ define(['angular', 'jquery', 'select2', 'app/common/factory/usstates'], function
 					else {
 						$scope.templatePath = 'assets/app/login/login.template.html';
 						$scope.user = {
-							email: 'gaix01@163.com',
+							email: 'gengx01@163.com',
 							password: 'gege1818'
 						};
 						$scope.$root.showmenu = false;
