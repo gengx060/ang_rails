@@ -25,7 +25,8 @@
 				<textarea set-focus="newcomment_top.show" class="form-control" placeholder="Join the discussion here..."
 						  style='overflow: auto; word-wrap: break-word; min-height: 100px;margin-bottom:5px'
 						  ng-model="newcomment_top.content"></textarea>
-				<button class='btn btn-info pull-right' ng-click='newcomment_top.send(null, comments)'>send</button>
+				<!--<button class='btn btn-info pull-right' ng-click='newcomment_top.send(null, comments)'>send</button>-->
+				<button class='btn btn-info pull-right' ng-click='save_comment(newcomment_top.content)'>send</button>
 			</div>
 		</div>
 	</div>

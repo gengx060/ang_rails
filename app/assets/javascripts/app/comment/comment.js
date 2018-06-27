@@ -36,9 +36,6 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 				controller : function ($scope, $element, $http) {
 					$scope.margin = {'1': '40px', '2': '100px', '3': '145px'};
 
-					// $scope.code_text = '';
-					// $scope.code_text_show = false;
-					// $scope.profile_placeholder = "asset/img/blank-profile.png";
 					$scope.newcomment = function () {
 						return {
 							content    : '',
@@ -113,6 +110,21 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 					};
 					$scope.newcomment_top = $scope.newcomment();
 
+					$scope.save_comment = function (c) {
+						if (c.trim() === "") {
+							toastr.error("message is empty.");
+							return;
+						}
+						var params = {content: c};
+						ajaxRequest(params, '/message/save', function (res) {
+							$scope.$apply(function () {
+								$scope.newcomment_top.content = "";
+								toastr.success(res.message);
+							});
+						}, function (res) {
+							toastr.error(res.info.message ? res.info.message : res.info.server_msg);
+						});
+					};
 					$scope.comments = [
 						{
 							id        : 1,
@@ -200,7 +212,6 @@ define(['angular', 'toastr', 'Enumerable', 'bootstrap-dialog', 'app/welcome/full
 						}
 						$scope.comments = rs;
 					}
-
 				},
 				templateUrl: 'assets/app/comment/comment.template.html',
 				replace    : true

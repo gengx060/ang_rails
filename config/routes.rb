@@ -6,9 +6,11 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
   get '/welcome/ajax' => 'welcome#ajax'
+  get '/welcome/test' => 'welcome#test'
   get '/resource/preview'
   post '/welcome/ajax' => 'welcome#ajax'
   post '/auth/login' => 'auth#login'
+  post '/welcome/test' => 'welcome#test'
 
 
   id_requirement     = /\d+/
